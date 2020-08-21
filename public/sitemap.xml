@@ -198,126 +198,6 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-01/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-02/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-03/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-04/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-3/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-4/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-5/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-01/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-03/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-3/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-05/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-06/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://book.ninescloud.com/docs/5.-Functions/ch5-01/</loc>
     <lastmod>2020-08-21T16:04:53+08:00</lastmod>
   </url>
@@ -653,6 +533,30 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.1.-Integers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.1.-Arrays/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/Preface/The-Origins-of-Go/</loc>
     <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
@@ -693,6 +597,30 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/Preface/The-Go-Project/</loc>
     <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
@@ -709,12 +637,28 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/</loc>
-    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+    <lastmod>2020-08-21T17:55:13+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/</loc>
     <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.3.-Maps/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</loc>
   </url>
   
   <url>
@@ -743,6 +687,18 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.4.-Booleans/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/Preface/Where-to-Find-More-Information/</loc>
     <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
@@ -758,8 +714,20 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/4.-Composite-Types/</loc>
     <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.5.-JSON/</loc>
   </url>
   
   <url>
@@ -775,6 +743,14 @@
   <url>
     <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.6.-Packages-and-Files/</loc>
     <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/</loc>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</loc>
   </url>
   
   <url>

@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
+var x complex128 = complex(1, 2) // 1&#43;2i var y complex128 = complex(3, 4) // 3&#43;4i fmt.Println(x*y) // &#34;(-5&#43;10i)&#34; fmt.Println(real(x*y)) // &#34;-5&#34; fmt.Println(imag(x*y)) // &#34;10&#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
+fmt.Println(1i * 1i) // &#34;(-1&#43;0i)&#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1&#43;2i或与之等价的写法2i&#43;1。上面x和y的声明语句还可以简化：
+x := 1 &#43; 2i y := 3 &#43; 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
+math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
+fmt.Println(cmplx.Sqrt(-1)) // &#34;(0&#43;1i)&#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
+gopl.io/ch3/mandelbrot
+// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &#34;image&#34; &#34;image/color&#34; &#34;image/png&#34; &#34;math/cmplx&#34; &#34;os&#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, &#43;2, &#43;2 width, height = 1024, 1024 ) img := image.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="3.3. 复数" />
+<meta property="og:description" content="3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
+var x complex128 = complex(1, 2) // 1&#43;2i var y complex128 = complex(3, 4) // 3&#43;4i fmt.Println(x*y) // &#34;(-5&#43;10i)&#34; fmt.Println(real(x*y)) // &#34;-5&#34; fmt.Println(imag(x*y)) // &#34;10&#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
+fmt.Println(1i * 1i) // &#34;(-1&#43;0i)&#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1&#43;2i或与之等价的写法2i&#43;1。上面x和y的声明语句还可以简化：
+x := 1 &#43; 2i y := 3 &#43; 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
+math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
+fmt.Println(cmplx.Sqrt(-1)) // &#34;(0&#43;1i)&#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
+gopl.io/ch3/mandelbrot
+// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &#34;image&#34; &#34;image/color&#34; &#34;image/png&#34; &#34;math/cmplx&#34; &#34;os&#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, &#43;2, &#43;2 width, height = 1024, 1024 ) img := image." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/" />
+
+<title>3.3. 复数 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.3fc2e6782a9dc6a54ee071e8fc0383f758384cee9b039867d35f2fd0ee351308.js" integrity="sha256-P8LmeCqdxqVO4HHo/AOD91g4TO6bA5hn018v0O41Ewg="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">2. 程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.1.-Names/" class="">2.1. 命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.2.-Declarations/" class="">2.2. 声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/" class="">2.3. 变量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/" class="">2.3.1. 简短变量声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/" class="">2.3.2. 指针</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/" class="">2.3.3. new函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/" class="">2.3.4. 变量的生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/" class="">2.4. 赋值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/" class="">2.4.1. 元组赋值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/" class="">2.4.2. 可赋值性</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.5.-Type-Declarations/" class="">2.5. 类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/" class="">2.6. 包和文件</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/" class="">2.6.1. 导入包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/" class="">2.6.2. 包的初始化</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.7.-Scope/" class="">2.7. 作用域</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">3. 基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.1.-Integers/" class="">3.1. 整型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/" class="">3.2. 浮点数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/" class="active">3.3. 复数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.4.-Booleans/" class="">3.4. 布尔型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/" class="">3.5. 字符串</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/" class="">3.5.1. 字符串面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/" class="">3.5.2. Unicode</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/" class="">3.5.3. UTF-8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/" class="">3.5.4. 字符串和Byte切片</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/" class="">3.5.5. 字符串和数字的转换</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/" class="">3.6. 常量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/" class="">3.6.1. iota 常量生成器</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/" class="">3.6.2. 无类型常量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">4. 复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.1.-Arrays/" class="">4.1. 数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/" class="">4.2. Slice</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/" class="">4.2.1. append函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/" class="">4.2.2. Slice内存技巧</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.3.-Maps/" class="">4.3. Map</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/" class="">4.4. 结构体</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/" class="">4.4.1. 结构体字面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/" class="">4.4.2. 结构体比较</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/" class="">4.4.3. 结构体嵌入和匿名成员</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.5.-JSON/" class="">4.5. JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" class="">4.6. 文本和HTML模板</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">5. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-01/" class="">Ch5 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-02/" class="">Ch5 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-03/" class="">Ch5 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-1/" class="">Ch5 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-2/" class="">Ch5 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04/" class="">Ch5 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-05/" class="">Ch5 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06-1/" class="">Ch5 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06/" class="">Ch5 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-07/" class="">Ch5 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-08/" class="">Ch5 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-09/" class="">Ch5 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-10/" class="">Ch5 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">6. 方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-01/" class="">Ch6 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02-1/" class="">Ch6 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02/" class="">Ch6 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-03/" class="">Ch6 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-04/" class="">Ch6 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-05/" class="">Ch6 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-06/" class="">Ch6 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">7. 接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-01/" class="">Ch7 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-02/" class="">Ch7 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-03/" class="">Ch7 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-04/" class="">Ch7 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05-1/" class="">Ch7 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05/" class="">Ch7 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-06/" class="">Ch7 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-07/" class="">Ch7 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-08/" class="">Ch7 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-09/" class="">Ch7 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-10/" class="">Ch7 10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-11/" class="">Ch7 11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-12/" class="">Ch7 12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-13/" class="">Ch7 13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-14/" class="">Ch7 14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-15/" class="">Ch7 15</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">8. Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-01/" class="">Ch8 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-02/" class="">Ch8 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-03/" class="">Ch8 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-1/" class="">Ch8 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-2/" class="">Ch8 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-3/" class="">Ch8 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-4/" class="">Ch8 04 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04/" class="">Ch8 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-05/" class="">Ch8 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-06/" class="">Ch8 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-07/" class="">Ch8 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-08/" class="">Ch8 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-09/" class="">Ch8 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-10/" class="">Ch8 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">9. 基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-01/" class="">Ch9 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-02/" class="">Ch9 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-03/" class="">Ch9 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-04/" class="">Ch9 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-05/" class="">Ch9 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-06/" class="">Ch9 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-07/" class="">Ch9 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/" class="">Ch9 08 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/" class="">Ch9 08 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/" class="">Ch9 08 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/" class="">Ch9 08 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08/" class="">Ch9 08</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">10. 包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-01/" class="">Ch10 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-02/" class="">Ch10 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-03/" class="">Ch10 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-04/" class="">Ch10 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-05/" class="">Ch10 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-06/" class="">Ch10 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-1/" class="">Ch10 07 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-2/" class="">Ch10 07 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-3/" class="">Ch10 07 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-4/" class="">Ch10 07 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-5/" class="">Ch10 07 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-6/" class="">Ch10 07 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07/" class="">Ch10 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">11. 测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-01/" class="">Ch11 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-1/" class="">Ch11 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-2/" class="">Ch11 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-3/" class="">Ch11 02 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-4/" class="">Ch11 02 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-5/" class="">Ch11 02 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-6/" class="">Ch11 02 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02/" class="">Ch11 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-03/" class="">Ch11 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-04/" class="">Ch11 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-05/" class="">Ch11 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-06/" class="">Ch11 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">12. 反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-01/" class="">Ch12 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-02/" class="">Ch12 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-03/" class="">Ch12 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-04/" class="">Ch12 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-05/" class="">Ch12 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-06/" class="">Ch12 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-07/" class="">Ch12 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-08/" class="">Ch12 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-09/" class="">Ch12 09</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">13. 底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-01/" class="">Ch13 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-02/" class="">Ch13 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-03/" class="">Ch13 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-04/" class="">Ch13 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-05/" class="">Ch13 05</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>3.3. 复数</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#33-复数">3.3. 复数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="33-复数">
+  3.3. 复数
+  <a class="anchor" href="#33-%e5%a4%8d%e6%95%b0">#</a>
+</h2>
+<p>Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#66d9ef">complex128</span> = complex(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>) <span style="color:#75715e">// 1+2i
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">complex128</span> = complex(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>) <span style="color:#75715e">// 3+4i
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>)                 <span style="color:#75715e">// &#34;(-5+10i)&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(real(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>))           <span style="color:#75715e">// &#34;-5&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(imag(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>))           <span style="color:#75715e">// &#34;10&#34;
+</span></code></pre></div><p>如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#ae81ff">1i</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1i</span>) <span style="color:#75715e">// &#34;(-1+0i)&#34;, i^2 = -1
+</span></code></pre></div><p>在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1+2i或与之等价的写法2i+1。上面x和y的声明语句还可以简化：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2i</span>
+<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4i</span>
+</code></pre></div><p>复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。</p>
+<p>math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">cmplx</span>.<span style="color:#a6e22e">Sqrt</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)) <span style="color:#75715e">// &#34;(0+1i)&#34;
+</span></code></pre></div><p>下面的程序使用complex128复数算法来生成一个Mandelbrot图像。</p>
+<p><u><i>gopl.io/ch3/mandelbrot</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Mandelbrot emits a PNG image of the Mandelbrot fractal.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;image&#34;</span>
+	<span style="color:#e6db74">&#34;image/color&#34;</span>
+	<span style="color:#e6db74">&#34;image/png&#34;</span>
+	<span style="color:#e6db74">&#34;math/cmplx&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+)
+
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#66d9ef">const</span> (
+		<span style="color:#a6e22e">xmin</span>, <span style="color:#a6e22e">ymin</span>, <span style="color:#a6e22e">xmax</span>, <span style="color:#a6e22e">ymax</span> = <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>
+		<span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">height</span>          = <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">1024</span>
+	)
+
+	<span style="color:#a6e22e">img</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">NewRGBA</span>(<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Rect</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">height</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">py</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">py</span> &lt; <span style="color:#a6e22e">height</span>; <span style="color:#a6e22e">py</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">py</span>)<span style="color:#f92672">/</span><span style="color:#a6e22e">height</span><span style="color:#f92672">*</span>(<span style="color:#a6e22e">ymax</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ymin</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ymin</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">px</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">px</span> &lt; <span style="color:#a6e22e">width</span>; <span style="color:#a6e22e">px</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">px</span>)<span style="color:#f92672">/</span><span style="color:#a6e22e">width</span><span style="color:#f92672">*</span>(<span style="color:#a6e22e">xmax</span><span style="color:#f92672">-</span><span style="color:#a6e22e">xmin</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">xmin</span>
+			<span style="color:#a6e22e">z</span> <span style="color:#f92672">:=</span> complex(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>)
+			<span style="color:#75715e">// Image point (px, py) represents complex value z.
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">img</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">px</span>, <span style="color:#a6e22e">py</span>, <span style="color:#a6e22e">mandelbrot</span>(<span style="color:#a6e22e">z</span>))
+		}
+	}
+	<span style="color:#a6e22e">png</span>.<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">img</span>) <span style="color:#75715e">// NOTE: ignoring errors
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mandelbrot</span>(<span style="color:#a6e22e">z</span> <span style="color:#66d9ef">complex128</span>) <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Color</span> {
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">iterations</span> = <span style="color:#ae81ff">200</span>
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">contrast</span> = <span style="color:#ae81ff">15</span>
+
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">v</span> <span style="color:#66d9ef">complex128</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> uint8(<span style="color:#ae81ff">0</span>); <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">iterations</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">v</span> = <span style="color:#a6e22e">v</span><span style="color:#f92672">*</span><span style="color:#a6e22e">v</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">z</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cmplx</span>.<span style="color:#a6e22e">Abs</span>(<span style="color:#a6e22e">v</span>) &gt; <span style="color:#ae81ff">2</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Gray</span>{<span style="color:#ae81ff">255</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">contrast</span><span style="color:#f92672">*</span><span style="color:#a6e22e">n</span>}
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Black</span>
+}
+</code></pre></div><p>用于遍历1024x1024图像每个点的两个嵌套的循环对应-2到+2区间的复数平面。程序反复测试每个点对应复数值平方值加一个增量值对应的点是否超出半径为2的圆。如果超过了，通过根据预设置的逃逸迭代次数对应的灰度颜色来代替。如果不是，那么该点属于Mandelbrot集合，使用黑色颜色标记。最终程序将生成的PNG格式分形图像输出到标准输出，如图3.3所示。</p>
+<p>
+  <img src="/images/ch3-03.png" alt="" /></p>
+<p><strong>练习 3.5：</strong> 实现一个彩色的Mandelbrot图像，使用image.NewRGBA创建图像，使用color.RGBA或color.YCbCr生成颜色。</p>
+<p><strong>练习 3.6：</strong> 升采样技术可以降低每个像素对计算颜色值和平均值的影响。简单的方法是将每个像素分成四个子像素，实现它。</p>
+<p><strong>练习 3.7：</strong> 另一个生成分形图像的方式是使用牛顿法来求解一个复数方程，例如$z^4-1=0$。每个起点到四个根的迭代次数对应阴影的灰度。方程根对应的点用颜色表示。</p>
+<p><strong>练习 3.8：</strong> 通过提高精度来生成更多级别的分形。使用四种不同精度类型的数字实现相同的分形：complex64、complex128、big.Float和big.Rat。（后面两种类型在math/big包声明。Float是有指定限精度的浮点数；Rat是无限精度的有理数。）它们间的性能和内存使用对比如何？当渲染图可见时缩放的级别是多少？</p>
+<p><strong>练习 3.9：</strong> 编写一个web服务器，用于给客户端生成分形的图像。运行客户端通过HTTP参数指定x、y和zoom参数。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/3.%20Basic%20Data%20Types/3.3.%20Complex%20Numbers.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#33-复数">3.3. 复数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

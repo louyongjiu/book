@@ -572,379 +572,6 @@ package gzip // compress/gzip func NewWriter(w io.Writer) io.WriteCloser func Ne
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-01/</guid>
-      <description>3.1. 整型 #  Go语言的数值类型包括几种不同大小的整数、浮点数和复数。每种数值类型都决定了对应的大小范围和是否支持正负符号。让我们先从整数类型开始介绍。
-Go语言同时提供了有符号和无符号类型的整数运算。这里有int8、int16、int32和int64四种截然不同大小的有符号整数类型，分别对应8、16、32、64bit大小的有符号整数，与此对应的是uint8、uint16、uint32和uint64四种无符号整数类型。
-这里还有两种一般对应特定CPU平台机器字大小的有符号和无符号整数int和uint；其中int是应用最广泛的数值类型。这两种类型都有同样的大小，32或64bit，但是我们不能对此做任何的假设；因为不同的编译器即使在相同的硬件平台上可能产生不同的大小。
-Unicode字符rune类型是和int32等价的类型，通常用于表示一个Unicode码点。这两个名称可以互换使用。同样byte也是uint8类型的等价类型，byte类型一般用于强调数值是一个原始的数据而不是一个小的整数。
-最后，还有一种无符号的整数类型uintptr，没有指定具体的bit大小但是足以容纳指针。uintptr类型只有在底层编程时才需要，特别是Go语言和C语言函数库或操作系统接口相交互的地方。我们将在第十三章的unsafe包相关部分看到类似的例子。
-不管它们的具体大小，int、uint和uintptr是不同类型的兄弟类型。其中int和int32也是不同的类型，即使int的大小也是32bit，在需要将int当作int32类型的地方需要一个显式的类型转换操作，反之亦然。
-其中有符号整数采用2的补码形式表示，也就是最高bit位用来表示符号位，一个n-bit的有符号数的值域是从$-2^{n-1}$到$2^{n-1}-1$。无符号整数的所有bit位都用于表示非负数，值域是0到$2^n-1$。例如，int8类型整数的值域是从-128到127，而uint8类型整数的值域是从0到255。
-下面是Go语言中关于算术运算、逻辑运算和比较运算的二元运算符，它们按照优先级递减的顺序排列：
-* / % &amp;lt;&amp;lt; &amp;gt;&amp;gt; &amp;amp; &amp;amp;^ + - | ^ == != &amp;lt; &amp;lt;= &amp;gt; &amp;gt;= &amp;amp;&amp;amp; || 二元运算符有五种优先级。在同一个优先级，使用左优先结合规则，但是使用括号可以明确优先顺序，使用括号也可以用于提升优先级，例如mask &amp;amp; (1 &amp;lt;&amp;lt; 28)。
-对于上表中前两行的运算符，例如+运算符还有一个与赋值相结合的对应运算符+=，可以用于简化赋值语句。
-算术运算符+、-、*和/可以适用于整数、浮点数和复数，但是取模运算符%仅用于整数间的运算。对于不同编程语言，%取模运算的行为可能并不相同。在Go语言中，%取模运算符的符号和被取模数的符号总是一致的，因此-5%3和-5%-3结果都是-2。除法运算符/的行为则依赖于操作数是否全为整数，比如5.0/4.0的结果是1.25，但是5/4的结果是1，因为整数除法会向着0方向截断余数。
-一个算术运算的结果，不管是有符号或者是无符号的，如果需要更多的bit位才能正确表示的话，就说明计算结果是溢出了。超出的高位的bit位部分将被丢弃。如果原始的数值是有符号类型，而且最左边的bit位是1的话，那么最终结果可能是负的，例如int8的例子：
-var u uint8 = 255 fmt.Println(u, u+1, u*u) // &amp;#34;255 0 1&amp;#34;  var i int8 = 127 fmt.Println(i, i+1, i*i) // &amp;#34;127 -128 1&amp;#34; 两个相同的整数类型可以使用下面的二元比较运算符进行比较；比较表达式的结果是布尔类型。
-== 等于 != 不等于 &amp;lt; 小于 &amp;lt;= 小于等于 &amp;gt; 大于 &amp;gt;= 大于等于 事实上，布尔型、数字类型和字符串等基本类型都是可比较的，也就是说两个相同类型的值可以用==和!</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-02/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-02/</guid>
-      <description>3.2. 浮点数 #  Go语言提供了两种精度的浮点数，float32和float64。它们的算术规范由IEEE754浮点数国际标准定义，该浮点数规范被所有现代的CPU支持。
-这些浮点数类型的取值范围可以从很微小到很巨大。浮点数的范围极限值可以在math包找到。常量math.MaxFloat32表示float32能表示的最大数值，大约是 3.4e38；对应的math.MaxFloat64常量大约是1.8e308。它们分别能表示的最小值近似为1.4e-45和4.9e-324。
-一个float32类型的浮点数可以提供大约6个十进制数的精度，而float64则可以提供约15个十进制数的精度；通常应该优先使用float64类型，因为float32类型的累计计算误差很容易扩散，并且float32能精确表示的正整数并不是很大（译注：因为float32的有效bit位只有23个，其它的bit位用于指数和符号；当整数大于23bit能表达的范围时，float32的表示将出现误差）：
-var f float32 = 16777216 // 1 &amp;lt;&amp;lt; 24 fmt.Println(f == f+1) // &amp;#34;true&amp;#34;! 浮点数的字面值可以直接写小数部分，像这样：
-const e = 2.71828 // (approximately) 小数点前面或后面的数字都可能被省略（例如.707或1.）。很小或很大的数最好用科学计数法书写，通过e或E来指定指数部分：
-const Avogadro = 6.02214129e23 // 阿伏伽德罗常数 const Planck = 6.62606957e-34 // 普朗克常数 用Printf函数的%g参数打印浮点数，将采用更紧凑的表示形式打印，并提供足够的精度，但是对应表格的数据，使用%e（带指数）或%f的形式打印可能更合适。所有的这三个打印形式都可以指定打印的宽度和控制打印精度。
-for x := 0; x &amp;lt; 8; x++ { fmt.Printf(&amp;#34;x = %d e^x = %8.3f\n&amp;#34;, x, math.Exp(float64(x))) } 上面代码打印e的幂，打印精度是小数点后三个小数精度和8个字符宽度：
-x = 0 e^x = 1.000 x = 1 e^x = 2.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-03/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-03/</guid>
-      <description>3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
-var x complex128 = complex(1, 2) // 1+2i var y complex128 = complex(3, 4) // 3+4i fmt.Println(x*y) // &amp;#34;(-5+10i)&amp;#34; fmt.Println(real(x*y)) // &amp;#34;-5&amp;#34; fmt.Println(imag(x*y)) // &amp;#34;10&amp;#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
-fmt.Println(1i * 1i) // &amp;#34;(-1+0i)&amp;#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1+2i或与之等价的写法2i+1。上面x和y的声明语句还可以简化：
-x := 1 + 2i y := 3 + 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
-math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
-fmt.Println(cmplx.Sqrt(-1)) // &amp;#34;(0+1i)&amp;#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
-gopl.io/ch3/mandelbrot
-// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &amp;#34;image&amp;#34; &amp;#34;image/color&amp;#34; &amp;#34;image/png&amp;#34; &amp;#34;math/cmplx&amp;#34; &amp;#34;os&amp;#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, +2, +2 width, height = 1024, 1024 ) img := image.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-04/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-04/</guid>
-      <description>3.4. 布尔型 #  一个布尔类型的值只有两种：true和false。if和for语句的条件部分都是布尔类型的值，并且==和&amp;lt;等比较操作也会产生布尔型的值。一元操作符!对应逻辑非操作，因此!true的值为false，更罗嗦的说法是(!true==false)==true，虽然表达方式不一样，不过我们一般会采用简洁的布尔表达式，就像用x来表示x==true。
-布尔值可以和&amp;amp;&amp;amp;（AND）和||（OR）操作符结合，并且有短路行为：如果运算符左边值已经可以确定整个布尔表达式的值，那么运算符右边的值将不再被求值，因此下面的表达式总是安全的：
-s != &amp;#34;&amp;#34; &amp;amp;&amp;amp; s[0] == &amp;#39;x&amp;#39; 其中s[0]操作如果应用于空字符串将会导致panic异常。
-因为&amp;amp;&amp;amp;的优先级比||高（助记：&amp;amp;&amp;amp;对应逻辑乘法，||对应逻辑加法，乘法比加法优先级要高），下面形式的布尔表达式是不需要加小括弧的：
-if &amp;#39;a&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;z&amp;#39; || &amp;#39;A&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;Z&amp;#39; || &amp;#39;0&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;9&amp;#39; { // ...ASCII letter or digit... } 布尔值并不会隐式转换为数字值0或1，反之亦然。必须使用一个显式的if语句辅助转换：
-i := 0 if b { i = 1 } 如果需要经常做类似的转换，包装成一个函数会更方便：
-// btoi returns 1 if b is true and 0 if false. func btoi(b bool) int { if b { return 1 } return 0 } 数字到布尔型的逆转换则非常简单，不过为了保持对称，我们也可以包装一个函数：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-1/</guid>
-      <description>3.5.1. 字符串面值 #  字符串值也可以用字符串面值方式编写，只要将一系列字节序列包含在双引号内即可：
-&amp;quot;Hello, 世界&amp;quot;  因为Go语言源文件总是用UTF8编码，并且Go语言的文本字符串也以UTF8编码的方式处理，因此我们可以将Unicode码点也写到字符串面值中。
-在一个双引号包含的字符串面值中，可以用以反斜杠\开头的转义序列插入任意的数据。下面的换行、回车和制表符等是常见的ASCII控制代码的转义方式：
-\a 响铃 \b 退格 \f 换页 \n 换行 \r 回车 \t 制表符 \v 垂直制表符 \&#39; 单引号（只用在 &#39;\&#39;&#39; 形式的rune符号面值中） \&amp;quot; 双引号（只用在 &amp;quot;...&amp;quot; 形式的字符串面值中） \\ 反斜杠 可以通过十六进制或八进制转义在字符串面值中包含任意的字节。一个十六进制的转义形式是\xhh，其中两个h表示十六进制数字（大写或小写都可以）。一个八进制转义形式是\ooo，包含三个八进制的o数字（0到7），但是不能超过\377（译注：对应一个字节的范围，十进制为255）。每一个单一的字节表达一个特定的值。稍后我们将看到如何将一个Unicode码点写到字符串面值中。
-一个原生的字符串面值形式是`&amp;hellip;`，使用反引号代替双引号。在原生的字符串面值中，没有转义操作；全部的内容都是字面的意思，包含退格和换行，因此一个程序中的原生字符串面值可能跨越多行（译注：在原生字符串面值内部是无法直接写`字符的，可以用八进制或十六进制转义或+&amp;rdquo;`&amp;quot;连接字符串常量完成）。唯一的特殊处理是会删除回车以保证在所有平台上的值都是一样的，包括那些把回车也放入文本文件的系统（译注：Windows系统会把回车和换行一起放入文本文件中）。
-原生字符串面值用于编写正则表达式会很方便，因为正则表达式往往会包含很多反斜杠。原生字符串面值同时被广泛应用于HTML模板、JSON面值、命令行提示信息以及那些需要扩展到多行的场景。
-const GoUsage = `Go is a tool for managing Go source code. Usage: go command [arguments] ...` </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-2/</guid>
-      <description>3.5.2. Unicode #  在很久以前，世界还是比较简单的，起码计算机世界就只有一个ASCII字符集：美国信息交换标准代码。ASCII，更准确地说是美国的ASCII，使用7bit来表示128个字符：包含英文字母的大小写、数字、各种标点符号和设备控制符。对于早期的计算机程序来说，这些就足够了，但是这也导致了世界上很多其他地区的用户无法直接使用自己的符号系统。随着互联网的发展，混合多种语言的数据变得很常见（译注：比如本身的英文原文或中文翻译都包含了ASCII、中文、日文等多种语言字符）。如何有效处理这些包含了各种语言的丰富多样的文本数据呢？
-答案就是使用Unicode（ http://unicode.org ），它收集了这个世界上所有的符号系统，包括重音符号和其它变音符号，制表符和回车符，还有很多神秘的符号，每个符号都分配一个唯一的Unicode码点，Unicode码点对应Go语言中的rune整数类型（译注：rune是int32等价类型）。
-在第八版本的Unicode标准里收集了超过120,000个字符，涵盖超过100多种语言。这些在计算机程序和数据中是如何体现的呢？通用的表示一个Unicode码点的数据类型是int32，也就是Go语言中rune对应的类型；它的同义词rune符文正是这个意思。
-我们可以将一个符文序列表示为一个int32序列。这种编码方式叫UTF-32或UCS-4，每个Unicode码点都使用同样大小的32bit来表示。这种方式比较简单统一，但是它会浪费很多存储空间，因为大多数计算机可读的文本是ASCII字符，本来每个ASCII字符只需要8bit或1字节就能表示。而且即使是常用的字符也远少于65,536个，也就是说用16bit编码方式就能表达常用字符。但是，还有其它更好的编码方法吗？</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-3/</guid>
-      <description>3.5.3. UTF-8 #  UTF8是一个将Unicode码点编码为字节序列的变长编码。UTF8编码是由Go语言之父Ken Thompson和Rob Pike共同发明的，现在已经是Unicode的标准。UTF8编码使用1到4个字节来表示每个Unicode码点，ASCII部分字符只使用1个字节，常用字符部分使用2或3个字节表示。每个符号编码后第一个字节的高端bit位用于表示编码总共有多少个字节。如果第一个字节的高端bit为0，则表示对应7bit的ASCII字符，ASCII字符每个字符依然是一个字节，和传统的ASCII编码兼容。如果第一个字节的高端bit是110，则说明需要2个字节；后续的每个高端bit都以10开头。更大的Unicode码点也是采用类似的策略处理。
-0xxxxxxx runes 0-127 (ASCII) 110xxxxx 10xxxxxx 128-2047 (values &amp;lt;128 unused) 1110xxxx 10xxxxxx 10xxxxxx 2048-65535 (values &amp;lt;2048 unused) 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx 65536-0x10ffff (other values unused) 变长的编码无法直接通过索引来访问第n个字符，但是UTF8编码获得了很多额外的优点。首先UTF8编码比较紧凑，完全兼容ASCII码，并且可以自动同步：它可以通过向前回朔最多3个字节就能确定当前字符编码的开始字节的位置。它也是一个前缀编码，所以当从左向右解码时不会有任何歧义也并不需要向前查看（译注：像GBK之类的编码，如果不知道起点位置则可能会出现歧义）。没有任何字符的编码是其它字符编码的子串，或是其它编码序列的字串，因此搜索一个字符时只要搜索它的字节编码序列即可，不用担心前后的上下文会对搜索结果产生干扰。同时UTF8编码的顺序和Unicode码点的顺序一致，因此可以直接排序UTF8编码序列。同时因为没有嵌入的NUL(0)字节，可以很好地兼容那些使用NUL作为字符串结尾的编程语言。
-Go语言的源文件采用UTF8编码，并且Go语言处理UTF8编码的文本也很出色。unicode包提供了诸多处理rune字符相关功能的函数（比如区分字母和数字，或者是字母的大写和小写转换等），unicode/utf8包则提供了用于rune字符序列的UTF8编码和解码的功能。
-有很多Unicode字符很难直接从键盘输入，并且还有很多字符有着相似的结构；有一些甚至是不可见的字符（译注：中文和日文就有很多相似但不同的字）。Go语言字符串面值中的Unicode转义字符让我们可以通过Unicode码点输入特殊的字符。有两种形式：\uhhhh对应16bit的码点值，\Uhhhhhhhh对应32bit的码点值，其中h是一个十六进制数字；一般很少需要使用32bit的形式。每一个对应码点的UTF8编码。例如：下面的字母串面值都表示相同的值：
-&amp;quot;世界&amp;quot; &amp;quot;\xe4\xb8\x96\xe7\x95\x8c&amp;quot; &amp;quot;\u4e16\u754c&amp;quot; &amp;quot;\U00004e16\U0000754c&amp;quot; 上面三个转义序列都为第一个字符串提供替代写法，但是它们的值都是相同的。
-Unicode转义也可以使用在rune字符中。下面三个字符是等价的：
-&#39;世&#39; &#39;\u4e16&#39; &#39;\U00004e16&#39; 对于小于256的码点值可以写在一个十六进制转义字节中，例如\x41对应字符&amp;rsquo;A&amp;rsquo;，但是对于更大的码点则必须使用\u或\U转义形式。因此，\xe4\xb8\x96并不是一个合法的rune字符，虽然这三个字节对应一个有效的UTF8编码的码点。
-得益于UTF8编码优良的设计，诸多字符串操作都不需要解码操作。我们可以不用解码直接测试一个字符串是否是另一个字符串的前缀：
-func HasPrefix(s, prefix string) bool { return len(s) &amp;gt;= len(prefix) &amp;amp;&amp;amp; s[:len(prefix)] == prefix } 或者是后缀测试：
-func HasSuffix(s, suffix string) bool { return len(s) &amp;gt;= len(suffix) &amp;amp;&amp;amp; s[len(s)-len(suffix):] == suffix } 或者是包含子串测试：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-4/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-4/</guid>
-      <description>3.5.4. 字符串和Byte切片 #  标准库中有四个包对字符串处理尤为重要：bytes、strings、strconv和unicode包。strings包提供了许多如字符串的查询、替换、比较、截断、拆分和合并等功能。
-bytes包也提供了很多类似功能的函数，但是针对和字符串有着相同结构的[]byte类型。因为字符串是只读的，因此逐步构建字符串会导致很多分配和复制。在这种情况下，使用bytes.Buffer类型将会更有效，稍后我们将展示。
-strconv包提供了布尔型、整型数、浮点数和对应字符串的相互转换，还提供了双引号转义相关的转换。
-unicode包提供了IsDigit、IsLetter、IsUpper和IsLower等类似功能，它们用于给字符分类。每个函数有一个单一的rune类型的参数，然后返回一个布尔值。而像ToUpper和ToLower之类的转换函数将用于rune字符的大小写转换。所有的这些函数都是遵循Unicode标准定义的字母、数字等分类规范。strings包也有类似的函数，它们是ToUpper和ToLower，将原始字符串的每个字符都做相应的转换，然后返回新的字符串。
-下面例子的basename函数灵感源于Unix shell的同名工具。在我们实现的版本中，basename(s)将看起来像是系统路径的前缀删除，同时将看似文件类型的后缀名部分删除：
-fmt.Println(basename(&amp;#34;a/b/c.go&amp;#34;)) // &amp;#34;c&amp;#34; fmt.Println(basename(&amp;#34;c.d.go&amp;#34;)) // &amp;#34;c.d&amp;#34; fmt.Println(basename(&amp;#34;abc&amp;#34;)) // &amp;#34;abc&amp;#34; 第一个版本并没有使用任何库，全部手工硬编码实现：
-gopl.io/ch3/basename1
-// basename removes directory components and a .suffix. // e.g., a =&amp;gt; a, a.go =&amp;gt; a, a/b/c.go =&amp;gt; c, a/b.c.go =&amp;gt; b.c func basename(s string) string { // Discard last &amp;#39;/&amp;#39; and everything before. 	for i := len(s) - 1; i &amp;gt;= 0; i-- { if s[i] == &amp;#39;/&amp;#39; { s = s[i+1:] break } } // Preserve everything before last &amp;#39;.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-5/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05-5/</guid>
-      <description>3.5.5. 字符串和数字的转换 #  除了字符串、字符、字节之间的转换，字符串和数值之间的转换也比较常见。由strconv包提供这类转换功能。
-将一个整数转为字符串，一种方法是用fmt.Sprintf返回一个格式化的字符串；另一个方法是用strconv.Itoa(“整数到ASCII”)：
-x := 123 y := fmt.Sprintf(&amp;#34;%d&amp;#34;, x) fmt.Println(y, strconv.Itoa(x)) // &amp;#34;123 123&amp;#34; FormatInt和FormatUint函数可以用不同的进制来格式化数字：
-fmt.Println(strconv.FormatInt(int64(x), 2)) // &amp;#34;1111011&amp;#34; fmt.Printf函数的%b、%d、%o和%x等参数提供功能往往比strconv包的Format函数方便很多，特别是在需要包含有附加额外信息的时候：
-s := fmt.Sprintf(&amp;#34;x=%b&amp;#34;, x) // &amp;#34;x=1111011&amp;#34; 如果要将一个字符串解析为整数，可以使用strconv包的Atoi或ParseInt函数，还有用于解析无符号整数的ParseUint函数：
-x, err := strconv.Atoi(&amp;#34;123&amp;#34;) // x is an int y, err := strconv.ParseInt(&amp;#34;123&amp;#34;, 10, 64) // base 10, up to 64 bits ParseInt函数的第三个参数是用于指定整型数的大小；例如16表示int16，0则表示int。在任何情况下，返回的结果y总是int64类型，你可以通过强制类型转换将它转为更小的整数类型。
-有时候也会使用fmt.Scanf来解析输入的字符串和数字，特别是当字符串和数字混合在一行的时候，它可以灵活处理不完整或不规则的输入。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-05/</guid>
-      <description>3.5. 字符串 #  一个字符串是一个不可改变的字节序列。字符串可以包含任意的数据，包括byte值0，但是通常是用来包含人类可读的文本。文本字符串通常被解释为采用UTF8编码的Unicode码点（rune）序列，我们稍后会详细讨论这个问题。
-内置的len函数可以返回一个字符串中的字节数目（不是rune字符数目），索引操作s[i]返回第i个字节的字节值，i必须满足0 ≤ i&amp;lt; len(s)条件约束。
-s := &amp;#34;hello, world&amp;#34; fmt.Println(len(s)) // &amp;#34;12&amp;#34; fmt.Println(s[0], s[7]) // &amp;#34;104 119&amp;#34; (&amp;#39;h&amp;#39; and &amp;#39;w&amp;#39;) 如果试图访问超出字符串索引范围的字节将会导致panic异常：
-c := s[len(s)] // panic: index out of range 第i个字节并不一定是字符串的第i个字符，因为对于非ASCII字符的UTF8编码会要两个或多个字节。我们先简单说下字符的工作方式。
-子字符串操作s[i:j]基于原始的s字符串的第i个字节开始到第j个字节（并不包含j本身）生成一个新字符串。生成的新字符串将包含j-i个字节。
-fmt.Println(s[0:5]) // &amp;#34;hello&amp;#34; 同样，如果索引超出字符串范围或者j小于i的话将导致panic异常。
-不管i还是j都可能被忽略，当它们被忽略时将采用0作为开始位置，采用len(s)作为结束的位置。
-fmt.Println(s[:5]) // &amp;#34;hello&amp;#34; fmt.Println(s[7:]) // &amp;#34;world&amp;#34; fmt.Println(s[:]) // &amp;#34;hello, world&amp;#34; 其中+操作符将两个字符串连接构造一个新字符串：
-fmt.Println(&amp;#34;goodbye&amp;#34; + s[5:]) // &amp;#34;goodbye, world&amp;#34; 字符串可以用==和&amp;lt;进行比较；比较通过逐个字节比较完成的，因此比较的结果是字符串自然编码的顺序。
-字符串的值是不可变的：一个字符串包含的字节序列永远不会被改变，当然我们也可以给一个字符串变量分配一个新字符串值。可以像下面这样将一个字符串追加到另一个字符串：
-s := &amp;#34;left foot&amp;#34; t := s s += &amp;#34;, right foot&amp;#34; 这并不会导致原始的字符串值被改变，但是变量s将因为+=语句持有一个新的字符串值，但是t依然是包含原先的字符串值。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-1/</guid>
-      <description>3.6.1. iota 常量生成器 #  常量声明可以使用iota常量生成器初始化，它用于生成一组以相似规则初始化的常量，但是不用每行都写一遍初始化表达式。在一个const声明语句中，在第一个声明的常量所在的行，iota将会被置为0，然后在每一个有常量声明的行加一。
-下面是来自time包的例子，它首先定义了一个Weekday命名类型，然后为一周的每天定义了一个常量，从周日0开始。在其它编程语言中，这种类型一般被称为枚举类型。
-type Weekday int const ( Sunday Weekday = iota Monday Tuesday Wednesday Thursday Friday Saturday ) 周日将对应0，周一为1，如此等等。
-我们也可以在复杂的常量表达式中使用iota，下面是来自net包的例子，用于给一个无符号整数的最低5bit的每个bit指定一个名字：
-type Flags uint const ( FlagUp Flags = 1 &amp;lt;&amp;lt; iota // is up 	FlagBroadcast // supports broadcast access capability 	FlagLoopback // is a loopback interface 	FlagPointToPoint // belongs to a point-to-point link 	FlagMulticast // supports multicast access capability ) 随着iota的递增，每个常量对应表达式1 &amp;laquo; iota，是连续的2的幂，分别对应一个bit位置。使用这些常量可以用于测试、设置或清除对应的bit位的值：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06-2/</guid>
-      <description>3.6.2. 无类型常量 #  Go语言的常量有个不同寻常之处。虽然一个常量可以有任意一个确定的基础类型，例如int或float64，或者是类似time.Duration这样命名的基础类型，但是许多常量并没有一个明确的基础类型。编译器为这些没有明确基础类型的数字常量提供比基础类型更高精度的算术运算；你可以认为至少有256bit的运算精度。这里有六种未明确类型的常量类型，分别是无类型的布尔型、无类型的整数、无类型的字符、无类型的浮点数、无类型的复数、无类型的字符串。
-通过延迟明确常量的具体类型，无类型的常量不仅可以提供更高的运算精度，而且可以直接用于更多的表达式而不需要显式的类型转换。例如，例子中的ZiB和YiB的值已经超出任何Go语言中整数类型能表达的范围，但是它们依然是合法的常量，而且像下面的常量表达式依然有效（译注：YiB/ZiB是在编译期计算出来的，并且结果常量是1024，是Go语言int变量能有效表示的）：
-fmt.Println(YiB/ZiB) // &amp;#34;1024&amp;#34; 另一个例子，math.Pi无类型的浮点数常量，可以直接用于任意需要浮点数或复数的地方：
-var x float32 = math.Pi var y float64 = math.Pi var z complex128 = math.Pi 如果math.Pi被确定为特定类型，比如float64，那么结果精度可能会不一样，同时对于需要float32或complex128类型值的地方则会强制需要一个明确的类型转换：
-const Pi64 float64 = math.Pi var x float32 = float32(Pi64) var y float64 = Pi64 var z complex128 = complex128(Pi64) 对于常量面值，不同的写法可能会对应不同的类型。例如0、0.0、0i和\u0000虽然有着相同的常量值，但是它们分别对应无类型的整数、无类型的浮点数、无类型的复数和无类型的字符等不同的常量类型。同样，true和false也是无类型的布尔类型，字符串面值常量是无类型的字符串类型。
-前面说过除法运算符/会根据操作数的类型生成对应类型的结果。因此，不同写法的常量除法表达式可能对应不同的结果：
-var f float64 = 212 fmt.Println((f - 32) * 5 / 9) // &amp;#34;100&amp;#34;; (f - 32) * 5 is a float64 fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-06/</guid>
-      <description>3.6. 常量 #  常量表达式的值在编译期计算，而不是在运行期。每种常量的潜在类型都是基础类型：boolean、string或数字。
-一个常量的声明语句定义了常量的名字，和变量的声明语法类似，常量的值不可修改，这样可以防止在运行期被意外或恶意的修改。例如，常量比变量更适合用于表达像π之类的数学常数，因为它们的值不会发生变化：
-const pi = 3.14159 // approximately; math.Pi is a better approximation 和变量声明一样，可以批量声明多个常量；这比较适合声明一组相关的常量：
-const ( e = 2.71828182845904523536028747135266249775724709369995957496696763 pi = 3.14159265358979323846264338327950288419716939937510582097494459 ) 所有常量的运算都可以在编译期完成，这样可以减少运行时的工作，也方便其他编译优化。当操作数是常量时，一些运行时的错误也可以在编译时被发现，例如整数除零、字符串索引越界、任何导致无效浮点数的操作等。
-常量间的所有算术运算、逻辑运算和比较运算的结果也是常量，对常量的类型转换操作或以下函数调用都是返回常量结果：len、cap、real、imag、complex和unsafe.Sizeof（§13.1）。
-因为它们的值是在编译期就确定的，因此常量可以是构成类型的一部分，例如用于指定数组类型的长度：
-const IPv4Len = 4 // parseIPv4 parses an IPv4 address (d.d.d.d). func parseIPv4(s string) IP { var p [IPv4Len]byte // ... } 一个常量的声明也可以包含一个类型和一个值，但是如果没有显式指明类型，那么将从右边的表达式推断类型。在下面的代码中，time.Duration是一个命名类型，底层类型是int64，time.Minute是对应类型的常量。下面声明的两个常量都是time.Duration类型，可以通过%T参数打印类型信息：
-const noDelay time.Duration = 0 const timeout = 5 * time.Minute fmt.Printf(&amp;#34;%T %[1]v\n&amp;#34;, noDelay) // &amp;#34;time.Duration 0&amp;#34; fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-01/</guid>
-      <description>4.1. 数组 #  数组是一个由固定长度的特定类型元素组成的序列，一个数组可以由零个或多个元素组成。因为数组的长度是固定的，因此在Go语言中很少直接使用数组。和数组对应的类型是Slice（切片），它是可以增长和收缩的动态序列，slice功能也更灵活，但是要理解slice工作原理的话需要先理解数组。
-数组的每个元素可以通过索引下标来访问，索引下标的范围是从0开始到数组长度减1的位置。内置的len函数将返回数组中元素的个数。
-var a [3]int // array of 3 integers fmt.Println(a[0]) // print the first element fmt.Println(a[len(a)-1]) // print the last element, a[2]  // Print the indices and elements. for i, v := range a { fmt.Printf(&amp;#34;%d %d\n&amp;#34;, i, v) } // Print the elements only. for _, v := range a { fmt.Printf(&amp;#34;%d\n&amp;#34;, v) } 默认情况下，数组的每个元素都被初始化为元素类型对应的零值，对于数字类型来说就是0。我们也可以使用数组字面值语法用一组值来初始化数组：
-var q [3]int = [3]int{1, 2, 3} var r [3]int = [3]int{1, 2} fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-1/</guid>
-      <description>4.2.1. append函数 #  内置的append函数用于向slice追加元素：
-var runes []rune for _, r := range &amp;#34;Hello, 世界&amp;#34; { runes = append(runes, r) } fmt.Printf(&amp;#34;%q\n&amp;#34;, runes) // &amp;#34;[&amp;#39;H&amp;#39; &amp;#39;e&amp;#39; &amp;#39;l&amp;#39; &amp;#39;l&amp;#39; &amp;#39;o&amp;#39; &amp;#39;,&amp;#39; &amp;#39; &amp;#39; &amp;#39;世&amp;#39; &amp;#39;界&amp;#39;]&amp;#34; 在循环中使用append函数构建一个由九个rune字符构成的slice，当然对应这个特殊的问题我们可以通过Go语言内置的[]rune(&amp;ldquo;Hello, 世界&amp;rdquo;)转换操作完成。
-append函数对于理解slice底层是如何工作的非常重要，所以让我们仔细查看究竟是发生了什么。下面是第一个版本的appendInt函数，专门用于处理[]int类型的slice：
-gopl.io/ch4/append
-func appendInt(x []int, y int) []int { var z []int zlen := len(x) + 1 if zlen &amp;lt;= cap(x) { // There is room to grow. Extend the slice. 	z = x[:zlen] } else { // There is insufficient space.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-2/</guid>
-      <description>4.2.2. Slice内存技巧 #  让我们看看更多的例子，比如旋转slice、反转slice或在slice原有内存空间修改元素。给定一个字符串列表，下面的nonempty函数将在原有slice内存空间之上返回不包含空字符串的列表：
-gopl.io/ch4/nonempty
-// Nonempty is an example of an in-place slice algorithm. package main import &amp;#34;fmt&amp;#34; // nonempty returns a slice holding only the non-empty strings. // The underlying array is modified during the call. func nonempty(strings []string) []string { i := 0 for _, s := range strings { if s != &amp;#34;&amp;#34; { strings[i] = s i++ } } return strings[:i] } 比较微妙的地方是，输入的slice和输出的slice共享一个底层数组。这可以避免分配另一个数组，不过原来的数据将可能会被覆盖，正如下面两个打印语句看到的那样：
-data := []string{&amp;#34;one&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;three&amp;#34;} fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02/</guid>
-      <description>4.2. Slice #  Slice（切片）代表变长的序列，序列中每个元素都有相同的类型。一个slice类型一般写作[]T，其中T代表slice中元素的类型；slice的语法和数组很像，只是没有固定长度而已。
-数组和slice之间有着紧密的联系。一个slice是一个轻量级的数据结构，提供了访问数组子序列（或者全部）元素的功能，而且slice的底层确实引用一个数组对象。一个slice由三个部分构成：指针、长度和容量。指针指向第一个slice元素对应的底层数组元素的地址，要注意的是slice的第一个元素并不一定就是数组的第一个元素。长度对应slice中元素的数目；长度不能超过容量，容量一般是从slice的开始位置到底层数据的结尾位置。内置的len和cap函数分别返回slice的长度和容量。
-多个slice之间可以共享底层的数据，并且引用的数组部分区间可能重叠。图4.1显示了表示一年中每个月份名字的字符串数组，还有重叠引用了该数组的两个slice。数组这样定义
-months := [...]string{1: &amp;#34;January&amp;#34;, /* ... */, 12: &amp;#34;December&amp;#34;} 因此一月份是months[1]，十二月份是months[12]。通常，数组的第一个元素从索引0开始，但是月份一般是从1开始的，因此我们声明数组时直接跳过第0个元素，第0个元素会被自动初始化为空字符串。
-slice的切片操作s[i:j]，其中0 ≤ i≤ j≤ cap(s)，用于创建一个新的slice，引用s的从第i个元素开始到第j-1个元素的子序列。新的slice将只有j-i个元素。如果i位置的索引被省略的话将使用0代替，如果j位置的索引被省略的话将使用len(s)代替。因此，months[1:13]切片操作将引用全部有效的月份，和months[1:]操作等价；months[:]切片操作则是引用整个数组。让我们分别定义表示第二季度和北方夏天月份的slice，它们有重叠部分：
- Q2 := months[4:7] summer := months[6:9] fmt.Println(Q2) // [&amp;#34;April&amp;#34; &amp;#34;May&amp;#34; &amp;#34;June&amp;#34;] fmt.Println(summer) // [&amp;#34;June&amp;#34; &amp;#34;July&amp;#34; &amp;#34;August&amp;#34;] 两个slice都包含了六月份，下面的代码是一个包含相同月份的测试（性能较低）：
-for _, s := range summer { for _, q := range Q2 { if s == q { fmt.Printf(&amp;#34;%s appears in both\n&amp;#34;, s) } } } 如果切片操作超出cap(s)的上限将导致一个panic异常，但是超出len(s)则是意味着扩展了slice，因为新slice的长度会变大：
-fmt.Println(summer[:20]) // panic: out of range  endlessSummer := summer[:5] // extend a slice (within capacity) fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-03/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-03/</guid>
-      <description>4.3. Map #  哈希表是一种巧妙并且实用的数据结构。它是一个无序的key/value对的集合，其中所有的key都是不同的，然后通过给定的key可以在常数时间复杂度内检索、更新或删除对应的value。
-在Go语言中，一个map就是一个哈希表的引用，map类型可以写为map[K]V，其中K和V分别对应key和value。map中所有的key都有相同的类型，所有的value也有着相同的类型，但是key和value之间可以是不同的数据类型。其中K对应的key必须是支持==比较运算符的数据类型，所以map可以通过测试key是否相等来判断是否已经存在。虽然浮点数类型也是支持相等运算符比较的，但是将浮点数用做key类型则是一个坏的想法，正如第三章提到的，最坏的情况是可能出现的NaN和任何浮点数都不相等。对于V对应的value数据类型则没有任何的限制。
-内置的make函数可以创建一个map：
-ages := make(map[string]int) // mapping from strings to ints 我们也可以用map字面值的语法创建map，同时还可以指定一些最初的key/value：
-ages := map[string]int{ &amp;#34;alice&amp;#34;: 31, &amp;#34;charlie&amp;#34;: 34, } 这相当于
-ages := make(map[string]int) ages[&amp;#34;alice&amp;#34;] = 31 ages[&amp;#34;charlie&amp;#34;] = 34 因此，另一种创建空的map的表达式是map[string]int{}。
-Map中的元素通过key对应的下标语法访问：
-ages[&amp;#34;alice&amp;#34;] = 32 fmt.Println(ages[&amp;#34;alice&amp;#34;]) // &amp;#34;32&amp;#34; 使用内置的delete函数可以删除元素：
-delete(ages, &amp;#34;alice&amp;#34;) // remove element ages[&amp;#34;alice&amp;#34;] 所有这些操作是安全的，即使这些元素不在map中也没有关系；如果一个查找失败将返回value类型对应的零值，例如，即使map中不存在“bob”下面的代码也可以正常工作，因为ages[&amp;ldquo;bob&amp;rdquo;]失败时将返回0。
-ages[&amp;#34;bob&amp;#34;] = ages[&amp;#34;bob&amp;#34;] + 1 // happy birthday! 而且x += y和x++等简短赋值语法也可以用在map上，所以上面的代码可以改写成
-ages[&amp;#34;bob&amp;#34;] += 1 更简单的写法
-ages[&amp;#34;bob&amp;#34;]++ 但是map中的元素并不是一个变量，因此我们不能对map的元素进行取址操作：
-_ = &amp;amp;ages[&amp;#34;bob&amp;#34;] // compile error: cannot take address of map element 禁止对map元素取址的原因是map可能随着元素数量的增长而重新分配更大的内存空间，从而可能导致之前的地址无效。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-1/</guid>
-      <description>4.4.1. 结构体字面值 #  结构体值也可以用结构体字面值表示，结构体字面值可以指定每个成员的值。
-type Point struct{ X, Y int } p := Point{1, 2} 这里有两种形式的结构体字面值语法，上面的是第一种写法，要求以结构体成员定义的顺序为每个结构体成员指定一个字面值。它要求写代码和读代码的人要记住结构体的每个成员的类型和顺序，不过结构体成员有细微的调整就可能导致上述代码不能编译。因此，上述的语法一般只在定义结构体的包内部使用，或者是在较小的结构体中使用，这些结构体的成员排列比较规则，比如image.Point{x, y}或color.RGBA{red, green, blue, alpha}。
-其实更常用的是第二种写法，以成员名字和相应的值来初始化，可以包含部分或全部的成员，如1.4节的Lissajous程序的写法：
-anim := gif.GIF{LoopCount: nframes} 在这种形式的结构体字面值写法中，如果成员被忽略的话将默认用零值。因为提供了成员的名字，所以成员出现的顺序并不重要。
-两种不同形式的写法不能混合使用。而且，你不能企图在外部包中用第一种顺序赋值的技巧来偷偷地初始化结构体中未导出的成员。
-package p type T struct{ a, b int } // a and b are not exported  package q import &amp;#34;p&amp;#34; var _ = p.T{a: 1, b: 2} // compile error: can&amp;#39;t reference a, b var _ = p.T{1, 2} // compile error: can&amp;#39;t reference a, b 虽然上面最后一行代码的编译错误信息中并没有显式提到未导出的成员，但是这样企图隐式使用未导出成员的行为也是不允许的。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-2/</guid>
-      <description>4.4.2. 结构体比较 #  如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：
-type Point struct{ X, Y int } p := Point{1, 2} q := Point{2, 1} fmt.Println(p.X == q.X &amp;amp;&amp;amp; p.Y == q.Y) // &amp;#34;false&amp;#34; fmt.Println(p == q) // &amp;#34;false&amp;#34; 可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。
-type address struct { hostname string port int } hits := make(map[address]int) hits[address{&amp;#34;golang.org&amp;#34;, 443}]++ </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-3/</guid>
-      <description>4.4.3. 结构体嵌入和匿名成员 #  在本节中，我们将看到如何使用Go语言提供的不同寻常的结构体嵌入机制让一个命名的结构体包含另一个结构体类型的匿名成员，这样就可以通过简单的点运算符x.f来访问匿名成员链中嵌套的x.d.e.f成员。
-考虑一个二维的绘图程序，提供了一个各种图形的库，例如矩形、椭圆形、星形和轮形等几何形状。这里是其中两个的定义：
-type Circle struct { X, Y, Radius int } type Wheel struct { X, Y, Radius, Spokes int } 一个Circle代表的圆形类型包含了标准圆心的X和Y坐标信息，和一个Radius表示的半径信息。一个Wheel轮形除了包含Circle类型所有的全部成员外，还增加了Spokes表示径向辐条的数量。我们可以这样创建一个wheel变量：
-var w Wheel w.X = 8 w.Y = 8 w.Radius = 5 w.Spokes = 20 随着库中几何形状数量的增多，我们一定会注意到它们之间的相似和重复之处，所以我们可能为了便于维护而将相同的属性独立出来：
-type Point struct { X, Y int } type Circle struct { Center Point Radius int } type Wheel struct { Circle Circle Spokes int } 这样改动之后结构体类型变的清晰了，但是这种修改同时也导致了访问每个成员变得繁琐：
-var w Wheel w.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04/</guid>
-      <description>4.4. 结构体 #  结构体是一种聚合的数据类型，是由零个或多个任意类型的值聚合成的实体。每个值称为结构体的成员。用结构体的经典案例是处理公司的员工信息，每个员工信息包含一个唯一的员工编号、员工的名字、家庭住址、出生日期、工作岗位、薪资、上级领导等等。所有的这些信息都需要绑定到一个实体中，可以作为一个整体单元被复制，作为函数的参数或返回值，或者是被存储到数组中，等等。
-下面两个语句声明了一个叫Employee的命名的结构体类型，并且声明了一个Employee类型的变量dilbert：
-type Employee struct { ID int Name string Address string DoB time.Time Position string Salary int ManagerID int } var dilbert Employee dilbert结构体变量的成员可以通过点操作符访问，比如dilbert.Name和dilbert.DoB。因为dilbert是一个变量，它所有的成员也同样是变量，我们可以直接对每个成员赋值：
-dilbert.Salary -= 5000 // demoted, for writing too few lines of code 或者是对成员取地址，然后通过指针访问：
-position := &amp;amp;dilbert.Position *position = &amp;#34;Senior &amp;#34; + *position // promoted, for outsourcing to Elbonia 点操作符也可以和指向结构体的指针一起工作：
-var employeeOfTheMonth *Employee = &amp;amp;dilbert employeeOfTheMonth.Position += &amp;#34; (proactive team player)&amp;#34; 相当于下面语句</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-05/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-05/</guid>
-      <description>4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
-Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
-JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
-基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是\Uhhhh转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。
-这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：
-boolean true number -273.15 string &amp;quot;She said \&amp;quot;Hello, BF\&amp;quot;&amp;quot; array [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;] object {&amp;quot;year&amp;quot;: 1980, &amp;quot;event&amp;quot;: &amp;quot;archery&amp;quot;, &amp;quot;medals&amp;quot;: [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;]} 考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）
-gopl.io/ch4/movie
-type Movie struct { Title string Year int `json:&amp;#34;released&amp;#34;` Color bool `json:&amp;#34;color,omitempty&amp;#34;` Actors []string } var movies = []Movie{ {Title: &amp;#34;Casablanca&amp;#34;, Year: 1942, Color: false, Actors: []string{&amp;#34;Humphrey Bogart&amp;#34;, &amp;#34;Ingrid Bergman&amp;#34;}}, {Title: &amp;#34;Cool Hand Luke&amp;#34;, Year: 1967, Color: true, Actors: []string{&amp;#34;Paul Newman&amp;#34;}}, {Title: &amp;#34;Bullitt&amp;#34;, Year: 1968, Color: true, Actors: []string{&amp;#34;Steve McQueen&amp;#34;, &amp;#34;Jacqueline Bisset&amp;#34;}}, // .</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-06/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-06/</guid>
-      <description>4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
-一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
-{% raw %}
-gopl.io/ch4/issuesreport
-const templ = `{{.TotalCount}}issues: {{range .Items}}---------------------------------------- Number: {{.Number}}User: {{.User.Login}}Title: {{.Title | printf &amp;#34;%.64s&amp;#34;}}Age: {{.CreatedAt | daysAgo}}days {{end}}` {% endraw %}
-{% raw %}
-这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中{{.TotalCount}}对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中{{range .Items}}和{{end}}对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。
-{% endraw %}
-在一个action中，|操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：
-func daysAgo(t time.Time) int { return int(time.Since(t).Hours() / 24) } 需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。
-生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。
-report, err := template.New(&amp;#34;report&amp;#34;). Funcs(template.FuncMap{&amp;#34;daysAgo&amp;#34;: daysAgo}). Parse(templ) if err != nil { log.Fatal(err) } 因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。
-一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：
-var report = template.</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://book.ninescloud.com/docs/5.-Functions/ch5-01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -1030,9 +657,7 @@ value, ok := cache.Lookup(key) if !ok { // ...cache[key] does not exist… } 通
 fmt.Println(err) fmt.Printf(&amp;#34;%v&amp;#34;, err) 通常，当函数返回non-nil的error时，其他的返回值是未定义的（undefined），这些未定义的返回值应该被忽略。然而，有少部分函数在发生错误时，仍然会返回一些有用的返回值。比如，当读取文件发生错误时，Read函数会返回可以读取的字节数以及错误信息。对于这种情况，正确的处理方式应该是先处理这些不完整的数据，再处理错误。因此对函数的返回值要有清晰的说明，以便于其他人使用。
 在Go中，函数运行失败时会返回错误信息，这些错误信息被认为是一种预期的值而非异常（exception），这使得Go有别于那些将函数运行失败看作是异常的语言。虽然Go有各种异常机制，但这些机制仅被使用在处理那些未被预料到的错误，即bug，而不是那些在健壮程序中应该被避免的程序错误。对于Go的异常机制我们将在5.9介绍。
 Go这样设计的原因是由于对于某个应该在控制流程中处理的错误而言，将这个错误以异常的形式抛出会混乱对错误的描述，这通常会导致一些糟糕的后果。当某个程序错误被当作异常处理后，这个错误会将堆栈跟踪信息返回给终端用户，这些信息复杂且无用，无法帮助定位错误。
-正因此，Go使用控制流机制（如if和return）处理错误，这使得编码人员能更多的关注错误处理。
-{% include &amp;ldquo;./ch5-04-1.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch5-04-2.md&amp;rdquo; %}</description>
+正因此，Go使用控制流机制（如if和return）处理错误，这使得编码人员能更多的关注错误处理。</description>
     </item>
     
     <item>
@@ -1809,11 +1434,7 @@ Go鼓励更为简单的模式，这种模式下参数（译注：外部显式参
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08/</guid>
-      <description>9.8. Goroutines和线程 #  在上一章中我们说goroutine和操作系统的线程区别可以先忽略。尽管两者的区别实际上只是一个量的区别，但量变会引起质变的道理同样适用于goroutine和线程。现在正是我们来区分开两者的最佳时机。
-{% include &amp;ldquo;./ch9-08-1.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-2.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-3.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-4.md&amp;rdquo; %}</description>
+      <description>9.8. Goroutines和线程 #  在上一章中我们说goroutine和操作系统的线程区别可以先忽略。尽管两者的区别实际上只是一个量的区别，但量变会引起质变的道理同样适用于goroutine和线程。现在正是我们来区分开两者的最佳时机。</description>
     </item>
     
     <item>
@@ -1894,6 +1515,95 @@ i, j, k = 2, 3, 5 但如果表达式太复杂的话，应该尽量避免过度�
 要使用gopl.io/ch2/tempconv包，需要先导入：
 gopl.io/ch2/cf
 // Cf converts its numeric argument to Celsius and Fahrenheit. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strconv&amp;#34; &amp;#34;gopl.io/ch2/tempconv&amp;#34; ) func main() { for _, arg := range os.Args[1:] { t, err := strconv.ParseFloat(arg, 64) if err != nil { fmt.Fprintf(os.Stderr, &amp;#34;cf: %v\n&amp;#34;, err) os.Exit(1) } f := tempconv.Fahrenheit(t) c := tempconv.Celsius(t) fmt.Printf(&amp;#34;%s = %s, %s = %s\n&amp;#34;, f, tempconv.FToC(f), c, tempconv.CToF(c)) } } 导入语句将导入的包绑定到一个短小的名字，然后通过该短小的名字就可以引用包中导出的全部内容。上面的导入声明将允许我们以tempconv.</description>
+    </item>
+    
+    <item>
+      <title>3.1. 整型</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.1.-Integers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.1.-Integers/</guid>
+      <description>3.1. 整型 #  Go语言的数值类型包括几种不同大小的整数、浮点数和复数。每种数值类型都决定了对应的大小范围和是否支持正负符号。让我们先从整数类型开始介绍。
+Go语言同时提供了有符号和无符号类型的整数运算。这里有int8、int16、int32和int64四种截然不同大小的有符号整数类型，分别对应8、16、32、64bit大小的有符号整数，与此对应的是uint8、uint16、uint32和uint64四种无符号整数类型。
+这里还有两种一般对应特定CPU平台机器字大小的有符号和无符号整数int和uint；其中int是应用最广泛的数值类型。这两种类型都有同样的大小，32或64bit，但是我们不能对此做任何的假设；因为不同的编译器即使在相同的硬件平台上可能产生不同的大小。
+Unicode字符rune类型是和int32等价的类型，通常用于表示一个Unicode码点。这两个名称可以互换使用。同样byte也是uint8类型的等价类型，byte类型一般用于强调数值是一个原始的数据而不是一个小的整数。
+最后，还有一种无符号的整数类型uintptr，没有指定具体的bit大小但是足以容纳指针。uintptr类型只有在底层编程时才需要，特别是Go语言和C语言函数库或操作系统接口相交互的地方。我们将在第十三章的unsafe包相关部分看到类似的例子。
+不管它们的具体大小，int、uint和uintptr是不同类型的兄弟类型。其中int和int32也是不同的类型，即使int的大小也是32bit，在需要将int当作int32类型的地方需要一个显式的类型转换操作，反之亦然。
+其中有符号整数采用2的补码形式表示，也就是最高bit位用来表示符号位，一个n-bit的有符号数的值域是从$-2^{n-1}$到$2^{n-1}-1$。无符号整数的所有bit位都用于表示非负数，值域是0到$2^n-1$。例如，int8类型整数的值域是从-128到127，而uint8类型整数的值域是从0到255。
+下面是Go语言中关于算术运算、逻辑运算和比较运算的二元运算符，它们按照优先级递减的顺序排列：
+* / % &amp;lt;&amp;lt; &amp;gt;&amp;gt; &amp;amp; &amp;amp;^ + - | ^ == != &amp;lt; &amp;lt;= &amp;gt; &amp;gt;= &amp;amp;&amp;amp; || 二元运算符有五种优先级。在同一个优先级，使用左优先结合规则，但是使用括号可以明确优先顺序，使用括号也可以用于提升优先级，例如mask &amp;amp; (1 &amp;lt;&amp;lt; 28)。
+对于上表中前两行的运算符，例如+运算符还有一个与赋值相结合的对应运算符+=，可以用于简化赋值语句。
+算术运算符+、-、*和/可以适用于整数、浮点数和复数，但是取模运算符%仅用于整数间的运算。对于不同编程语言，%取模运算的行为可能并不相同。在Go语言中，%取模运算符的符号和被取模数的符号总是一致的，因此-5%3和-5%-3结果都是-2。除法运算符/的行为则依赖于操作数是否全为整数，比如5.0/4.0的结果是1.25，但是5/4的结果是1，因为整数除法会向着0方向截断余数。
+一个算术运算的结果，不管是有符号或者是无符号的，如果需要更多的bit位才能正确表示的话，就说明计算结果是溢出了。超出的高位的bit位部分将被丢弃。如果原始的数值是有符号类型，而且最左边的bit位是1的话，那么最终结果可能是负的，例如int8的例子：
+var u uint8 = 255 fmt.Println(u, u+1, u*u) // &amp;#34;255 0 1&amp;#34;  var i int8 = 127 fmt.Println(i, i+1, i*i) // &amp;#34;127 -128 1&amp;#34; 两个相同的整数类型可以使用下面的二元比较运算符进行比较；比较表达式的结果是布尔类型。
+== 等于 != 不等于 &amp;lt; 小于 &amp;lt;= 小于等于 &amp;gt; 大于 &amp;gt;= 大于等于 事实上，布尔型、数字类型和字符串等基本类型都是可比较的，也就是说两个相同类型的值可以用==和!</description>
+    </item>
+    
+    <item>
+      <title>3.5.1. 字符串面值</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</guid>
+      <description>3.5.1. 字符串面值 #  字符串值也可以用字符串面值方式编写，只要将一系列字节序列包含在双引号内即可：
+&amp;quot;Hello, 世界&amp;quot;  因为Go语言源文件总是用UTF8编码，并且Go语言的文本字符串也以UTF8编码的方式处理，因此我们可以将Unicode码点也写到字符串面值中。
+在一个双引号包含的字符串面值中，可以用以反斜杠\开头的转义序列插入任意的数据。下面的换行、回车和制表符等是常见的ASCII控制代码的转义方式：
+\a 响铃 \b 退格 \f 换页 \n 换行 \r 回车 \t 制表符 \v 垂直制表符 \&#39; 单引号（只用在 &#39;\&#39;&#39; 形式的rune符号面值中） \&amp;quot; 双引号（只用在 &amp;quot;...&amp;quot; 形式的字符串面值中） \\ 反斜杠 可以通过十六进制或八进制转义在字符串面值中包含任意的字节。一个十六进制的转义形式是\xhh，其中两个h表示十六进制数字（大写或小写都可以）。一个八进制转义形式是\ooo，包含三个八进制的o数字（0到7），但是不能超过\377（译注：对应一个字节的范围，十进制为255）。每一个单一的字节表达一个特定的值。稍后我们将看到如何将一个Unicode码点写到字符串面值中。
+一个原生的字符串面值形式是`&amp;hellip;`，使用反引号代替双引号。在原生的字符串面值中，没有转义操作；全部的内容都是字面的意思，包含退格和换行，因此一个程序中的原生字符串面值可能跨越多行（译注：在原生字符串面值内部是无法直接写`字符的，可以用八进制或十六进制转义或+&amp;rdquo;`&amp;quot;连接字符串常量完成）。唯一的特殊处理是会删除回车以保证在所有平台上的值都是一样的，包括那些把回车也放入文本文件的系统（译注：Windows系统会把回车和换行一起放入文本文件中）。
+原生字符串面值用于编写正则表达式会很方便，因为正则表达式往往会包含很多反斜杠。原生字符串面值同时被广泛应用于HTML模板、JSON面值、命令行提示信息以及那些需要扩展到多行的场景。
+const GoUsage = `Go is a tool for managing Go source code. Usage: go command [arguments] ...` </description>
+    </item>
+    
+    <item>
+      <title>3.6.1. iota 常量生成器</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</guid>
+      <description>3.6.1. iota 常量生成器 #  常量声明可以使用iota常量生成器初始化，它用于生成一组以相似规则初始化的常量，但是不用每行都写一遍初始化表达式。在一个const声明语句中，在第一个声明的常量所在的行，iota将会被置为0，然后在每一个有常量声明的行加一。
+下面是来自time包的例子，它首先定义了一个Weekday命名类型，然后为一周的每天定义了一个常量，从周日0开始。在其它编程语言中，这种类型一般被称为枚举类型。
+type Weekday int const ( Sunday Weekday = iota Monday Tuesday Wednesday Thursday Friday Saturday ) 周日将对应0，周一为1，如此等等。
+我们也可以在复杂的常量表达式中使用iota，下面是来自net包的例子，用于给一个无符号整数的最低5bit的每个bit指定一个名字：
+type Flags uint const ( FlagUp Flags = 1 &amp;lt;&amp;lt; iota // is up 	FlagBroadcast // supports broadcast access capability 	FlagLoopback // is a loopback interface 	FlagPointToPoint // belongs to a point-to-point link 	FlagMulticast // supports multicast access capability ) 随着iota的递增，每个常量对应表达式1 &amp;laquo; iota，是连续的2的幂，分别对应一个bit位置。使用这些常量可以用于测试、设置或清除对应的bit位的值：</description>
+    </item>
+    
+    <item>
+      <title>4.1. 数组</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.1.-Arrays/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.1.-Arrays/</guid>
+      <description>4.1. 数组 #  数组是一个由固定长度的特定类型元素组成的序列，一个数组可以由零个或多个元素组成。因为数组的长度是固定的，因此在Go语言中很少直接使用数组。和数组对应的类型是Slice（切片），它是可以增长和收缩的动态序列，slice功能也更灵活，但是要理解slice工作原理的话需要先理解数组。
+数组的每个元素可以通过索引下标来访问，索引下标的范围是从0开始到数组长度减1的位置。内置的len函数将返回数组中元素的个数。
+var a [3]int // array of 3 integers fmt.Println(a[0]) // print the first element fmt.Println(a[len(a)-1]) // print the last element, a[2]  // Print the indices and elements. for i, v := range a { fmt.Printf(&amp;#34;%d %d\n&amp;#34;, i, v) } // Print the elements only. for _, v := range a { fmt.Printf(&amp;#34;%d\n&amp;#34;, v) } 默认情况下，数组的每个元素都被初始化为元素类型对应的零值，对于数字类型来说就是0。我们也可以使用数组字面值语法用一组值来初始化数组：
+var q [3]int = [3]int{1, 2, 3} var r [3]int = [3]int{1, 2} fmt.</description>
+    </item>
+    
+    <item>
+      <title>4.2.1. append函数</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</guid>
+      <description>4.2.1. append函数 #  内置的append函数用于向slice追加元素：
+var runes []rune for _, r := range &amp;#34;Hello, 世界&amp;#34; { runes = append(runes, r) } fmt.Printf(&amp;#34;%q\n&amp;#34;, runes) // &amp;#34;[&amp;#39;H&amp;#39; &amp;#39;e&amp;#39; &amp;#39;l&amp;#39; &amp;#39;l&amp;#39; &amp;#39;o&amp;#39; &amp;#39;,&amp;#39; &amp;#39; &amp;#39; &amp;#39;世&amp;#39; &amp;#39;界&amp;#39;]&amp;#34; 在循环中使用append函数构建一个由九个rune字符构成的slice，当然对应这个特殊的问题我们可以通过Go语言内置的[]rune(&amp;ldquo;Hello, 世界&amp;rdquo;)转换操作完成。
+append函数对于理解slice底层是如何工作的非常重要，所以让我们仔细查看究竟是发生了什么。下面是第一个版本的appendInt函数，专门用于处理[]int类型的slice：
+gopl.io/ch4/append
+func appendInt(x []int, y int) []int { var z []int zlen := len(x) + 1 if zlen &amp;lt;= cap(x) { // There is room to grow. Extend the slice. 	z = x[:zlen] } else { // There is insufficient space.</description>
+    </item>
+    
+    <item>
+      <title>4.4.1. 结构体字面值</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</guid>
+      <description>4.4.1. 结构体字面值 #  结构体值也可以用结构体字面值表示，结构体字面值可以指定每个成员的值。
+type Point struct{ X, Y int } p := Point{1, 2} 这里有两种形式的结构体字面值语法，上面的是第一种写法，要求以结构体成员定义的顺序为每个结构体成员指定一个字面值。它要求写代码和读代码的人要记住结构体的每个成员的类型和顺序，不过结构体成员有细微的调整就可能导致上述代码不能编译。因此，上述的语法一般只在定义结构体的包内部使用，或者是在较小的结构体中使用，这些结构体的成员排列比较规则，比如image.Point{x, y}或color.RGBA{red, green, blue, alpha}。
+其实更常用的是第二种写法，以成员名字和相应的值来初始化，可以包含部分或全部的成员，如1.4节的Lissajous程序的写法：
+anim := gif.GIF{LoopCount: nframes} 在这种形式的结构体字面值写法中，如果成员被忽略的话将默认用零值。因为提供了成员的名字，所以成员出现的顺序并不重要。
+两种不同形式的写法不能混合使用。而且，你不能企图在外部包中用第一种顺序赋值的技巧来偷偷地初始化结构体中未导出的成员。
+package p type T struct{ a, b int } // a and b are not exported  package q import &amp;#34;p&amp;#34; var _ = p.T{a: 1, b: 2} // compile error: can&amp;#39;t reference a, b var _ = p.T{1, 2} // compile error: can&amp;#39;t reference a, b 虽然上面最后一行代码的编译错误信息中并没有显式提到未导出的成员，但是这样企图隐式使用未导出成员的行为也是不允许的。</description>
     </item>
     
     <item>
@@ -1990,6 +1700,72 @@ package popcount // pc[i] is the population count of i. var pc [256]byte func in
     </item>
     
     <item>
+      <title>3.2. 浮点数</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/</guid>
+      <description>3.2. 浮点数 #  Go语言提供了两种精度的浮点数，float32和float64。它们的算术规范由IEEE754浮点数国际标准定义，该浮点数规范被所有现代的CPU支持。
+这些浮点数类型的取值范围可以从很微小到很巨大。浮点数的范围极限值可以在math包找到。常量math.MaxFloat32表示float32能表示的最大数值，大约是 3.4e38；对应的math.MaxFloat64常量大约是1.8e308。它们分别能表示的最小值近似为1.4e-45和4.9e-324。
+一个float32类型的浮点数可以提供大约6个十进制数的精度，而float64则可以提供约15个十进制数的精度；通常应该优先使用float64类型，因为float32类型的累计计算误差很容易扩散，并且float32能精确表示的正整数并不是很大（译注：因为float32的有效bit位只有23个，其它的bit位用于指数和符号；当整数大于23bit能表达的范围时，float32的表示将出现误差）：
+var f float32 = 16777216 // 1 &amp;lt;&amp;lt; 24 fmt.Println(f == f+1) // &amp;#34;true&amp;#34;! 浮点数的字面值可以直接写小数部分，像这样：
+const e = 2.71828 // (approximately) 小数点前面或后面的数字都可能被省略（例如.707或1.）。很小或很大的数最好用科学计数法书写，通过e或E来指定指数部分：
+const Avogadro = 6.02214129e23 // 阿伏伽德罗常数 const Planck = 6.62606957e-34 // 普朗克常数 用Printf函数的%g参数打印浮点数，将采用更紧凑的表示形式打印，并提供足够的精度，但是对应表格的数据，使用%e（带指数）或%f的形式打印可能更合适。所有的这三个打印形式都可以指定打印的宽度和控制打印精度。
+for x := 0; x &amp;lt; 8; x++ { fmt.Printf(&amp;#34;x = %d e^x = %8.3f\n&amp;#34;, x, math.Exp(float64(x))) } 上面代码打印e的幂，打印精度是小数点后三个小数精度和8个字符宽度：
+x = 0 e^x = 1.000 x = 1 e^x = 2.</description>
+    </item>
+    
+    <item>
+      <title>3.5.2. Unicode</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</guid>
+      <description>3.5.2. Unicode #  在很久以前，世界还是比较简单的，起码计算机世界就只有一个ASCII字符集：美国信息交换标准代码。ASCII，更准确地说是美国的ASCII，使用7bit来表示128个字符：包含英文字母的大小写、数字、各种标点符号和设备控制符。对于早期的计算机程序来说，这些就足够了，但是这也导致了世界上很多其他地区的用户无法直接使用自己的符号系统。随着互联网的发展，混合多种语言的数据变得很常见（译注：比如本身的英文原文或中文翻译都包含了ASCII、中文、日文等多种语言字符）。如何有效处理这些包含了各种语言的丰富多样的文本数据呢？
+答案就是使用Unicode（ http://unicode.org ），它收集了这个世界上所有的符号系统，包括重音符号和其它变音符号，制表符和回车符，还有很多神秘的符号，每个符号都分配一个唯一的Unicode码点，Unicode码点对应Go语言中的rune整数类型（译注：rune是int32等价类型）。
+在第八版本的Unicode标准里收集了超过120,000个字符，涵盖超过100多种语言。这些在计算机程序和数据中是如何体现的呢？通用的表示一个Unicode码点的数据类型是int32，也就是Go语言中rune对应的类型；它的同义词rune符文正是这个意思。
+我们可以将一个符文序列表示为一个int32序列。这种编码方式叫UTF-32或UCS-4，每个Unicode码点都使用同样大小的32bit来表示。这种方式比较简单统一，但是它会浪费很多存储空间，因为大多数计算机可读的文本是ASCII字符，本来每个ASCII字符只需要8bit或1字节就能表示。而且即使是常用的字符也远少于65,536个，也就是说用16bit编码方式就能表达常用字符。但是，还有其它更好的编码方法吗？</description>
+    </item>
+    
+    <item>
+      <title>3.6.2. 无类型常量</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</guid>
+      <description>3.6.2. 无类型常量 #  Go语言的常量有个不同寻常之处。虽然一个常量可以有任意一个确定的基础类型，例如int或float64，或者是类似time.Duration这样命名的基础类型，但是许多常量并没有一个明确的基础类型。编译器为这些没有明确基础类型的数字常量提供比基础类型更高精度的算术运算；你可以认为至少有256bit的运算精度。这里有六种未明确类型的常量类型，分别是无类型的布尔型、无类型的整数、无类型的字符、无类型的浮点数、无类型的复数、无类型的字符串。
+通过延迟明确常量的具体类型，无类型的常量不仅可以提供更高的运算精度，而且可以直接用于更多的表达式而不需要显式的类型转换。例如，例子中的ZiB和YiB的值已经超出任何Go语言中整数类型能表达的范围，但是它们依然是合法的常量，而且像下面的常量表达式依然有效（译注：YiB/ZiB是在编译期计算出来的，并且结果常量是1024，是Go语言int变量能有效表示的）：
+fmt.Println(YiB/ZiB) // &amp;#34;1024&amp;#34; 另一个例子，math.Pi无类型的浮点数常量，可以直接用于任意需要浮点数或复数的地方：
+var x float32 = math.Pi var y float64 = math.Pi var z complex128 = math.Pi 如果math.Pi被确定为特定类型，比如float64，那么结果精度可能会不一样，同时对于需要float32或complex128类型值的地方则会强制需要一个明确的类型转换：
+const Pi64 float64 = math.Pi var x float32 = float32(Pi64) var y float64 = Pi64 var z complex128 = complex128(Pi64) 对于常量面值，不同的写法可能会对应不同的类型。例如0、0.0、0i和\u0000虽然有着相同的常量值，但是它们分别对应无类型的整数、无类型的浮点数、无类型的复数和无类型的字符等不同的常量类型。同样，true和false也是无类型的布尔类型，字符串面值常量是无类型的字符串类型。
+前面说过除法运算符/会根据操作数的类型生成对应类型的结果。因此，不同写法的常量除法表达式可能对应不同的结果：
+var f float64 = 212 fmt.Println((f - 32) * 5 / 9) // &amp;#34;100&amp;#34;; (f - 32) * 5 is a float64 fmt.</description>
+    </item>
+    
+    <item>
+      <title>4.2.2. Slice内存技巧</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</guid>
+      <description>4.2.2. Slice内存技巧 #  让我们看看更多的例子，比如旋转slice、反转slice或在slice原有内存空间修改元素。给定一个字符串列表，下面的nonempty函数将在原有slice内存空间之上返回不包含空字符串的列表：
+gopl.io/ch4/nonempty
+// Nonempty is an example of an in-place slice algorithm. package main import &amp;#34;fmt&amp;#34; // nonempty returns a slice holding only the non-empty strings. // The underlying array is modified during the call. func nonempty(strings []string) []string { i := 0 for _, s := range strings { if s != &amp;#34;&amp;#34; { strings[i] = s i++ } } return strings[:i] } 比较微妙的地方是，输入的slice和输出的slice共享一个底层数组。这可以避免分配另一个数组，不过原来的数据将可能会被覆盖，正如下面两个打印语句看到的那样：
+data := []string{&amp;#34;one&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;three&amp;#34;} fmt.</description>
+    </item>
+    
+    <item>
+      <title>4.4.2. 结构体比较</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</guid>
+      <description>4.4.2. 结构体比较 #  如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：
+type Point struct{ X, Y int } p := Point{1, 2} q := Point{2, 1} fmt.Println(p.X == q.X &amp;amp;&amp;amp; p.Y == q.Y) // &amp;#34;false&amp;#34; fmt.Println(p == q) // &amp;#34;false&amp;#34; 可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。
+type address struct { hostname string port int } hits := make(map[address]int) hits[address{&amp;#34;golang.org&amp;#34;, 443}]++ </description>
+    </item>
+    
+    <item>
       <title>Go语言项目</title>
       <link>https://book.ninescloud.com/docs/Preface/The-Go-Project/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -2030,6 +1806,75 @@ p := new(int) q := new(int) fmt.Println(p == q) // &amp;#34;false&amp;#34; 当�
 new函数使用通常相对比较少，因为对于结构体来说，直接用字面量语法创建新变量的方法会更灵活（§4.4.1）。
 由于new只是一个预定义的函数，它并不是一个关键字，因此我们可以将new名字重新定义为别的类型。例如下面的例子：
 func delta(old, new int) int { return new - old } 由于new被定义为int类型的变量名，因此在delta函数内部是无法使用内置的new函数的。</description>
+    </item>
+    
+    <item>
+      <title>3.3. 复数</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/</guid>
+      <description>3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
+var x complex128 = complex(1, 2) // 1+2i var y complex128 = complex(3, 4) // 3+4i fmt.Println(x*y) // &amp;#34;(-5+10i)&amp;#34; fmt.Println(real(x*y)) // &amp;#34;-5&amp;#34; fmt.Println(imag(x*y)) // &amp;#34;10&amp;#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
+fmt.Println(1i * 1i) // &amp;#34;(-1+0i)&amp;#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1+2i或与之等价的写法2i+1。上面x和y的声明语句还可以简化：
+x := 1 + 2i y := 3 + 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
+math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
+fmt.Println(cmplx.Sqrt(-1)) // &amp;#34;(0+1i)&amp;#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
+gopl.io/ch3/mandelbrot
+// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &amp;#34;image&amp;#34; &amp;#34;image/color&amp;#34; &amp;#34;image/png&amp;#34; &amp;#34;math/cmplx&amp;#34; &amp;#34;os&amp;#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, +2, +2 width, height = 1024, 1024 ) img := image.</description>
+    </item>
+    
+    <item>
+      <title>3.5.3. UTF-8</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</guid>
+      <description>3.5.3. UTF-8 #  UTF8是一个将Unicode码点编码为字节序列的变长编码。UTF8编码是由Go语言之父Ken Thompson和Rob Pike共同发明的，现在已经是Unicode的标准。UTF8编码使用1到4个字节来表示每个Unicode码点，ASCII部分字符只使用1个字节，常用字符部分使用2或3个字节表示。每个符号编码后第一个字节的高端bit位用于表示编码总共有多少个字节。如果第一个字节的高端bit为0，则表示对应7bit的ASCII字符，ASCII字符每个字符依然是一个字节，和传统的ASCII编码兼容。如果第一个字节的高端bit是110，则说明需要2个字节；后续的每个高端bit都以10开头。更大的Unicode码点也是采用类似的策略处理。
+0xxxxxxx runes 0-127 (ASCII) 110xxxxx 10xxxxxx 128-2047 (values &amp;lt;128 unused) 1110xxxx 10xxxxxx 10xxxxxx 2048-65535 (values &amp;lt;2048 unused) 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx 65536-0x10ffff (other values unused) 变长的编码无法直接通过索引来访问第n个字符，但是UTF8编码获得了很多额外的优点。首先UTF8编码比较紧凑，完全兼容ASCII码，并且可以自动同步：它可以通过向前回朔最多3个字节就能确定当前字符编码的开始字节的位置。它也是一个前缀编码，所以当从左向右解码时不会有任何歧义也并不需要向前查看（译注：像GBK之类的编码，如果不知道起点位置则可能会出现歧义）。没有任何字符的编码是其它字符编码的子串，或是其它编码序列的字串，因此搜索一个字符时只要搜索它的字节编码序列即可，不用担心前后的上下文会对搜索结果产生干扰。同时UTF8编码的顺序和Unicode码点的顺序一致，因此可以直接排序UTF8编码序列。同时因为没有嵌入的NUL(0)字节，可以很好地兼容那些使用NUL作为字符串结尾的编程语言。
+Go语言的源文件采用UTF8编码，并且Go语言处理UTF8编码的文本也很出色。unicode包提供了诸多处理rune字符相关功能的函数（比如区分字母和数字，或者是字母的大写和小写转换等），unicode/utf8包则提供了用于rune字符序列的UTF8编码和解码的功能。
+有很多Unicode字符很难直接从键盘输入，并且还有很多字符有着相似的结构；有一些甚至是不可见的字符（译注：中文和日文就有很多相似但不同的字）。Go语言字符串面值中的Unicode转义字符让我们可以通过Unicode码点输入特殊的字符。有两种形式：\uhhhh对应16bit的码点值，\Uhhhhhhhh对应32bit的码点值，其中h是一个十六进制数字；一般很少需要使用32bit的形式。每一个对应码点的UTF8编码。例如：下面的字母串面值都表示相同的值：
+&amp;quot;世界&amp;quot; &amp;quot;\xe4\xb8\x96\xe7\x95\x8c&amp;quot; &amp;quot;\u4e16\u754c&amp;quot; &amp;quot;\U00004e16\U0000754c&amp;quot; 上面三个转义序列都为第一个字符串提供替代写法，但是它们的值都是相同的。
+Unicode转义也可以使用在rune字符中。下面三个字符是等价的：
+&#39;世&#39; &#39;\u4e16&#39; &#39;\U00004e16&#39; 对于小于256的码点值可以写在一个十六进制转义字节中，例如\x41对应字符&amp;rsquo;A&amp;rsquo;，但是对于更大的码点则必须使用\u或\U转义形式。因此，\xe4\xb8\x96并不是一个合法的rune字符，虽然这三个字节对应一个有效的UTF8编码的码点。
+得益于UTF8编码优良的设计，诸多字符串操作都不需要解码操作。我们可以不用解码直接测试一个字符串是否是另一个字符串的前缀：
+func HasPrefix(s, prefix string) bool { return len(s) &amp;gt;= len(prefix) &amp;amp;&amp;amp; s[:len(prefix)] == prefix } 或者是后缀测试：
+func HasSuffix(s, suffix string) bool { return len(s) &amp;gt;= len(suffix) &amp;amp;&amp;amp; s[len(s)-len(suffix):] == suffix } 或者是包含子串测试：</description>
+    </item>
+    
+    <item>
+      <title>4.3. Map</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.3.-Maps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.3.-Maps/</guid>
+      <description>4.3. Map #  哈希表是一种巧妙并且实用的数据结构。它是一个无序的key/value对的集合，其中所有的key都是不同的，然后通过给定的key可以在常数时间复杂度内检索、更新或删除对应的value。
+在Go语言中，一个map就是一个哈希表的引用，map类型可以写为map[K]V，其中K和V分别对应key和value。map中所有的key都有相同的类型，所有的value也有着相同的类型，但是key和value之间可以是不同的数据类型。其中K对应的key必须是支持==比较运算符的数据类型，所以map可以通过测试key是否相等来判断是否已经存在。虽然浮点数类型也是支持相等运算符比较的，但是将浮点数用做key类型则是一个坏的想法，正如第三章提到的，最坏的情况是可能出现的NaN和任何浮点数都不相等。对于V对应的value数据类型则没有任何的限制。
+内置的make函数可以创建一个map：
+ages := make(map[string]int) // mapping from strings to ints 我们也可以用map字面值的语法创建map，同时还可以指定一些最初的key/value：
+ages := map[string]int{ &amp;#34;alice&amp;#34;: 31, &amp;#34;charlie&amp;#34;: 34, } 这相当于
+ages := make(map[string]int) ages[&amp;#34;alice&amp;#34;] = 31 ages[&amp;#34;charlie&amp;#34;] = 34 因此，另一种创建空的map的表达式是map[string]int{}。
+Map中的元素通过key对应的下标语法访问：
+ages[&amp;#34;alice&amp;#34;] = 32 fmt.Println(ages[&amp;#34;alice&amp;#34;]) // &amp;#34;32&amp;#34; 使用内置的delete函数可以删除元素：
+delete(ages, &amp;#34;alice&amp;#34;) // remove element ages[&amp;#34;alice&amp;#34;] 所有这些操作是安全的，即使这些元素不在map中也没有关系；如果一个查找失败将返回value类型对应的零值，例如，即使map中不存在“bob”下面的代码也可以正常工作，因为ages[&amp;ldquo;bob&amp;rdquo;]失败时将返回0。
+ages[&amp;#34;bob&amp;#34;] = ages[&amp;#34;bob&amp;#34;] + 1 // happy birthday! 而且x += y和x++等简短赋值语法也可以用在map上，所以上面的代码可以改写成
+ages[&amp;#34;bob&amp;#34;] += 1 更简单的写法
+ages[&amp;#34;bob&amp;#34;]++ 但是map中的元素并不是一个变量，因此我们不能对map的元素进行取址操作：
+_ = &amp;amp;ages[&amp;#34;bob&amp;#34;] // compile error: cannot take address of map element 禁止对map元素取址的原因是map可能随着元素数量的增长而重新分配更大的内存空间，从而可能导致之前的地址无效。</description>
+    </item>
+    
+    <item>
+      <title>4.4.3. 结构体嵌入和匿名成员</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</guid>
+      <description>4.4.3. 结构体嵌入和匿名成员 #  在本节中，我们将看到如何使用Go语言提供的不同寻常的结构体嵌入机制让一个命名的结构体包含另一个结构体类型的匿名成员，这样就可以通过简单的点运算符x.f来访问匿名成员链中嵌套的x.d.e.f成员。
+考虑一个二维的绘图程序，提供了一个各种图形的库，例如矩形、椭圆形、星形和轮形等几何形状。这里是其中两个的定义：
+type Circle struct { X, Y, Radius int } type Wheel struct { X, Y, Radius, Spokes int } 一个Circle代表的圆形类型包含了标准圆心的X和Y坐标信息，和一个Radius表示的半径信息。一个Wheel轮形除了包含Circle类型所有的全部成员外，还增加了Spokes表示径向辐条的数量。我们可以这样创建一个wheel变量：
+var w Wheel w.X = 8 w.Y = 8 w.Radius = 5 w.Spokes = 20 随着库中几何形状数量的增多，我们一定会注意到它们之间的相似和重复之处，所以我们可能为了便于维护而将相同的属性独立出来：
+type Point struct { X, Y int } type Circle struct { Center Point Radius int } type Wheel struct { Circle Circle Spokes int } 这样改动之后结构体类型变的清晰了，但是这种修改同时也导致了访问每个成员变得繁琐：
+var w Wheel w.</description>
     </item>
     
     <item>
@@ -2084,6 +1929,37 @@ var global *int func f() { var x int x = 1 global = &amp;amp;x } func g() { y :=
     </item>
     
     <item>
+      <title>3.4. 布尔型</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.4.-Booleans/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.4.-Booleans/</guid>
+      <description>3.4. 布尔型 #  一个布尔类型的值只有两种：true和false。if和for语句的条件部分都是布尔类型的值，并且==和&amp;lt;等比较操作也会产生布尔型的值。一元操作符!对应逻辑非操作，因此!true的值为false，更罗嗦的说法是(!true==false)==true，虽然表达方式不一样，不过我们一般会采用简洁的布尔表达式，就像用x来表示x==true。
+布尔值可以和&amp;amp;&amp;amp;（AND）和||（OR）操作符结合，并且有短路行为：如果运算符左边值已经可以确定整个布尔表达式的值，那么运算符右边的值将不再被求值，因此下面的表达式总是安全的：
+s != &amp;#34;&amp;#34; &amp;amp;&amp;amp; s[0] == &amp;#39;x&amp;#39; 其中s[0]操作如果应用于空字符串将会导致panic异常。
+因为&amp;amp;&amp;amp;的优先级比||高（助记：&amp;amp;&amp;amp;对应逻辑乘法，||对应逻辑加法，乘法比加法优先级要高），下面形式的布尔表达式是不需要加小括弧的：
+if &amp;#39;a&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;z&amp;#39; || &amp;#39;A&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;Z&amp;#39; || &amp;#39;0&amp;#39; &amp;lt;= c &amp;amp;&amp;amp; c &amp;lt;= &amp;#39;9&amp;#39; { // ...ASCII letter or digit... } 布尔值并不会隐式转换为数字值0或1，反之亦然。必须使用一个显式的if语句辅助转换：
+i := 0 if b { i = 1 } 如果需要经常做类似的转换，包装成一个函数会更方便：
+// btoi returns 1 if b is true and 0 if false. func btoi(b bool) int { if b { return 1 } return 0 } 数字到布尔型的逆转换则非常简单，不过为了保持对称，我们也可以包装一个函数：</description>
+    </item>
+    
+    <item>
+      <title>3.5.4. 字符串和Byte切片</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</guid>
+      <description>3.5.4. 字符串和Byte切片 #  标准库中有四个包对字符串处理尤为重要：bytes、strings、strconv和unicode包。strings包提供了许多如字符串的查询、替换、比较、截断、拆分和合并等功能。
+bytes包也提供了很多类似功能的函数，但是针对和字符串有着相同结构的[]byte类型。因为字符串是只读的，因此逐步构建字符串会导致很多分配和复制。在这种情况下，使用bytes.Buffer类型将会更有效，稍后我们将展示。
+strconv包提供了布尔型、整型数、浮点数和对应字符串的相互转换，还提供了双引号转义相关的转换。
+unicode包提供了IsDigit、IsLetter、IsUpper和IsLower等类似功能，它们用于给字符分类。每个函数有一个单一的rune类型的参数，然后返回一个布尔值。而像ToUpper和ToLower之类的转换函数将用于rune字符的大小写转换。所有的这些函数都是遵循Unicode标准定义的字母、数字等分类规范。strings包也有类似的函数，它们是ToUpper和ToLower，将原始字符串的每个字符都做相应的转换，然后返回新的字符串。
+下面例子的basename函数灵感源于Unix shell的同名工具。在我们实现的版本中，basename(s)将看起来像是系统路径的前缀删除，同时将看似文件类型的后缀名部分删除：
+fmt.Println(basename(&amp;#34;a/b/c.go&amp;#34;)) // &amp;#34;c&amp;#34; fmt.Println(basename(&amp;#34;c.d.go&amp;#34;)) // &amp;#34;c.d&amp;#34; fmt.Println(basename(&amp;#34;abc&amp;#34;)) // &amp;#34;abc&amp;#34; 第一个版本并没有使用任何库，全部手工硬编码实现：
+gopl.io/ch3/basename1
+// basename removes directory components and a .suffix. // e.g., a =&amp;gt; a, a.go =&amp;gt; a, a/b/c.go =&amp;gt; c, a/b.c.go =&amp;gt; b.c func basename(s string) string { // Discard last &amp;#39;/&amp;#39; and everything before. 	for i := len(s) - 1; i &amp;gt;= 0; i-- { if s[i] == &amp;#39;/&amp;#39; { s = s[i+1:] break } } // Preserve everything before last &amp;#39;.</description>
+    </item>
+    
+    <item>
       <title>更多的信息</title>
       <link>https://book.ninescloud.com/docs/Preface/Where-to-Find-More-Information/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -2125,6 +2001,37 @@ For Go 2 (can&amp;rsquo;t do it before then): Change the definition to “lower 
     </item>
     
     <item>
+      <title>3.5.5. 字符串和数字的转换</title>
+      <link>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</guid>
+      <description>3.5.5. 字符串和数字的转换 #  除了字符串、字符、字节之间的转换，字符串和数值之间的转换也比较常见。由strconv包提供这类转换功能。
+将一个整数转为字符串，一种方法是用fmt.Sprintf返回一个格式化的字符串；另一个方法是用strconv.Itoa(“整数到ASCII”)：
+x := 123 y := fmt.Sprintf(&amp;#34;%d&amp;#34;, x) fmt.Println(y, strconv.Itoa(x)) // &amp;#34;123 123&amp;#34; FormatInt和FormatUint函数可以用不同的进制来格式化数字：
+fmt.Println(strconv.FormatInt(int64(x), 2)) // &amp;#34;1111011&amp;#34; fmt.Printf函数的%b、%d、%o和%x等参数提供功能往往比strconv包的Format函数方便很多，特别是在需要包含有附加额外信息的时候：
+s := fmt.Sprintf(&amp;#34;x=%b&amp;#34;, x) // &amp;#34;x=1111011&amp;#34; 如果要将一个字符串解析为整数，可以使用strconv包的Atoi或ParseInt函数，还有用于解析无符号整数的ParseUint函数：
+x, err := strconv.Atoi(&amp;#34;123&amp;#34;) // x is an int y, err := strconv.ParseInt(&amp;#34;123&amp;#34;, 10, 64) // base 10, up to 64 bits ParseInt函数的第三个参数是用于指定整型数的大小；例如16表示int16，0则表示int。在任何情况下，返回的结果y总是int64类型，你可以通过强制类型转换将它转为更小的整数类型。
+有时候也会使用fmt.Scanf来解析输入的字符串和数字，特别是当字符串和数字混合在一行的时候，它可以灵活处理不完整或不规则的输入。</description>
+    </item>
+    
+    <item>
+      <title>4.5. JSON</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.5.-JSON/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.5.-JSON/</guid>
+      <description>4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
+Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
+JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
+基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是\Uhhhh转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。
+这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：
+boolean true number -273.15 string &amp;quot;She said \&amp;quot;Hello, BF\&amp;quot;&amp;quot; array [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;] object {&amp;quot;year&amp;quot;: 1980, &amp;quot;event&amp;quot;: &amp;quot;archery&amp;quot;, &amp;quot;medals&amp;quot;: [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;]} 考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）
+gopl.io/ch4/movie
+type Movie struct { Title string Year int `json:&amp;#34;released&amp;#34;` Color bool `json:&amp;#34;color,omitempty&amp;#34;` Actors []string } var movies = []Movie{ {Title: &amp;#34;Casablanca&amp;#34;, Year: 1942, Color: false, Actors: []string{&amp;#34;Humphrey Bogart&amp;#34;, &amp;#34;Ingrid Bergman&amp;#34;}}, {Title: &amp;#34;Cool Hand Luke&amp;#34;, Year: 1967, Color: true, Actors: []string{&amp;#34;Paul Newman&amp;#34;}}, {Title: &amp;#34;Bullitt&amp;#34;, Year: 1968, Color: true, Actors: []string{&amp;#34;Steve McQueen&amp;#34;, &amp;#34;Jacqueline Bisset&amp;#34;}}, // .</description>
+    </item>
+    
+    <item>
       <title>致谢</title>
       <link>https://book.ninescloud.com/docs/Preface/Acknowledgments/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -2148,6 +2055,28 @@ For Go 2 (can&amp;rsquo;t do it before then): Change the definition to “lower 
 下面的例子fetchall，和前面小节的fetch程序所要做的工作基本一致，fetchall的特别之处在于它会同时去获取所有的URL，所以这个程序的总执行时间不会超过执行时间最长的那一个任务，前面的fetch程序执行时间则是所有任务执行时间之和。fetchall程序只会打印获取的内容大小和经过的时间，不会像之前那样打印获取的内容。
 gopl.io/ch1/fetchall
 // Fetchall fetches URLs in parallel and reports their times and sizes. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;io&amp;#34; &amp;#34;io/ioutil&amp;#34; &amp;#34;net/http&amp;#34; &amp;#34;os&amp;#34; &amp;#34;time&amp;#34; ) func main() { start := time.Now() ch := make(chan string) for _, url := range os.Args[1:] { go fetch(url, ch) // start a goroutine 	} for range os.Args[1:] { fmt.Println(&amp;lt;-ch) // receive from channel ch 	} fmt.Printf(&amp;#34;%.2fs elapsed\n&amp;#34;, time.</description>
+    </item>
+    
+    <item>
+      <title>4.6. 文本和HTML模板</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</guid>
+      <description>4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
+一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
+{% raw %}
+gopl.io/ch4/issuesreport
+const templ = `{{.TotalCount}}issues: {{range .Items}}---------------------------------------- Number: {{.Number}}User: {{.User.Login}}Title: {{.Title | printf &amp;#34;%.64s&amp;#34;}}Age: {{.CreatedAt | daysAgo}}days {{end}}` {% endraw %}
+{% raw %}
+这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中{{.TotalCount}}对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中{{range .Items}}和{{end}}对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。
+{% endraw %}
+在一个action中，|操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：
+func daysAgo(t time.Time) int { return int(time.Since(t).Hours() / 24) } 需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。
+生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。
+report, err := template.New(&amp;#34;report&amp;#34;). Funcs(template.FuncMap{&amp;#34;daysAgo&amp;#34;: daysAgo}). Parse(templ) if err != nil { log.Fatal(err) } 因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。
+一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：
+var report = template.</description>
     </item>
     
     <item>

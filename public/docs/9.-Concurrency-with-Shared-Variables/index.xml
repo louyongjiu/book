@@ -164,11 +164,7 @@ Go鼓励更为简单的模式，这种模式下参数（译注：外部显式参
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08/</guid>
-      <description>9.8. Goroutines和线程 #  在上一章中我们说goroutine和操作系统的线程区别可以先忽略。尽管两者的区别实际上只是一个量的区别，但量变会引起质变的道理同样适用于goroutine和线程。现在正是我们来区分开两者的最佳时机。
-{% include &amp;ldquo;./ch9-08-1.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-2.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-3.md&amp;rdquo; %}
-{% include &amp;ldquo;./ch9-08-4.md&amp;rdquo; %}</description>
+      <description>9.8. Goroutines和线程 #  在上一章中我们说goroutine和操作系统的线程区别可以先忽略。尽管两者的区别实际上只是一个量的区别，但量变会引起质变的道理同样适用于goroutine和线程。现在正是我们来区分开两者的最佳时机。</description>
     </item>
     
   </channel>

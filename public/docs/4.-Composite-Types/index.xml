@@ -10,11 +10,11 @@
     
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-01/</link>
+      <title>4.1. 数组</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.1.-Arrays/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-01/</guid>
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.1.-Arrays/</guid>
       <description>4.1. 数组 #  数组是一个由固定长度的特定类型元素组成的序列，一个数组可以由零个或多个元素组成。因为数组的长度是固定的，因此在Go语言中很少直接使用数组。和数组对应的类型是Slice（切片），它是可以增长和收缩的动态序列，slice功能也更灵活，但是要理解slice工作原理的话需要先理解数组。
 数组的每个元素可以通过索引下标来访问，索引下标的范围是从0开始到数组长度减1的位置。内置的len函数将返回数组中元素的个数。
 var a [3]int // array of 3 integers fmt.Println(a[0]) // print the first element fmt.Println(a[len(a)-1]) // print the last element, a[2]  // Print the indices and elements. for i, v := range a { fmt.Printf(&amp;#34;%d %d\n&amp;#34;, i, v) } // Print the elements only. for _, v := range a { fmt.Printf(&amp;#34;%d\n&amp;#34;, v) } 默认情况下，数组的每个元素都被初始化为元素类型对应的零值，对于数字类型来说就是0。我们也可以使用数组字面值语法用一组值来初始化数组：
@@ -22,52 +22,11 @@ var q [3]int = [3]int{1, 2, 3} var r [3]int = [3]int{1, 2} fmt.</description>
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-1/</link>
+      <title>4.3. Map</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.3.-Maps/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-1/</guid>
-      <description>4.2.1. append函数 #  内置的append函数用于向slice追加元素：
-var runes []rune for _, r := range &amp;#34;Hello, 世界&amp;#34; { runes = append(runes, r) } fmt.Printf(&amp;#34;%q\n&amp;#34;, runes) // &amp;#34;[&amp;#39;H&amp;#39; &amp;#39;e&amp;#39; &amp;#39;l&amp;#39; &amp;#39;l&amp;#39; &amp;#39;o&amp;#39; &amp;#39;,&amp;#39; &amp;#39; &amp;#39; &amp;#39;世&amp;#39; &amp;#39;界&amp;#39;]&amp;#34; 在循环中使用append函数构建一个由九个rune字符构成的slice，当然对应这个特殊的问题我们可以通过Go语言内置的[]rune(&amp;ldquo;Hello, 世界&amp;rdquo;)转换操作完成。
-append函数对于理解slice底层是如何工作的非常重要，所以让我们仔细查看究竟是发生了什么。下面是第一个版本的appendInt函数，专门用于处理[]int类型的slice：
-gopl.io/ch4/append
-func appendInt(x []int, y int) []int { var z []int zlen := len(x) + 1 if zlen &amp;lt;= cap(x) { // There is room to grow. Extend the slice. 	z = x[:zlen] } else { // There is insufficient space.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02-2/</guid>
-      <description>4.2.2. Slice内存技巧 #  让我们看看更多的例子，比如旋转slice、反转slice或在slice原有内存空间修改元素。给定一个字符串列表，下面的nonempty函数将在原有slice内存空间之上返回不包含空字符串的列表：
-gopl.io/ch4/nonempty
-// Nonempty is an example of an in-place slice algorithm. package main import &amp;#34;fmt&amp;#34; // nonempty returns a slice holding only the non-empty strings. // The underlying array is modified during the call. func nonempty(strings []string) []string { i := 0 for _, s := range strings { if s != &amp;#34;&amp;#34; { strings[i] = s i++ } } return strings[:i] } 比较微妙的地方是，输入的slice和输出的slice共享一个底层数组。这可以避免分配另一个数组，不过原来的数据将可能会被覆盖，正如下面两个打印语句看到的那样：
-data := []string{&amp;#34;one&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;three&amp;#34;} fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-02/</guid>
-      <description>4.2. Slice #  Slice（切片）代表变长的序列，序列中每个元素都有相同的类型。一个slice类型一般写作[]T，其中T代表slice中元素的类型；slice的语法和数组很像，只是没有固定长度而已。
-数组和slice之间有着紧密的联系。一个slice是一个轻量级的数据结构，提供了访问数组子序列（或者全部）元素的功能，而且slice的底层确实引用一个数组对象。一个slice由三个部分构成：指针、长度和容量。指针指向第一个slice元素对应的底层数组元素的地址，要注意的是slice的第一个元素并不一定就是数组的第一个元素。长度对应slice中元素的数目；长度不能超过容量，容量一般是从slice的开始位置到底层数据的结尾位置。内置的len和cap函数分别返回slice的长度和容量。
-多个slice之间可以共享底层的数据，并且引用的数组部分区间可能重叠。图4.1显示了表示一年中每个月份名字的字符串数组，还有重叠引用了该数组的两个slice。数组这样定义
-months := [...]string{1: &amp;#34;January&amp;#34;, /* ... */, 12: &amp;#34;December&amp;#34;} 因此一月份是months[1]，十二月份是months[12]。通常，数组的第一个元素从索引0开始，但是月份一般是从1开始的，因此我们声明数组时直接跳过第0个元素，第0个元素会被自动初始化为空字符串。
-slice的切片操作s[i:j]，其中0 ≤ i≤ j≤ cap(s)，用于创建一个新的slice，引用s的从第i个元素开始到第j-1个元素的子序列。新的slice将只有j-i个元素。如果i位置的索引被省略的话将使用0代替，如果j位置的索引被省略的话将使用len(s)代替。因此，months[1:13]切片操作将引用全部有效的月份，和months[1:]操作等价；months[:]切片操作则是引用整个数组。让我们分别定义表示第二季度和北方夏天月份的slice，它们有重叠部分：
- Q2 := months[4:7] summer := months[6:9] fmt.Println(Q2) // [&amp;#34;April&amp;#34; &amp;#34;May&amp;#34; &amp;#34;June&amp;#34;] fmt.Println(summer) // [&amp;#34;June&amp;#34; &amp;#34;July&amp;#34; &amp;#34;August&amp;#34;] 两个slice都包含了六月份，下面的代码是一个包含相同月份的测试（性能较低）：
-for _, s := range summer { for _, q := range Q2 { if s == q { fmt.Printf(&amp;#34;%s appears in both\n&amp;#34;, s) } } } 如果切片操作超出cap(s)的上限将导致一个panic异常，但是超出len(s)则是意味着扩展了slice，因为新slice的长度会变大：
-fmt.Println(summer[:20]) // panic: out of range  endlessSummer := summer[:5] // extend a slice (within capacity) fmt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-03/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-03/</guid>
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.3.-Maps/</guid>
       <description>4.3. Map #  哈希表是一种巧妙并且实用的数据结构。它是一个无序的key/value对的集合，其中所有的key都是不同的，然后通过给定的key可以在常数时间复杂度内检索、更新或删除对应的value。
 在Go语言中，一个map就是一个哈希表的引用，map类型可以写为map[K]V，其中K和V分别对应key和value。map中所有的key都有相同的类型，所有的value也有着相同的类型，但是key和value之间可以是不同的数据类型。其中K对应的key必须是支持==比较运算符的数据类型，所以map可以通过测试key是否相等来判断是否已经存在。虽然浮点数类型也是支持相等运算符比较的，但是将浮点数用做key类型则是一个坏的想法，正如第三章提到的，最坏的情况是可能出现的NaN和任何浮点数都不相等。对于V对应的value数据类型则没有任何的限制。
 内置的make函数可以创建一个map：
@@ -84,64 +43,11 @@ _ = &amp;amp;ages[&amp;#34;bob&amp;#34;] // compile error: cannot take address o
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-1/</link>
+      <title>4.5. JSON</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.5.-JSON/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-1/</guid>
-      <description>4.4.1. 结构体字面值 #  结构体值也可以用结构体字面值表示，结构体字面值可以指定每个成员的值。
-type Point struct{ X, Y int } p := Point{1, 2} 这里有两种形式的结构体字面值语法，上面的是第一种写法，要求以结构体成员定义的顺序为每个结构体成员指定一个字面值。它要求写代码和读代码的人要记住结构体的每个成员的类型和顺序，不过结构体成员有细微的调整就可能导致上述代码不能编译。因此，上述的语法一般只在定义结构体的包内部使用，或者是在较小的结构体中使用，这些结构体的成员排列比较规则，比如image.Point{x, y}或color.RGBA{red, green, blue, alpha}。
-其实更常用的是第二种写法，以成员名字和相应的值来初始化，可以包含部分或全部的成员，如1.4节的Lissajous程序的写法：
-anim := gif.GIF{LoopCount: nframes} 在这种形式的结构体字面值写法中，如果成员被忽略的话将默认用零值。因为提供了成员的名字，所以成员出现的顺序并不重要。
-两种不同形式的写法不能混合使用。而且，你不能企图在外部包中用第一种顺序赋值的技巧来偷偷地初始化结构体中未导出的成员。
-package p type T struct{ a, b int } // a and b are not exported  package q import &amp;#34;p&amp;#34; var _ = p.T{a: 1, b: 2} // compile error: can&amp;#39;t reference a, b var _ = p.T{1, 2} // compile error: can&amp;#39;t reference a, b 虽然上面最后一行代码的编译错误信息中并没有显式提到未导出的成员，但是这样企图隐式使用未导出成员的行为也是不允许的。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-2/</guid>
-      <description>4.4.2. 结构体比较 #  如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：
-type Point struct{ X, Y int } p := Point{1, 2} q := Point{2, 1} fmt.Println(p.X == q.X &amp;amp;&amp;amp; p.Y == q.Y) // &amp;#34;false&amp;#34; fmt.Println(p == q) // &amp;#34;false&amp;#34; 可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。
-type address struct { hostname string port int } hits := make(map[address]int) hits[address{&amp;#34;golang.org&amp;#34;, 443}]++ </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04-3/</guid>
-      <description>4.4.3. 结构体嵌入和匿名成员 #  在本节中，我们将看到如何使用Go语言提供的不同寻常的结构体嵌入机制让一个命名的结构体包含另一个结构体类型的匿名成员，这样就可以通过简单的点运算符x.f来访问匿名成员链中嵌套的x.d.e.f成员。
-考虑一个二维的绘图程序，提供了一个各种图形的库，例如矩形、椭圆形、星形和轮形等几何形状。这里是其中两个的定义：
-type Circle struct { X, Y, Radius int } type Wheel struct { X, Y, Radius, Spokes int } 一个Circle代表的圆形类型包含了标准圆心的X和Y坐标信息，和一个Radius表示的半径信息。一个Wheel轮形除了包含Circle类型所有的全部成员外，还增加了Spokes表示径向辐条的数量。我们可以这样创建一个wheel变量：
-var w Wheel w.X = 8 w.Y = 8 w.Radius = 5 w.Spokes = 20 随着库中几何形状数量的增多，我们一定会注意到它们之间的相似和重复之处，所以我们可能为了便于维护而将相同的属性独立出来：
-type Point struct { X, Y int } type Circle struct { Center Point Radius int } type Wheel struct { Circle Circle Spokes int } 这样改动之后结构体类型变的清晰了，但是这种修改同时也导致了访问每个成员变得繁琐：
-var w Wheel w.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-04/</guid>
-      <description>4.4. 结构体 #  结构体是一种聚合的数据类型，是由零个或多个任意类型的值聚合成的实体。每个值称为结构体的成员。用结构体的经典案例是处理公司的员工信息，每个员工信息包含一个唯一的员工编号、员工的名字、家庭住址、出生日期、工作岗位、薪资、上级领导等等。所有的这些信息都需要绑定到一个实体中，可以作为一个整体单元被复制，作为函数的参数或返回值，或者是被存储到数组中，等等。
-下面两个语句声明了一个叫Employee的命名的结构体类型，并且声明了一个Employee类型的变量dilbert：
-type Employee struct { ID int Name string Address string DoB time.Time Position string Salary int ManagerID int } var dilbert Employee dilbert结构体变量的成员可以通过点操作符访问，比如dilbert.Name和dilbert.DoB。因为dilbert是一个变量，它所有的成员也同样是变量，我们可以直接对每个成员赋值：
-dilbert.Salary -= 5000 // demoted, for writing too few lines of code 或者是对成员取地址，然后通过指针访问：
-position := &amp;amp;dilbert.Position *position = &amp;#34;Senior &amp;#34; + *position // promoted, for outsourcing to Elbonia 点操作符也可以和指向结构体的指针一起工作：
-var employeeOfTheMonth *Employee = &amp;amp;dilbert employeeOfTheMonth.Position += &amp;#34; (proactive team player)&amp;#34; 相当于下面语句</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-05/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-05/</guid>
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.5.-JSON/</guid>
       <description>4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
 Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
 JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
@@ -153,11 +59,11 @@ type Movie struct { Title string Year int `json:&amp;#34;released&amp;#34;` Colo
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-06/</link>
+      <title>4.6. 文本和HTML模板</title>
+      <link>https://book.ninescloud.com/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/ch4-06/</guid>
+      <guid>https://book.ninescloud.com/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</guid>
       <description>4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
 一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
 {% raw %}

@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Go语言起源 #  编程语言的演化跟生物物种的演化类似，一个成功的编程语言的后代一般都会继承它们祖先的优点；当然有时多种语言杂合也可能会产生令人惊讶的特性；还有一些激进的新特性可能并没有先例。通过观察这些影响，我们可以学到为什么一门语言是这样子的，它已经适应了怎样的环境。
+下图展示了有哪些早期的编程语言对Go语言的设计产生了重要影响。
+ Go语言有时候被描述为“C类似语言”，或者是“21世纪的C语言”。Go从C语言继承了相似的表达式语法、控制流结构、基础数据类型、调用参数传值、指针等很多思想，还有C语言一直所看中的编译后机器码的运行效率以及和现有操作系统的无缝适配。
+但是在Go语言的家族树中还有其它的祖先。其中一个有影响力的分支来自 Niklaus Wirth所设计的[Pascal][Pascal]语言。然后[Modula-2][Modula-2]语言激发了包的概念。然后[Oberon][Oberon]语言摒弃了模块接口文件和模块实现文件之间的区别。第二代的[Oberon-2][Oberon-2]语言直接影响了包的导入和声明的语法，还有[Oberon][Oberon]语言的面向对象特性所提供的方法的声明语法等。
+Go语言的另一支祖先，带来了Go语言区别其他语言的重要特性，灵感来自于贝尔实验室的 Tony Hoare于1978年发表的鲜为外界所知的关于并发研究的基础文献 顺序通信进程 （ [communicating sequential processes][CSP] ，缩写为[CSP][CSP]。在[CSP][CSP]中，程序是一组中间没有共享状态的平行运行的处理过程，它们之间使用管道进行通信和控制同步。不过 Tony Hoare的[CSP][CSP]只是一个用于描述并发性基本概念的描述语言，并不是一个可以编写可执行程序的通用编程语言。
+接下来，Rob Pike和其他人开始不断尝试将 CSP引入实际的编程语言中。他们第一次尝试引入 CSP特性的编程语言叫 Squeak（老鼠间交流的语言），是一个提供鼠标和键盘事件处理的编程语言，它的管道是静态创建的。然后是改进版的 Newsqueak语言，提供了类似C语言语句和表达式的语法和类似[Pascal][Pascal]语言的推导语法。Newsqueak是一个带垃圾回收的纯函数式语言，它再次针对键盘、鼠标和窗口事件管理。但是在Newsqueak语言中管道是动态创建的，属于第一类值，可以保存到变量中。
+在Plan9操作系统中，这些优秀的想法被吸收到了一个叫[Alef][Alef]的编程语言中。Alef试图将Newsqueak语言改造为系统编程语言，但是因为缺少垃圾回收机制而导致并发编程很痛苦。（译注：在Alef之后还有一个叫[Limbo][Limbo]的编程语言，Go语言从其中借鉴了很多特性。 具体请参考Pike的讲稿：http://talks.golang.org/2012/concurrency.slide#9 ）
+Go语言的其他的一些特性零散地来自于其他一些编程语言；比如iota语法是从[APL][APL]语言借鉴，词法作用域与嵌套函数来自于[Scheme][Scheme]语言（和其他很多语言）。当然，我们也可以从Go中发现很多创新的设计。比如Go语言的切片为动态数组提供了有效的随机存取的性能，这可能会让人联想到链表的底层的共享机制。还有Go语言新发明的defer语句。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Go语言起源" />
+<meta property="og:description" content="Go语言起源 #  编程语言的演化跟生物物种的演化类似，一个成功的编程语言的后代一般都会继承它们祖先的优点；当然有时多种语言杂合也可能会产生令人惊讶的特性；还有一些激进的新特性可能并没有先例。通过观察这些影响，我们可以学到为什么一门语言是这样子的，它已经适应了怎样的环境。
+下图展示了有哪些早期的编程语言对Go语言的设计产生了重要影响。
+ Go语言有时候被描述为“C类似语言”，或者是“21世纪的C语言”。Go从C语言继承了相似的表达式语法、控制流结构、基础数据类型、调用参数传值、指针等很多思想，还有C语言一直所看中的编译后机器码的运行效率以及和现有操作系统的无缝适配。
+但是在Go语言的家族树中还有其它的祖先。其中一个有影响力的分支来自 Niklaus Wirth所设计的[Pascal][Pascal]语言。然后[Modula-2][Modula-2]语言激发了包的概念。然后[Oberon][Oberon]语言摒弃了模块接口文件和模块实现文件之间的区别。第二代的[Oberon-2][Oberon-2]语言直接影响了包的导入和声明的语法，还有[Oberon][Oberon]语言的面向对象特性所提供的方法的声明语法等。
+Go语言的另一支祖先，带来了Go语言区别其他语言的重要特性，灵感来自于贝尔实验室的 Tony Hoare于1978年发表的鲜为外界所知的关于并发研究的基础文献 顺序通信进程 （ [communicating sequential processes][CSP] ，缩写为[CSP][CSP]。在[CSP][CSP]中，程序是一组中间没有共享状态的平行运行的处理过程，它们之间使用管道进行通信和控制同步。不过 Tony Hoare的[CSP][CSP]只是一个用于描述并发性基本概念的描述语言，并不是一个可以编写可执行程序的通用编程语言。
+接下来，Rob Pike和其他人开始不断尝试将 CSP引入实际的编程语言中。他们第一次尝试引入 CSP特性的编程语言叫 Squeak（老鼠间交流的语言），是一个提供鼠标和键盘事件处理的编程语言，它的管道是静态创建的。然后是改进版的 Newsqueak语言，提供了类似C语言语句和表达式的语法和类似[Pascal][Pascal]语言的推导语法。Newsqueak是一个带垃圾回收的纯函数式语言，它再次针对键盘、鼠标和窗口事件管理。但是在Newsqueak语言中管道是动态创建的，属于第一类值，可以保存到变量中。
+在Plan9操作系统中，这些优秀的想法被吸收到了一个叫[Alef][Alef]的编程语言中。Alef试图将Newsqueak语言改造为系统编程语言，但是因为缺少垃圾回收机制而导致并发编程很痛苦。（译注：在Alef之后还有一个叫[Limbo][Limbo]的编程语言，Go语言从其中借鉴了很多特性。 具体请参考Pike的讲稿：http://talks.golang.org/2012/concurrency.slide#9 ）
+Go语言的其他的一些特性零散地来自于其他一些编程语言；比如iota语法是从[APL][APL]语言借鉴，词法作用域与嵌套函数来自于[Scheme][Scheme]语言（和其他很多语言）。当然，我们也可以从Go中发现很多创新的设计。比如Go语言的切片为动态数组提供了有效的随机存取的性能，这可能会让人联想到链表的底层的共享机制。还有Go语言新发明的defer语句。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Preface/The-Origins-of-Go/" />
+<meta property="article:modified_time" content="2020-08-21T09:00:49+08:00" />
+<title>Go语言起源 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.8ad77cb77d05fcbaeadaf72260e059e068125a3b770814705f3d5b62dedbc5fd.js" integrity="sha256-itd8t30F/Lrq2vciYOBZ4GgSWjt3CBRwXz1bYt7bxf0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="active">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-01/" class="">Ch2 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-02/" class="">Ch2 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-1/" class="">Ch2 03 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-2/" class="">Ch2 03 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-3/" class="">Ch2 03 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-4/" class="">Ch2 03 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03/" class="">Ch2 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-1/" class="">Ch2 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-2/" class="">Ch2 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04/" class="">Ch2 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-05/" class="">Ch2 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-1/" class="">Ch2 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-2/" class="">Ch2 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06/" class="">Ch2 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-07/" class="">Ch2 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-01/" class="">Ch3 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-02/" class="">Ch3 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-03/" class="">Ch3 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-04/" class="">Ch3 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-1/" class="">Ch3 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-2/" class="">Ch3 05 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-3/" class="">Ch3 05 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-4/" class="">Ch3 05 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-5/" class="">Ch3 05 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05/" class="">Ch3 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-1/" class="">Ch3 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-2/" class="">Ch3 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06/" class="">Ch3 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-01/" class="">Ch4 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-1/" class="">Ch4 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-2/" class="">Ch4 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02/" class="">Ch4 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-03/" class="">Ch4 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-1/" class="">Ch4 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-2/" class="">Ch4 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-3/" class="">Ch4 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04/" class="">Ch4 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-05/" class="">Ch4 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-06/" class="">Ch4 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-01/" class="">Ch5 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-02/" class="">Ch5 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-03/" class="">Ch5 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-1/" class="">Ch5 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-2/" class="">Ch5 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04/" class="">Ch5 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-05/" class="">Ch5 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06-1/" class="">Ch5 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06/" class="">Ch5 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-07/" class="">Ch5 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-08/" class="">Ch5 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-09/" class="">Ch5 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-10/" class="">Ch5 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-01/" class="">Ch6 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02-1/" class="">Ch6 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02/" class="">Ch6 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-03/" class="">Ch6 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-04/" class="">Ch6 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-05/" class="">Ch6 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-06/" class="">Ch6 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-01/" class="">Ch7 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-02/" class="">Ch7 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-03/" class="">Ch7 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-04/" class="">Ch7 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05-1/" class="">Ch7 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05/" class="">Ch7 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-06/" class="">Ch7 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-07/" class="">Ch7 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-08/" class="">Ch7 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-09/" class="">Ch7 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-10/" class="">Ch7 10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-11/" class="">Ch7 11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-12/" class="">Ch7 12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-13/" class="">Ch7 13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-14/" class="">Ch7 14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-15/" class="">Ch7 15</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-01/" class="">Ch8 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-02/" class="">Ch8 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-03/" class="">Ch8 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-1/" class="">Ch8 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-2/" class="">Ch8 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-3/" class="">Ch8 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-4/" class="">Ch8 04 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04/" class="">Ch8 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-05/" class="">Ch8 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-06/" class="">Ch8 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-07/" class="">Ch8 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-08/" class="">Ch8 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-09/" class="">Ch8 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-10/" class="">Ch8 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-01/" class="">Ch9 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-02/" class="">Ch9 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-03/" class="">Ch9 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-04/" class="">Ch9 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-05/" class="">Ch9 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-06/" class="">Ch9 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-07/" class="">Ch9 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/" class="">Ch9 08 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/" class="">Ch9 08 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/" class="">Ch9 08 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/" class="">Ch9 08 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08/" class="">Ch9 08</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-01/" class="">Ch10 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-02/" class="">Ch10 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-03/" class="">Ch10 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-04/" class="">Ch10 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-05/" class="">Ch10 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-06/" class="">Ch10 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-1/" class="">Ch10 07 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-2/" class="">Ch10 07 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-3/" class="">Ch10 07 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-4/" class="">Ch10 07 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-5/" class="">Ch10 07 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-6/" class="">Ch10 07 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07/" class="">Ch10 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-01/" class="">Ch11 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-1/" class="">Ch11 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-2/" class="">Ch11 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-3/" class="">Ch11 02 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-4/" class="">Ch11 02 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-5/" class="">Ch11 02 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-6/" class="">Ch11 02 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02/" class="">Ch11 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-03/" class="">Ch11 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-04/" class="">Ch11 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-05/" class="">Ch11 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-06/" class="">Ch11 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-01/" class="">Ch12 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-02/" class="">Ch12 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-03/" class="">Ch12 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-04/" class="">Ch12 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-05/" class="">Ch12 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-06/" class="">Ch12 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-07/" class="">Ch12 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-08/" class="">Ch12 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-09/" class="">Ch12 09</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-01/" class="">Ch13 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-02/" class="">Ch13 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-03/" class="">Ch13 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-04/" class="">Ch13 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-05/" class="">Ch13 05</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Go语言起源</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#go语言起源">Go语言起源</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="go语言起源">
+  Go语言起源
+  <a class="anchor" href="#go%e8%af%ad%e8%a8%80%e8%b5%b7%e6%ba%90">#</a>
+</h2>
+<p>编程语言的演化跟生物物种的演化类似，一个成功的编程语言的后代一般都会继承它们祖先的优点；当然有时多种语言杂合也可能会产生令人惊讶的特性；还有一些激进的新特性可能并没有先例。通过观察这些影响，我们可以学到为什么一门语言是这样子的，它已经适应了怎样的环境。</p>
+<p>下图展示了有哪些早期的编程语言对Go语言的设计产生了重要影响。</p>
+<p>
+  <img src="/images/ch0-01.png" alt="" /></p>
+<p>Go语言有时候被描述为“C类似语言”，或者是“21世纪的C语言”。Go从C语言继承了相似的表达式语法、控制流结构、基础数据类型、调用参数传值、指针等很多思想，还有C语言一直所看中的编译后机器码的运行效率以及和现有操作系统的无缝适配。</p>
+<p>但是在Go语言的家族树中还有其它的祖先。其中一个有影响力的分支来自
+  <a href="https://en.wikipedia.org/wiki/Niklaus_Wirth">Niklaus Wirth</a>所设计的[Pascal][Pascal]语言。然后[Modula-2][Modula-2]语言激发了包的概念。然后[Oberon][Oberon]语言摒弃了模块接口文件和模块实现文件之间的区别。第二代的[Oberon-2][Oberon-2]语言直接影响了包的导入和声明的语法，还有[Oberon][Oberon]语言的面向对象特性所提供的方法的声明语法等。</p>
+<p>Go语言的另一支祖先，带来了Go语言区别其他语言的重要特性，灵感来自于贝尔实验室的
+  <a href="https://en.wikipedia.org/wiki/Tony_Hoare">Tony Hoare</a>于1978年发表的鲜为外界所知的关于并发研究的基础文献 <em>顺序通信进程</em> （ <em>[communicating sequential processes][CSP]</em> ，缩写为[CSP][CSP]。在[CSP][CSP]中，程序是一组中间没有共享状态的平行运行的处理过程，它们之间使用管道进行通信和控制同步。不过
+  <a href="https://en.wikipedia.org/wiki/Tony_Hoare">Tony Hoare</a>的[CSP][CSP]只是一个用于描述并发性基本概念的描述语言，并不是一个可以编写可执行程序的通用编程语言。</p>
+<p>接下来，Rob Pike和其他人开始不断尝试将
+  <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a>引入实际的编程语言中。他们第一次尝试引入
+  <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a>特性的编程语言叫
+  <a href="http://doc.cat-v.org/bell_labs/squeak/">Squeak</a>（老鼠间交流的语言），是一个提供鼠标和键盘事件处理的编程语言，它的管道是静态创建的。然后是改进版的
+  <a href="http://doc.cat-v.org/bell_labs/squeak/">Newsqueak</a>语言，提供了类似C语言语句和表达式的语法和类似[Pascal][Pascal]语言的推导语法。Newsqueak是一个带垃圾回收的纯函数式语言，它再次针对键盘、鼠标和窗口事件管理。但是在Newsqueak语言中管道是动态创建的，属于第一类值，可以保存到变量中。</p>
+<p>在Plan9操作系统中，这些优秀的想法被吸收到了一个叫[Alef][Alef]的编程语言中。Alef试图将Newsqueak语言改造为系统编程语言，但是因为缺少垃圾回收机制而导致并发编程很痛苦。（译注：在Alef之后还有一个叫[Limbo][Limbo]的编程语言，Go语言从其中借鉴了很多特性。 具体请参考Pike的讲稿：http://talks.golang.org/2012/concurrency.slide#9 ）</p>
+<p>Go语言的其他的一些特性零散地来自于其他一些编程语言；比如iota语法是从[APL][APL]语言借鉴，词法作用域与嵌套函数来自于[Scheme][Scheme]语言（和其他很多语言）。当然，我们也可以从Go中发现很多创新的设计。比如Go语言的切片为动态数组提供了有效的随机存取的性能，这可能会让人联想到链表的底层的共享机制。还有Go语言新发明的defer语句。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/07b3c93fee0d727c00fce88fefc7073c5a6911c1" title='最后修改者 nines | 2020年8月21日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月21日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content//docs/Preface/The%20Origins%20of%20Go.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#go语言起源">Go语言起源</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

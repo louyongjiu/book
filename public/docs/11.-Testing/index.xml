@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>测试 on Book</title>
+    <link>https://book.ninescloud.com/docs/11.-Testing/</link>
+    <description>Recent content in 测试 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/11.-Testing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-01/</guid>
+      <description>11.1. go test #  go test命令是一个按照一定的约定和组织来测试代码的程序。在包目录内，所有以_test.go为后缀名的源文件在执行go build时不会被构建成包的一部分，它们是go test测试的一部分。
+在*_test.go文件中，有三种类型的函数：测试函数、基准测试（benchmark）函数、示例函数。一个测试函数是以Test为函数名前缀的函数，用于测试程序的一些逻辑行为是否正确；go test命令会调用这些测试函数并报告测试结果是PASS或FAIL。基准测试函数是以Benchmark为函数名前缀的函数，它们用于衡量一些函数的性能；go test命令会多次运行基准测试函数以计算一个平均的执行时间。示例函数是以Example为函数名前缀的函数，提供一个由编译器保证正确性的示例文档。我们将在11.2节讨论测试函数的所有细节，并在11.4节讨论基准测试函数的细节，然后在11.6节讨论示例函数的细节。
+go test命令会遍历所有的*_test.go文件中符合上述命名规则的函数，生成一个临时的main包用于调用相应的测试函数，接着构建并运行、报告测试结果，最后清理测试中生成的临时文件。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-1/</guid>
+      <description>11.2.1. 随机测试 #  表格驱动的测试便于构造基于精心挑选的测试数据的测试用例。另一种测试思路是随机测试，也就是通过构造更广泛的随机输入来测试探索函数的行为。
+那么对于一个随机的输入，我们如何能知道希望的输出结果呢？这里有两种处理策略。第一个是编写另一个对照函数，使用简单和清晰的算法，虽然效率较低但是行为和要测试的函数是一致的，然后针对相同的随机输入检查两者的输出结果。第二种是生成的随机输入的数据遵循特定的模式，这样我们就可以知道期望的输出的模式。
+下面的例子使用的是第二种方法：randomPalindrome函数用于随机生成回文字符串。
+import &amp;#34;math/rand&amp;#34; // randomPalindrome returns a palindrome whose length and contents // are derived from the pseudo-random number generator rng. func randomPalindrome(rng *rand.Rand) string { n := rng.Intn(25) // random length up to 24 	runes := make([]rune, n) for i := 0; i &amp;lt; (n+1)/2; i++ { r := rune(rng.Intn(0x1000)) // random rune up to &amp;#39;\u0999&amp;#39; 	runes[i] = r runes[n-1-i] = r } return string(runes) } func TestRandomPalindromes(t *testing.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-2/</guid>
+      <description>11.2.2. 测试一个命令 #  对于测试包go test是一个有用的工具，但是稍加努力我们也可以用它来测试可执行程序。如果一个包的名字是 main，那么在构建时会生成一个可执行程序，不过main包可以作为一个包被测试器代码导入。
+让我们为2.3.2节的echo程序编写一个测试。我们先将程序拆分为两个函数：echo函数完成真正的工作，main函数用于处理命令行输入参数和echo可能返回的错误。
+gopl.io/ch11/echo
+// Echo prints its command-line arguments. package main import ( &amp;#34;flag&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;io&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strings&amp;#34; ) var ( n = flag.Bool(&amp;#34;n&amp;#34;, false, &amp;#34;omit trailing newline&amp;#34;) s = flag.String(&amp;#34;s&amp;#34;, &amp;#34; &amp;#34;, &amp;#34;separator&amp;#34;) ) var out io.Writer = os.Stdout // modified during testing  func main() { flag.Parse() if err := echo(!*n, *s, flag.Args()); err != nil { fmt.Fprintf(os.Stderr, &amp;#34;echo: %v\n&amp;#34;, err) os.Exit(1) } } func echo(newline bool, sep string, args []string) error { fmt.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-3/</guid>
+      <description>11.2.3. 白盒测试 #  一种测试分类的方法是基于测试者是否需要了解被测试对象的内部工作原理。黑盒测试只需要测试包公开的文档和API行为，内部实现对测试代码是透明的。相反，白盒测试有访问包内部函数和数据结构的权限，因此可以做到一些普通客户端无法实现的测试。例如，一个白盒测试可以在每个操作之后检测不变量的数据类型。（白盒测试只是一个传统的名称，其实称为clear box测试会更准确。）
+黑盒和白盒这两种测试方法是互补的。黑盒测试一般更健壮，随着软件实现的完善测试代码很少需要更新。它们可以帮助测试者了解真实客户的需求，也可以帮助发现API设计的一些不足之处。相反，白盒测试则可以对内部一些棘手的实现提供更多的测试覆盖。
+我们已经看到两种测试的例子。TestIsPalindrome测试仅仅使用导出的IsPalindrome函数，因此这是一个黑盒测试。TestEcho测试则调用了内部的echo函数，并且更新了内部的out包级变量，这两个都是未导出的，因此这是白盒测试。
+当我们准备TestEcho测试的时候，我们修改了echo函数使用包级的out变量作为输出对象，因此测试代码可以用另一个实现代替标准输出，这样可以方便对比echo输出的数据。使用类似的技术，我们可以将产品代码的其他部分也替换为一个容易测试的伪对象。使用伪对象的好处是我们可以方便配置，容易预测，更可靠，也更容易观察。同时也可以避免一些不良的副作用，例如更新生产数据库或信用卡消费行为。
+下面的代码演示了为用户提供网络存储的web服务中的配额检测逻辑。当用户使用了超过90%的存储配额之后将发送提醒邮件。（译注：一般在实现业务机器监控，包括磁盘、cpu、网络等的时候，需要类似的到达阈值=&amp;gt;触发报警的逻辑，所以是很实用的案例。）
+gopl.io/ch11/storage1
+package storage import ( &amp;#34;fmt&amp;#34; &amp;#34;log&amp;#34; &amp;#34;net/smtp&amp;#34; ) func bytesInUse(username string) int64 { return 0 /* ... */ } // Email sender configuration. // NOTE: never put passwords in source code! const sender = &amp;#34;notifications@example.com&amp;#34; const password = &amp;#34;correcthorsebatterystaple&amp;#34; const hostname = &amp;#34;smtp.example.com&amp;#34; const template = `Warning: you are using %d bytes of storage, %d%% of your quota.` func CheckQuota(username string) { used := bytesInUse(username) const quota = 1000000000 // 1GB 	percent := 100 * used / quota if percent &amp;lt; 90 { return // OK 	} msg := fmt.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-4/</guid>
+      <description>11.2.4. 外部测试包 #  考虑下这两个包：net/url包，提供了URL解析的功能；net/http包，提供了web服务和HTTP客户端的功能。如我们所料，上层的net/http包依赖下层的net/url包。然后，net/url包中的一个测试是演示不同URL和HTTP客户端的交互行为。也就是说，一个下层包的测试代码导入了上层的包。
+ 这样的行为在net/url包的测试代码中会导致包的循环依赖，正如图11.1中向上箭头所示，同时正如我们在10.1节所讲的，Go语言规范是禁止包的循环依赖的。
+不过我们可以通过外部测试包的方式解决循环依赖的问题，也就是在net/url包所在的目录声明一个独立的url_test测试包。其中包名的_test后缀告诉go test工具它应该建立一个额外的包来运行测试。我们将这个外部测试包的导入路径视作是net/url_test会更容易理解，但实际上它并不能被其他任何包导入。
+因为外部测试包是一个独立的包，所以能够导入那些依赖待测代码本身的其他辅助包；包内的测试代码就无法做到这点。在设计层面，外部测试包是在所有它依赖的包的上层，正如图11.2所示。
+ 通过避免循环的导入依赖，外部测试包可以更灵活地编写测试，特别是集成测试（需要测试多个组件之间的交互），可以像普通应用程序那样自由地导入其他包。
+我们可以用go list命令查看包对应目录中哪些Go源文件是产品代码，哪些是包内测试，还有哪些是外部测试包。我们以fmt包作为一个例子：GoFiles表示产品代码对应的Go源文件列表；也就是go build命令要编译的部分。
+{% raw %}
+$ go list -f={{.GoFiles}} fmt [doc.go format.go print.go scan.go] {% endraw %}
+TestGoFiles表示的是fmt包内部测试代码，以_test.go为后缀文件名，不过只在测试时被构建：
+{% raw %}
+$ go list -f={{.TestGoFiles}} fmt [export_test.go] {% endraw %}
+包的测试代码通常都在这些文件中，不过fmt包并非如此；稍后我们再解释export_test.go文件的作用。
+XTestGoFiles表示的是属于外部测试包的测试代码，也就是fmt_test包，因此它们必须先导入fmt包。同样，这些文件也只是在测试时被构建运行：
+{% raw %}
+$ go list -f={{.XTestGoFiles}} fmt [fmt_test.go scan_test.go stringer_test.go] {% endraw %}
+有时候外部测试包也需要访问被测试包内部的代码，例如在一个为了避免循环导入而被独立到外部测试包的白盒测试。在这种情况下，我们可以通过一些技巧解决：我们在包内的一个_test.go文件中导出一个内部的实现给外部测试包。因为这些代码只有在测试时才需要，因此一般会放在export_test.go文件中。
+例如，fmt包的fmt.Scanf函数需要unicode.IsSpace函数提供的功能。但是为了避免太多的依赖，fmt包并没有导入包含巨大表格数据的unicode包；相反fmt包有一个叫isSpace内部的简易实现。
+为了确保fmt.isSpace和unicode.IsSpace函数的行为保持一致，fmt包谨慎地包含了一个测试。一个在外部测试包内的白盒测试，是无法直接访问到isSpace内部函数的，因此fmt通过一个后门导出了isSpace函数。export_test.go文件就是专门用于外部测试包的后门。
+package fmt var IsSpace = isSpace 这个测试文件并没有定义测试代码；它只是通过fmt.IsSpace简单导出了内部的isSpace函数，提供给外部测试包使用。这个技巧可以广泛用于位于外部测试包的白盒测试。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-5/</guid>
+      <description>11.2.5. 编写有效的测试 #  许多Go语言新人会惊异于Go语言极简的测试框架。很多其它语言的测试框架都提供了识别测试函数的机制（通常使用反射或元数据），通过设置一些“setup”和“teardown”的钩子函数来执行测试用例运行的初始化和之后的清理操作，同时测试工具箱还提供了很多类似assert断言、值比较函数、格式化输出错误信息和停止一个失败的测试等辅助函数（通常使用异常机制）。虽然这些机制可以使得测试非常简洁，但是测试输出的日志却会像火星文一般难以理解。此外，虽然测试最终也会输出PASS或FAIL的报告，但是它们提供的信息格式却非常不利于代码维护者快速定位问题，因为失败信息的具体含义非常隐晦，比如“assert: 0 == 1”或成页的海量跟踪日志。
+Go语言的测试风格则形成鲜明对比。它期望测试者自己完成大部分的工作，定义函数避免重复，就像普通编程那样。编写测试并不是一个机械的填空过程；一个测试也有自己的接口，尽管它的维护者也是测试仅有的一个用户。一个好的测试不应该引发其他无关的错误信息，它只要清晰简洁地描述问题的症状即可，有时候可能还需要一些上下文信息。在理想情况下，维护者可以在不看代码的情况下就能根据错误信息定位错误产生的原因。一个好的测试不应该在遇到一点小错误时就立刻退出测试，它应该尝试报告更多的相关的错误信息，因为我们可能从多个失败测试的模式中发现错误产生的规律。
+下面的断言函数比较两个值，然后生成一个通用的错误信息，并停止程序。它很好用也确实有效，但是当测试失败的时候，打印的错误信息却几乎是没有价值的。它并没有为快速解决问题提供一个很好的入口。
+import ( &amp;#34;fmt&amp;#34; &amp;#34;strings&amp;#34; &amp;#34;testing&amp;#34; ) // A poor assertion function. func assertEqual(x, y int) { if x != y { panic(fmt.Sprintf(&amp;#34;%d != %d&amp;#34;, x, y)) } } func TestSplit(t *testing.T) { words := strings.Split(&amp;#34;a:b:c&amp;#34;, &amp;#34;:&amp;#34;) assertEqual(len(words), 3) // ... } 从这个意义上说，断言函数犯了过早抽象的错误：仅仅测试两个整数是否相同，而没能根据上下文提供更有意义的错误信息。我们可以根据具体的错误打印一个更有价值的错误信息，就像下面例子那样。只有在测试中出现重复模式时才采用抽象。
+func TestSplit(t *testing.T) { s, sep := &amp;#34;a:b:c&amp;#34;, &amp;#34;:&amp;#34; words := strings.Split(s, sep) if got, want := len(words), 3; got !</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02-6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02-6/</guid>
+      <description>11.2.6. 避免脆弱的测试 #  如果一个应用程序对于新出现的但有效的输入经常失败说明程序容易出bug（不够稳健）；同样，如果一个测试仅仅对程序做了微小变化就失败则称为脆弱。就像一个不够稳健的程序会挫败它的用户一样，一个脆弱的测试同样会激怒它的维护者。最脆弱的测试代码会在程序没有任何变化的时候产生不同的结果，时好时坏，处理它们会耗费大量的时间但是并不会得到任何好处。
+当一个测试函数会产生一个复杂的输出如一个很长的字符串、一个精心设计的数据结构或一个文件时，人们很容易想预先写下一系列固定的用于对比的标杆数据。但是随着项目的发展，有些输出可能会发生变化，尽管很可能是一个改进的实现导致的。而且不仅仅是输出部分，函数复杂的输入部分可能也跟着变化了，因此测试使用的输入也就不再有效了。
+避免脆弱测试代码的方法是只检测你真正关心的属性。保持测试代码的简洁和内部结构的稳定。特别是对断言部分要有所选择。不要对字符串进行全字匹配，而是针对那些在项目的发展中是比较稳定不变的子串。很多时候值得花力气来编写一个从复杂输出中提取用于断言的必要信息的函数，虽然这可能会带来很多前期的工作，但是它可以帮助迅速及时修复因为项目演化而导致的不合逻辑的失败测试。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-02/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-02/</guid>
+      <description>11.2. 测试函数 #  每个测试函数必须导入testing包。测试函数有如下的签名：
+func TestName(t *testing.T) { // ... } 测试函数的名字必须以Test开头，可选的后缀名必须以大写字母开头：
+func TestSin(t *testing.T) { /* ... */ } func TestCos(t *testing.T) { /* ... */ } func TestLog(t *testing.T) { /* ... */ } 其中t参数用于报告测试失败和附加的日志信息。让我们定义一个实例包gopl.io/ch11/word1，其中只有一个函数IsPalindrome用于检查一个字符串是否从前向后和从后向前读都是一样的。（下面这个实现对于一个字符串是否是回文字符串前后重复测试了两次；我们稍后会再讨论这个问题。）
+gopl.io/ch11/word1
+// Package word provides utilities for word games. package word // IsPalindrome reports whether s reads the same forward and backward. // (Our first attempt.) func IsPalindrome(s string) bool { for i := range s { if s[i] !</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-03/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-03/</guid>
+      <description>11.3. 测试覆盖率 #  就其性质而言，测试不可能是完整的。计算机科学家Edsger Dijkstra曾说过：“测试能证明缺陷存在，而无法证明没有缺陷。”再多的测试也不能证明一个程序没有BUG。在最好的情况下，测试可以增强我们的信心：代码在很多重要场景下是可以正常工作的。
+对待测程序执行的测试的程度称为测试的覆盖率。测试覆盖率并不能量化——即使最简单的程序的动态也是难以精确测量的——但是有启发式方法来帮助我们编写有效的测试代码。
+这些启发式方法中，语句的覆盖率是最简单和最广泛使用的。语句的覆盖率是指在测试中至少被运行一次的代码占总代码数的比例。在本节中，我们使用go test命令中集成的测试覆盖率工具，来度量下面代码的测试覆盖率，帮助我们识别测试和我们期望间的差距。
+下面的代码是一个表格驱动的测试，用于测试第七章的表达式求值程序：
+gopl.io/ch7/eval
+func TestCoverage(t *testing.T) { var tests = []struct { input string env Env want string // expected error from Parse/Check or result from Eval 	}{ {&amp;#34;x % 2&amp;#34;, nil, &amp;#34;unexpected &amp;#39;%&amp;#39;&amp;#34;}, {&amp;#34;!true&amp;#34;, nil, &amp;#34;unexpected &amp;#39;!&amp;#39;&amp;#34;}, {&amp;#34;log(10)&amp;#34;, nil, `unknown function &amp;#34;log&amp;#34;`}, {&amp;#34;sqrt(1, 2)&amp;#34;, nil, &amp;#34;call to sqrt has 2 args, want 1&amp;#34;}, {&amp;#34;sqrt(A / pi)&amp;#34;, Env{&amp;#34;A&amp;#34;: 87616, &amp;#34;pi&amp;#34;: math.Pi}, &amp;#34;167&amp;#34;}, {&amp;#34;pow(x, 3) + pow(y, 3)&amp;#34;, Env{&amp;#34;x&amp;#34;: 9, &amp;#34;y&amp;#34;: 10}, &amp;#34;1729&amp;#34;}, {&amp;#34;5 / 9 * (F - 32)&amp;#34;, Env{&amp;#34;F&amp;#34;: -40}, &amp;#34;-40&amp;#34;}, } for _, test := range tests { expr, err := Parse(test.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-04/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-04/</guid>
+      <description>11.4. 基准测试 #  基准测试是测量一个程序在固定工作负载下的性能。在Go语言中，基准测试函数和普通测试函数写法类似，但是以Benchmark为前缀名，并且带有一个*testing.B类型的参数；*testing.B参数除了提供和*testing.T类似的方法，还有额外一些和性能测量相关的方法。它还提供了一个整数N，用于指定操作执行的循环次数。
+下面是IsPalindrome函数的基准测试，其中循环将执行N次。
+import &amp;#34;testing&amp;#34; func BenchmarkIsPalindrome(b *testing.B) { for i := 0; i &amp;lt; b.N; i++ { IsPalindrome(&amp;#34;A man, a plan, a canal: Panama&amp;#34;) } } 我们用下面的命令运行基准测试。和普通测试不同的是，默认情况下不运行任何基准测试。我们需要通过-bench命令行标志参数手工指定要运行的基准测试函数。该参数是一个正则表达式，用于匹配要执行的基准测试函数的名字，默认值是空的。其中“.”模式将可以匹配所有基准测试函数，但因为这里只有一个基准测试函数，因此和-bench=IsPalindrome参数是等价的效果。
+$ cd $GOPATH/src/gopl.io/ch11/word2 $ go test -bench=. PASS BenchmarkIsPalindrome-8 1000000 1035 ns/op ok gopl.io/ch11/word2 2.179s 结果中基准测试名的数字后缀部分，这里是8，表示运行时对应的GOMAXPROCS的值，这对于一些与并发相关的基准测试是重要的信息。
+报告显示每次调用IsPalindrome函数花费1.035微秒，是执行1,000,000次的平均时间。因为基准测试驱动器开始时并不知道每个基准测试函数运行所花的时间，它会尝试在真正运行基准测试前先尝试用较小的N运行测试来估算基准测试函数所需要的时间，然后推断一个较大的时间保证稳定的测量结果。
+循环在基准测试函数内实现，而不是放在基准测试框架内实现，这样可以让每个基准测试函数有机会在循环启动前执行初始化代码，这样并不会显著影响每次迭代的平均运行时间。如果还是担心初始化代码部分对测量时间带来干扰，那么可以通过testing.B参数提供的方法来临时关闭或重置计时器，不过这些一般很少会用到。
+现在我们有了一个基准测试和普通测试，我们可以很容易测试改进程序运行速度的想法。也许最明显的优化是在IsPalindrome函数中第二个循环的停止检查，这样可以避免每个比较都做两次：
+n := len(letters)/2 for i := 0; i &amp;lt; n; i++ { if letters[i] != letters[len(letters)-1-i] { return false } } return true 不过很多情况下，一个显而易见的优化未必能带来预期的效果。这个改进在基准测试中只带来了4%的性能提升。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-05/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-05/</guid>
+      <description>11.5. 剖析 #  基准测试（Benchmark）对于衡量特定操作的性能是有帮助的，但是当我们试图让程序跑的更快的时候，我们通常并不知道从哪里开始优化。每个码农都应该知道Donald Knuth在1974年的“Structured Programming with go to Statements”上所说的格言。虽然经常被解读为不重视性能的意思，但是从原文我们可以看到不同的含义：
+ 毫无疑问，对效率的片面追求会导致各种滥用。程序员会浪费大量的时间在非关键程序的速度上，实际上这些尝试提升效率的行为反倒可能产生很大的负面影响，特别是当调试和维护的时候。我们不应该过度纠结于细节的优化，应该说约97%的场景：过早的优化是万恶之源。
+当然我们也不应该放弃对那关键3%的优化。一个好的程序员不会因为这个比例小就裹足不前，他们会明智地观察和识别哪些是关键的代码；但是仅当关键代码已经被确认的前提下才会进行优化。对于很多程序员来说，判断哪部分是关键的性能瓶颈，是很容易犯经验上的错误的，因此一般应该借助测量工具来证明。
+ 当我们想仔细观察我们程序的运行速度的时候，最好的方法是性能剖析。剖析技术是基于程序执行期间一些自动抽样，然后在收尾时进行推断；最后产生的统计结果就称为剖析数据。
+Go语言支持多种类型的剖析性能分析，每一种关注不同的方面，但它们都涉及到每个采样记录的感兴趣的一系列事件消息，每个事件都包含函数调用时函数调用堆栈的信息。内建的go test工具对几种分析方式都提供了支持。
+CPU剖析数据标识了最耗CPU时间的函数。在每个CPU上运行的线程在每隔几毫秒都会遇到操作系统的中断事件，每次中断时都会记录一个剖析数据然后恢复正常的运行。
+堆剖析则标识了最耗内存的语句。剖析库会记录调用内部内存分配的操作，平均每512KB的内存申请会触发一个剖析数据。
+阻塞剖析则记录阻塞goroutine最久的操作，例如系统调用、管道发送和接收，还有获取锁等。每当goroutine被这些操作阻塞时，剖析库都会记录相应的事件。
+只需要开启下面其中一个标志参数就可以生成各种分析文件。当同时使用多个标志参数时需要当心，因为一项分析操作可能会影响其他项的分析结果。
+$ go test -cpuprofile=cpu.out $ go test -blockprofile=block.out $ go test -memprofile=mem.out 对于一些非测试程序也很容易进行剖析，具体的实现方式，与程序是短时间运行的小工具还是长时间运行的服务会有很大不同。剖析对于长期运行的程序尤其有用，因此可以通过调用Go的runtime API来启用运行时剖析。
+一旦我们已经收集到了用于分析的采样数据，我们就可以使用pprof来分析这些数据。这是Go工具箱自带的一个工具，但并不是一个日常工具，它对应go tool pprof命令。该命令有许多特性和选项，但是最基本的是两个参数：生成这个概要文件的可执行程序和对应的剖析数据。
+为了提高分析效率和减少空间，分析日志本身并不包含函数的名字；它只包含函数对应的地址。也就是说pprof需要对应的可执行程序来解读剖析数据。虽然go test通常在测试完成后就丢弃临时用的测试程序，但是在启用分析的时候会将测试程序保存为foo.test文件，其中foo部分对应待测包的名字。
+下面的命令演示了如何收集并展示一个CPU分析文件。我们选择net/http包的一个基准测试为例。通常最好是对业务关键代码的部分设计专门的基准测试。因为简单的基准测试几乎没法代表业务场景，因此我们用-run=NONE参数禁止那些简单测试。
+$ go test -run=NONE -bench=ClientServerParallelTLS64 \ -cpuprofile=cpu.log net/http PASS BenchmarkClientServerParallelTLS64-8 1000 3141325 ns/op 143010 B/op 1747 allocs/op ok net/http 3.395s $ go tool pprof -text -nodecount=10 ./http.test cpu.log 2570ms of 3590ms total (71.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/11.-Testing/ch11-06/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/11.-Testing/ch11-06/</guid>
+      <description>11.6. 示例函数 #  第三种被go test特别对待的函数是示例函数，以Example为函数名开头。示例函数没有函数参数和返回值。下面是IsPalindrome函数对应的示例函数：
+func ExampleIsPalindrome() { fmt.Println(IsPalindrome(&amp;#34;A man, a plan, a canal: Panama&amp;#34;)) fmt.Println(IsPalindrome(&amp;#34;palindrome&amp;#34;)) // Output: 	// true 	// false } 示例函数有三个用处。最主要的一个是作为文档：一个包的例子可以更简洁直观的方式来演示函数的用法，比文字描述更直接易懂，特别是作为一个提醒或快速参考时。一个示例函数也可以方便展示属于同一个接口的几种类型或函数之间的关系，所有的文档都必须关联到一个地方，就像一个类型或函数声明都统一到包一样。同时，示例函数和注释并不一样，示例函数是真实的Go代码，需要接受编译器的编译时检查，这样可以保证源代码更新时，示例代码不会脱节。
+根据示例函数的后缀名部分，godoc这个web文档服务器会将示例函数关联到某个具体函数或包本身，因此ExampleIsPalindrome示例函数将是IsPalindrome函数文档的一部分，Example示例函数将是包文档的一部分。
+示例函数的第二个用处是，在go test执行测试的时候也会运行示例函数测试。如果示例函数内含有类似上面例子中的// Output:格式的注释，那么测试工具会执行这个示例函数，然后检查示例函数的标准输出与注释是否匹配。
+示例函数的第三个目的提供一个真实的演练场。 http://golang.org 就是由godoc提供的文档服务，它使用了Go Playground让用户可以在浏览器中在线编辑和运行每个示例函数，就像图11.4所示的那样。这通常是学习函数使用或Go语言特性最快捷的方式。
+ 本书最后的两章是讨论reflect和unsafe包，一般的Go程序员很少使用它们，事实上也很少需要用到。因此，如果你还没有写过任何真实的Go程序的话，现在可以先去写些代码了。</description>
+    </item>
+    
+  </channel>
+</rss>

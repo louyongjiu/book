@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>反射 on Book</title>
+    <link>https://book.ninescloud.com/docs/12.-Reflection/</link>
+    <description>Recent content in 反射 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/12.-Reflection/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-01/</guid>
+      <description>12.1. 为何需要反射? #  有时候我们需要编写一个函数能够处理一类并不满足普通公共接口的类型的值，也可能是因为它们并没有确定的表示方式，或者是在我们设计该函数的时候这些类型可能还不存在。
+一个大家熟悉的例子是fmt.Fprintf函数提供的字符串格式化处理逻辑，它可以用来对任意类型的值格式化并打印，甚至支持用户自定义的类型。让我们也来尝试实现一个类似功能的函数。为了简单起见，我们的函数只接收一个参数，然后返回和fmt.Sprint类似的格式化后的字符串。我们实现的函数名也叫Sprint。
+我们首先用switch类型分支来测试输入参数是否实现了String方法，如果是的话就调用该方法。然后继续增加类型测试分支，检查这个值的动态类型是否是string、int、bool等基础类型，并在每种情况下执行相应的格式化操作。
+func Sprint(x interface{}) string { type stringer interface { String() string } switch x := x.(type) { case stringer: return x.String() case string: return x case int: return strconv.Itoa(x) // ...similar cases for int16, uint32, and so on... 	case bool: if x { return &amp;#34;true&amp;#34; } return &amp;#34;false&amp;#34; default: // array, chan, func, map, pointer, slice, struct 	return &amp;#34;???&amp;#34; } } 但是我们如何处理其它类似[]float64、map[string][]string等类型呢？我们当然可以添加更多的测试分支，但是这些组合类型的数目基本是无穷的。还有如何处理类似url.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-02/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-02/</guid>
+      <description>12.2. reflect.Type 和 reflect.Value #  反射是由 reflect 包提供的。它定义了两个重要的类型，Type 和 Value。一个 Type 表示一个Go类型。它是一个接口，有许多方法来区分类型以及检查它们的组成部分，例如一个结构体的成员或一个函数的参数等。唯一能反映 reflect.Type 实现的是接口的类型描述信息（§7.5），也正是这个实体标识了接口值的动态类型。
+函数 reflect.TypeOf 接受任意的 interface{} 类型，并以 reflect.Type 形式返回其动态类型：
+t := reflect.TypeOf(3) // a reflect.Type fmt.Println(t.String()) // &amp;#34;int&amp;#34; fmt.Println(t) // &amp;#34;int&amp;#34; 其中 TypeOf(3) 调用将值 3 传给 interface{} 参数。回到 7.5节 的将一个具体的值转为接口类型会有一个隐式的接口转换操作，它会创建一个包含两个信息的接口值：操作数的动态类型（这里是 int）和它的动态的值（这里是 3）。
+因为 reflect.TypeOf 返回的是一个动态类型的接口值，它总是返回具体的类型。因此，下面的代码将打印 &amp;ldquo;*os.File&amp;rdquo; 而不是 &amp;ldquo;io.Writer&amp;rdquo;。稍后，我们将看到能够表达接口类型的 reflect.Type。
+var w io.Writer = os.Stdout fmt.Println(reflect.TypeOf(w)) // &amp;#34;*os.File&amp;#34; 要注意的是 reflect.Type 接口是满足 fmt.Stringer 接口的。因为打印一个接口的动态类型对于调试和日志是有帮助的， fmt.Printf 提供了一个缩写 %T 参数，内部使用 reflect.TypeOf 来输出：</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-03/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-03/</guid>
+      <description>12.3. Display，一个递归的值打印器 #  接下来，让我们看看如何改善聚合数据类型的显示。我们并不想完全克隆一个fmt.Sprint函数，我们只是构建一个用于调试用的Display函数：给定任意一个复杂类型 x，打印这个值对应的完整结构，同时标记每个元素的发现路径。让我们从一个例子开始。
+e, _ := eval.Parse(&amp;#34;sqrt(A / pi)&amp;#34;) Display(&amp;#34;e&amp;#34;, e) 在上面的调用中，传入Display函数的参数是在7.9节一个表达式求值函数返回的语法树。Display函数的输出如下：
+Display e (eval.call): e.fn = &amp;#34;sqrt&amp;#34; e.args[0].type = eval.binary e.args[0].value.op = 47 e.args[0].value.x.type = eval.Var e.args[0].value.x.value = &amp;#34;A&amp;#34; e.args[0].value.y.type = eval.Var e.args[0].value.y.value = &amp;#34;pi&amp;#34; 你应该尽量避免在一个包的API中暴露涉及反射的接口。我们将定义一个未导出的display函数用于递归处理工作，导出的是Display函数，它只是display函数简单的包装以接受interface{}类型的参数：
+gopl.io/ch12/display
+func Display(name string, x interface{}) { fmt.Printf(&amp;#34;Display %s (%T):\n&amp;#34;, name, x) display(name, reflect.ValueOf(x)) } 在display函数中，我们使用了前面定义的打印基础类型——基本类型、函数和chan等——元素值的formatAtom函数，但是我们会使用reflect.Value的方法来递归显示复杂类型的每一个成员。在递归下降过程中，path字符串，从最开始传入的起始值（这里是“e”），将逐步增长来表示是如何达到当前值（例如“e.args[0].value”）的。
+因为我们不再模拟fmt.Sprint函数，我们将直接使用fmt包来简化我们的例子实现。
+func display(path string, v reflect.Value) { switch v.Kind() { case reflect.Invalid: fmt.Printf(&amp;#34;%s = invalid\n&amp;#34;, path) case reflect.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-04/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-04/</guid>
+      <description>12.4. 示例: 编码为S表达式 #  Display是一个用于显示结构化数据的调试工具，但是它并不能将任意的Go语言对象编码为通用消息然后用于进程间通信。
+正如我们在4.5节中中看到的，Go语言的标准库支持了包括JSON、XML和ASN.1等多种编码格式。还有另一种依然被广泛使用的格式是S表达式格式，采用Lisp语言的语法。但是和其他编码格式不同的是，Go语言自带的标准库并不支持S表达式，主要是因为它没有一个公认的标准规范。
+在本节中，我们将定义一个包用于将任意的Go语言对象编码为S表达式格式，它支持以下结构：
+42 integer &amp;quot;hello&amp;quot; string（带有Go风格的引号） foo symbol（未用引号括起来的名字） (1 2 3) list （括号包起来的0个或多个元素） 布尔型习惯上使用t符号表示true，空列表或nil符号表示false，但是为了简单起见，我们暂时忽略布尔类型。同时忽略的还有chan管道和函数，因为通过反射并无法知道它们的确切状态。我们忽略的还有浮点数、复数和interface。支持它们是练习12.3的任务。
+我们将Go语言的类型编码为S表达式的方法如下。整数和字符串以显而易见的方式编码。空值编码为nil符号。数组和slice被编码为列表。
+结构体被编码为成员对象的列表，每个成员对象对应一个有两个元素的子列表，子列表的第一个元素是成员的名字，第二个元素是成员的值。Map被编码为键值对的列表。传统上，S表达式使用点状符号列表(key . value)结构来表示key/value对，而不是用一个含双元素的列表，不过为了简单我们忽略了点状符号列表。
+编码是由一个encode递归函数完成，如下所示。它的结构本质上和前面的Display函数类似：
+gopl.io/ch12/sexpr
+func encode(buf *bytes.Buffer, v reflect.Value) error { switch v.Kind() { case reflect.Invalid: buf.WriteString(&amp;#34;nil&amp;#34;) case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64: fmt.Fprintf(buf, &amp;#34;%d&amp;#34;, v.Int()) case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr: fmt.Fprintf(buf, &amp;#34;%d&amp;#34;, v.Uint()) case reflect.String: fmt.Fprintf(buf, &amp;#34;%q&amp;#34;, v.String()) case reflect.Ptr: return encode(buf, v.Elem()) case reflect.Array, reflect.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-05/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-05/</guid>
+      <description>12.5. 通过reflect.Value修改值 #  到目前为止，反射还只是程序中变量的另一种读取方式。然而，在本节中我们将重点讨论如何通过反射机制来修改变量。
+回想一下，Go语言中类似x、x.f[1]和*p形式的表达式都可以表示变量，但是其它如x + 1和f(2)则不是变量。一个变量就是一个可寻址的内存空间，里面存储了一个值，并且存储的值可以通过内存地址来更新。
+对于reflect.Values也有类似的区别。有一些reflect.Values是可取地址的；其它一些则不可以。考虑以下的声明语句：
+x := 2 // value type variable? a := reflect.ValueOf(2) // 2 int no b := reflect.ValueOf(x) // 2 int no c := reflect.ValueOf(&amp;amp;x) // &amp;amp;x *int no d := c.Elem() // 2 int yes (x) 其中a对应的变量不可取地址。因为a中的值仅仅是整数2的拷贝副本。b中的值也同样不可取地址。c中的值还是不可取地址，它只是一个指针&amp;amp;x的拷贝。实际上，所有通过reflect.ValueOf(x)返回的reflect.Value都是不可取地址的。但是对于d，它是c的解引用方式生成的，指向另一个变量，因此是可取地址的。我们可以通过调用reflect.ValueOf(&amp;amp;x).Elem()，来获取任意变量x对应的可取地址的Value。
+我们可以通过调用reflect.Value的CanAddr方法来判断其是否可以被取地址：
+fmt.Println(a.CanAddr()) // &amp;#34;false&amp;#34; fmt.Println(b.CanAddr()) // &amp;#34;false&amp;#34; fmt.Println(c.CanAddr()) // &amp;#34;false&amp;#34; fmt.Println(d.CanAddr()) // &amp;#34;true&amp;#34; 每当我们通过指针间接地获取的reflect.Value都是可取地址的，即使开始的是一个不可取地址的Value。在反射机制中，所有关于是否支持取地址的规则都是类似的。例如，slice的索引表达式e[i]将隐式地包含一个指针，它就是可取地址的，即使开始的e表达式不支持也没有关系。以此类推，reflect.ValueOf(e).Index(i)对应的值也是可取地址的，即使原始的reflect.ValueOf(e)不支持也没有关系。
+要从变量对应的可取地址的reflect.Value来访问变量需要三个步骤。第一步是调用Addr()方法，它返回一个Value，里面保存了指向变量的指针。然后是在Value上调用Interface()方法，也就是返回一个interface{}，里面包含指向变量的指针。最后，如果我们知道变量的类型，我们可以使用类型的断言机制将得到的interface{}类型的接口强制转为普通的类型指针。这样我们就可以通过这个普通指针来更新变量了：
+x := 2 d := reflect.ValueOf(&amp;amp;x).Elem() // d refers to the variable x px := d.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-06/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-06/</guid>
+      <description>12.6. 示例: 解码S表达式 #  标准库中encoding/&amp;hellip;下每个包中提供的Marshal编码函数都有一个对应的Unmarshal函数用于解码。例如，我们在4.5节中看到的，要将包含JSON编码格式的字节slice数据解码为我们自己的Movie类型（§12.3），我们可以这样做：
+data := []byte{/* ... */} var movie Movie err := json.Unmarshal(data, &amp;amp;movie) Unmarshal函数使用了反射机制类修改movie变量的每个成员，根据输入的内容为Movie成员创建对应的map、结构体和slice。
+现在让我们为S表达式编码实现一个简易的Unmarshal，类似于前面的json.Unmarshal标准库函数，对应我们之前实现的sexpr.Marshal函数的逆操作。我们必须提醒一下，一个健壮的和通用的实现通常需要比例子更多的代码，为了便于演示我们采用了精简的实现。我们只支持S表达式有限的子集，同时处理错误的方式也比较粗暴，代码的目的是为了演示反射的用法，而不是构造一个实用的S表达式的解码器。
+词法分析器lexer使用了标准库中的text/scanner包将输入流的字节数据解析为一个个类似注释、标识符、字符串面值和数字面值之类的标记。输入扫描器scanner的Scan方法将提前扫描和返回下一个记号，对于rune类型。大多数记号，比如“(”，对应一个单一rune可表示的Unicode字符，但是text/scanner也可以用小的负数表示记号标识符、字符串等由多个字符组成的记号。调用Scan方法将返回这些记号的类型，接着调用TokenText方法将返回记号对应的文本内容。
+因为每个解析器可能需要多次使用当前的记号，但是Scan会一直向前扫描，所以我们包装了一个lexer扫描器辅助类型，用于跟踪最近由Scan方法返回的记号。
+gopl.io/ch12/sexpr
+type lexer struct { scan scanner.Scanner token rune // the current token } func (lex *lexer) next() { lex.token = lex.scan.Scan() } func (lex *lexer) text() string { return lex.scan.TokenText() } func (lex *lexer) consume(want rune) { if lex.token != want { // NOTE: Not an example of good error handling.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-07/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-07/</guid>
+      <description>12.7. 获取结构体字段标签 #  在4.5节我们使用构体成员标签用于设置对应JSON对应的名字。其中json成员标签让我们可以选择成员的名字和抑制零值成员的输出。在本节，我们将看到如何通过反射机制类获取成员标签。
+对于一个web服务，大部分HTTP处理函数要做的第一件事情就是展开请求中的参数到本地变量中。我们定义了一个工具函数，叫params.Unpack，通过使用结构体成员标签机制来让HTTP处理函数解析请求参数更方便。
+首先，我们看看如何使用它。下面的search函数是一个HTTP请求处理函数。它定义了一个匿名结构体类型的变量，用结构体的每个成员表示HTTP请求的参数。其中结构体成员标签指明了对于请求参数的名字，为了减少URL的长度这些参数名通常都是神秘的缩略词。Unpack将请求参数填充到合适的结构体成员中，这样我们可以方便地通过合适的类型类来访问这些参数。
+gopl.io/ch12/search
+import &amp;#34;gopl.io/ch12/params&amp;#34; // search implements the /search URL endpoint. func search(resp http.ResponseWriter, req *http.Request) { var data struct { Labels []string `http:&amp;#34;l&amp;#34;` MaxResults int `http:&amp;#34;max&amp;#34;` Exact bool `http:&amp;#34;x&amp;#34;` } data.MaxResults = 10 // set default 	if err := params.Unpack(req, &amp;amp;data); err != nil { http.Error(resp, err.Error(), http.StatusBadRequest) // 400 	return } // ...rest of handler... 	fmt.Fprintf(resp, &amp;#34;Search: %+v\n&amp;#34;, data) } 下面的Unpack函数主要完成三件事情。第一，它调用req.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-08/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-08/</guid>
+      <description>12.8. 显示一个类型的方法集 #  我们的最后一个例子是使用reflect.Type来打印任意值的类型和枚举它的方法：
+gopl.io/ch12/methods
+// Print prints the method set of the value x. func Print(x interface{}) { v := reflect.ValueOf(x) t := v.Type() fmt.Printf(&amp;#34;type %s\n&amp;#34;, t) for i := 0; i &amp;lt; v.NumMethod(); i++ { methType := v.Method(i).Type() fmt.Printf(&amp;#34;func (%s) %s%s\n&amp;#34;, t, t.Method(i).Name, strings.TrimPrefix(methType.String(), &amp;#34;func&amp;#34;)) } } reflect.Type和reflect.Value都提供了一个Method方法。每次t.Method(i)调用将一个reflect.Method的实例，对应一个用于描述一个方法的名称和类型的结构体。每次v.Method(i)方法调用都返回一个reflect.Value以表示对应的值（§6.4），也就是一个方法是帮到它的接收者的。使用reflect.Value.Call方法（我们这里没有演示），将可以调用一个Func类型的Value，但是这个例子中只用到了它的类型。
+这是属于time.Duration和*strings.Replacer两个类型的方法：
+methods.Print(time.Hour) // Output: // type time.Duration // func (time.Duration) Hours() float64 // func (time.Duration) Minutes() float64 // func (time.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/12.-Reflection/ch12-09/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/12.-Reflection/ch12-09/</guid>
+      <description>12.9. 几点忠告 #  虽然反射提供的API远多于我们讲到的，我们前面的例子主要是给出了一个方向，通过反射可以实现哪些功能。反射是一个强大并富有表达力的工具，但是它应该被小心地使用，原因有三。
+第一个原因是，基于反射的代码是比较脆弱的。对于每一个会导致编译器报告类型错误的问题，在反射中都有与之相对应的误用问题，不同的是编译器会在构建时马上报告错误，而反射则是在真正运行到的时候才会抛出panic异常，可能是写完代码很久之后了，而且程序也可能运行了很长的时间。
+以前面的readList函数（§12.6）为例，为了从输入读取字符串并填充int类型的变量而调用的reflect.Value.SetString方法可能导致panic异常。绝大多数使用反射的程序都有类似的风险，需要非常小心地检查每个reflect.Value的对应值的类型、是否可取地址，还有是否可以被修改等。
+避免这种因反射而导致的脆弱性的问题的最好方法，是将所有的反射相关的使用控制在包的内部，如果可能的话避免在包的API中直接暴露reflect.Value类型，这样可以限制一些非法输入。如果无法做到这一点，在每个有风险的操作前指向额外的类型检查。以标准库中的代码为例，当fmt.Printf收到一个非法的操作数时，它并不会抛出panic异常，而是打印相关的错误信息。程序虽然还有BUG，但是会更加容易诊断。
+fmt.Printf(&amp;#34;%d %s\n&amp;#34;, &amp;#34;hello&amp;#34;, 42) // &amp;#34;%!d(string=hello) %!s(int=42)&amp;#34; 反射同样降低了程序的安全性，还影响了自动化重构和分析工具的准确性，因为它们无法识别运行时才能确认的类型信息。
+避免使用反射的第二个原因是，即使对应类型提供了相同文档，但是反射的操作不能做静态类型检查，而且大量反射的代码通常难以理解。总是需要小心翼翼地为每个导出的类型和其它接受interface{}或reflect.Value类型参数的函数维护说明文档。
+第三个原因，基于反射的代码通常比正常的代码运行速度慢一到两个数量级。对于一个典型的项目，大部分函数的性能和程序的整体性能关系不大，所以当反射能使程序更加清晰的时候可以考虑使用。测试是一个特别适合使用反射的场景，因为每个测试的数据集都很小。但是对于性能关键路径的函数，最好避免使用反射。</description>
+    </item>
+    
+  </channel>
+</rss>

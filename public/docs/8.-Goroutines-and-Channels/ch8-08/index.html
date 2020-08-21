@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="8.8. 示例: 并发的目录遍历 #  在本小节中，我们会创建一个程序来生成指定目录的硬盘使用情况报告，这个程序和Unix里的du工具比较相似。大多数工作用下面这个walkDir函数来完成，这个函数使用dirents函数来枚举一个目录下的所有入口。
+gopl.io/ch8/du1
+// walkDir recursively walks the file tree rooted at dir // and sends the size of each found file on fileSizes. func walkDir(dir string, fileSizes chan&lt;- int64) { for _, entry := range dirents(dir) { if entry.IsDir() { subdir := filepath.Join(dir, entry.Name()) walkDir(subdir, fileSizes) } else { fileSizes &lt;- entry.Size() } } } // dirents returns the entries of directory dir. func dirents(dir string) []os.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="8.8. 示例: 并发的目录遍历 #  在本小节中，我们会创建一个程序来生成指定目录的硬盘使用情况报告，这个程序和Unix里的du工具比较相似。大多数工作用下面这个walkDir函数来完成，这个函数使用dirents函数来枚举一个目录下的所有入口。
+gopl.io/ch8/du1
+// walkDir recursively walks the file tree rooted at dir // and sends the size of each found file on fileSizes. func walkDir(dir string, fileSizes chan&lt;- int64) { for _, entry := range dirents(dir) { if entry.IsDir() { subdir := filepath.Join(dir, entry.Name()) walkDir(subdir, fileSizes) } else { fileSizes &lt;- entry.Size() } } } // dirents returns the entries of directory dir. func dirents(dir string) []os." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/8.-Goroutines-and-Channels/ch8-08/" />
+<meta property="article:modified_time" content="2020-08-21T16:04:53+08:00" />
+<title>Ch8 08 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.8ad77cb77d05fcbaeadaf72260e059e068125a3b770814705f3d5b62dedbc5fd.js" integrity="sha256-itd8t30F/Lrq2vciYOBZ4GgSWjt3CBRwXz1bYt7bxf0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-01/" class="">Ch2 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-02/" class="">Ch2 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-1/" class="">Ch2 03 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-2/" class="">Ch2 03 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-3/" class="">Ch2 03 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-4/" class="">Ch2 03 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03/" class="">Ch2 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-1/" class="">Ch2 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-2/" class="">Ch2 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04/" class="">Ch2 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-05/" class="">Ch2 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-1/" class="">Ch2 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-2/" class="">Ch2 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06/" class="">Ch2 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-07/" class="">Ch2 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-01/" class="">Ch3 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-02/" class="">Ch3 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-03/" class="">Ch3 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-04/" class="">Ch3 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-1/" class="">Ch3 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-2/" class="">Ch3 05 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-3/" class="">Ch3 05 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-4/" class="">Ch3 05 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-5/" class="">Ch3 05 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05/" class="">Ch3 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-1/" class="">Ch3 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-2/" class="">Ch3 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06/" class="">Ch3 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-01/" class="">Ch4 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-1/" class="">Ch4 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-2/" class="">Ch4 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02/" class="">Ch4 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-03/" class="">Ch4 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-1/" class="">Ch4 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-2/" class="">Ch4 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-3/" class="">Ch4 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04/" class="">Ch4 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-05/" class="">Ch4 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-06/" class="">Ch4 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-01/" class="">Ch5 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-02/" class="">Ch5 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-03/" class="">Ch5 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-1/" class="">Ch5 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-2/" class="">Ch5 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04/" class="">Ch5 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-05/" class="">Ch5 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06-1/" class="">Ch5 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06/" class="">Ch5 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-07/" class="">Ch5 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-08/" class="">Ch5 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-09/" class="">Ch5 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-10/" class="">Ch5 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-01/" class="">Ch6 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02-1/" class="">Ch6 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02/" class="">Ch6 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-03/" class="">Ch6 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-04/" class="">Ch6 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-05/" class="">Ch6 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-06/" class="">Ch6 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-01/" class="">Ch7 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-02/" class="">Ch7 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-03/" class="">Ch7 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-04/" class="">Ch7 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05-1/" class="">Ch7 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05/" class="">Ch7 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-06/" class="">Ch7 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-07/" class="">Ch7 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-08/" class="">Ch7 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-09/" class="">Ch7 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-10/" class="">Ch7 10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-11/" class="">Ch7 11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-12/" class="">Ch7 12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-13/" class="">Ch7 13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-14/" class="">Ch7 14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-15/" class="">Ch7 15</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-01/" class="">Ch8 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-02/" class="">Ch8 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-03/" class="">Ch8 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-1/" class="">Ch8 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-2/" class="">Ch8 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-3/" class="">Ch8 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-4/" class="">Ch8 04 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04/" class="">Ch8 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-05/" class="">Ch8 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-06/" class="">Ch8 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-07/" class="">Ch8 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-08/" class="active">Ch8 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-09/" class="">Ch8 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-10/" class="">Ch8 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-01/" class="">Ch9 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-02/" class="">Ch9 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-03/" class="">Ch9 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-04/" class="">Ch9 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-05/" class="">Ch9 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-06/" class="">Ch9 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-07/" class="">Ch9 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/" class="">Ch9 08 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/" class="">Ch9 08 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/" class="">Ch9 08 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/" class="">Ch9 08 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08/" class="">Ch9 08</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-01/" class="">Ch10 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-02/" class="">Ch10 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-03/" class="">Ch10 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-04/" class="">Ch10 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-05/" class="">Ch10 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-06/" class="">Ch10 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-1/" class="">Ch10 07 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-2/" class="">Ch10 07 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-3/" class="">Ch10 07 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-4/" class="">Ch10 07 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-5/" class="">Ch10 07 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-6/" class="">Ch10 07 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07/" class="">Ch10 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-01/" class="">Ch11 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-1/" class="">Ch11 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-2/" class="">Ch11 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-3/" class="">Ch11 02 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-4/" class="">Ch11 02 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-5/" class="">Ch11 02 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-6/" class="">Ch11 02 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02/" class="">Ch11 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-03/" class="">Ch11 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-04/" class="">Ch11 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-05/" class="">Ch11 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-06/" class="">Ch11 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-01/" class="">Ch12 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-02/" class="">Ch12 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-03/" class="">Ch12 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-04/" class="">Ch12 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-05/" class="">Ch12 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-06/" class="">Ch12 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-07/" class="">Ch12 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-08/" class="">Ch12 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-09/" class="">Ch12 09</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-01/" class="">Ch13 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-02/" class="">Ch13 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-03/" class="">Ch13 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-04/" class="">Ch13 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-05/" class="">Ch13 05</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch8 08</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#88-示例-并发的目录遍历">8.8. 示例: 并发的目录遍历</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="88-示例-并发的目录遍历">
+  8.8. 示例: 并发的目录遍历
+  <a class="anchor" href="#88-%e7%a4%ba%e4%be%8b-%e5%b9%b6%e5%8f%91%e7%9a%84%e7%9b%ae%e5%bd%95%e9%81%8d%e5%8e%86">#</a>
+</h2>
+<p>在本小节中，我们会创建一个程序来生成指定目录的硬盘使用情况报告，这个程序和Unix里的du工具比较相似。大多数工作用下面这个walkDir函数来完成，这个函数使用dirents函数来枚举一个目录下的所有入口。</p>
+<p><u><i>gopl.io/ch8/du1</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// walkDir recursively walks the file tree rooted at dir
+</span><span style="color:#75715e">// and sends the size of each found file on fileSizes.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">dir</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">fileSizes</span> <span style="color:#66d9ef">chan</span><span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">int64</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">entry</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">dirents</span>(<span style="color:#a6e22e">dir</span>) {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">IsDir</span>() {
+			<span style="color:#a6e22e">subdir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">Name</span>())
+			<span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">subdir</span>, <span style="color:#a6e22e">fileSizes</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">fileSizes</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">Size</span>()
+		}
+	}
+}
+
+<span style="color:#75715e">// dirents returns the entries of directory dir.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">dirents</span>(<span style="color:#a6e22e">dir</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">FileInfo</span> {
+	<span style="color:#a6e22e">entries</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadDir</span>(<span style="color:#a6e22e">dir</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>, <span style="color:#e6db74">&#34;du1: %v\n&#34;</span>, <span style="color:#a6e22e">err</span>)
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">entries</span>
+}
+</code></pre></div><p>ioutil.ReadDir函数会返回一个os.FileInfo类型的slice，os.FileInfo类型也是os.Stat这个函数的返回值。对每一个子目录而言，walkDir会递归地调用其自身，同时也在递归里获取每一个文件的信息。walkDir函数会向fileSizes这个channel发送一条消息。这条消息包含了文件的字节大小。</p>
+<p>下面的主函数，用了两个goroutine。后台的goroutine调用walkDir来遍历命令行给出的每一个路径并最终关闭fileSizes这个channel。主goroutine会对其从channel中接收到的文件大小进行累加，并输出其和。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;flag&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;io/ioutil&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;path/filepath&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// Determine the initial directories.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
+	<span style="color:#a6e22e">roots</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Args</span>()
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">roots</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">roots</span> = []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;.&#34;</span>}
+	}
+
+	<span style="color:#75715e">// Traverse the file tree.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fileSizes</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int64</span>)
+	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">root</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">roots</span> {
+			<span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">root</span>, <span style="color:#a6e22e">fileSizes</span>)
+		}
+		close(<span style="color:#a6e22e">fileSizes</span>)
+	}()
+
+	<span style="color:#75715e">// Print the results.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span> <span style="color:#66d9ef">int64</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">size</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">fileSizes</span> {
+		<span style="color:#a6e22e">nfiles</span><span style="color:#f92672">++</span>
+		<span style="color:#a6e22e">nbytes</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">size</span>
+	}
+	<span style="color:#a6e22e">printDiskUsage</span>(<span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printDiskUsage</span>(<span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span> <span style="color:#66d9ef">int64</span>) {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d files  %.1f GB\n&#34;</span>, <span style="color:#a6e22e">nfiles</span>, float64(<span style="color:#a6e22e">nbytes</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">1e9</span>)
+}
+</code></pre></div><p>这个程序会在打印其结果之前卡住很长时间。</p>
+<pre><code>$ go build gopl.io/ch8/du1
+$ ./du1 $HOME /usr /bin /etc
+213201 files  62.7 GB
+</code></pre><p>如果在运行的时候能够让我们知道处理进度的话想必更好。但是，如果简单地把printDiskUsage函数调用移动到循环里会导致其打印出成百上千的输出。</p>
+<p>下面这个du的变种会间歇打印内容，不过只有在调用时提供了-v的flag才会显示程序进度信息。在roots目录上循环的后台goroutine在这里保持不变。主goroutine现在使用了计时器来每500ms生成事件，然后用select语句来等待文件大小的消息来更新总大小数据，或者一个计时器的事件来打印当前的总大小数据。如果-v的flag在运行时没有传入的话，tick这个channel会保持为nil，这样在select里的case也就相当于被禁用了。</p>
+<p><u><i>gopl.io/ch8/du2</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">verbose</span> = <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Bool</span>(<span style="color:#e6db74">&#34;v&#34;</span>, <span style="color:#66d9ef">false</span>, <span style="color:#e6db74">&#34;show verbose progress messages&#34;</span>)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// ...start background goroutine...
+</span><span style="color:#75715e"></span>
+	<span style="color:#75715e">// Print the results periodically.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tick</span> <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">verbose</span> {
+		<span style="color:#a6e22e">tick</span> = <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Tick</span>(<span style="color:#ae81ff">500</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)
+	}
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span> <span style="color:#66d9ef">int64</span>
+<span style="color:#a6e22e">loop</span>:
+	<span style="color:#66d9ef">for</span> {
+		<span style="color:#66d9ef">select</span> {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">size</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">fileSizes</span>:
+			<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> {
+				<span style="color:#66d9ef">break</span> <span style="color:#a6e22e">loop</span> <span style="color:#75715e">// fileSizes was closed
+</span><span style="color:#75715e"></span>			}
+			<span style="color:#a6e22e">nfiles</span><span style="color:#f92672">++</span>
+			<span style="color:#a6e22e">nbytes</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">size</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">tick</span>:
+			<span style="color:#a6e22e">printDiskUsage</span>(<span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span>)
+		}
+	}
+	<span style="color:#a6e22e">printDiskUsage</span>(<span style="color:#a6e22e">nfiles</span>, <span style="color:#a6e22e">nbytes</span>) <span style="color:#75715e">// final totals
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>由于我们的程序不再使用range循环，第一个select的case必须显式地判断fileSizes的channel是不是已经被关闭了，这里可以用到channel接收的二值形式。如果channel已经被关闭了的话，程序会直接退出循环。这里的break语句用到了标签break，这样可以同时终结select和for两个循环；如果没有用标签就break的话只会退出内层的select循环，而外层的for循环会使之进入下一轮select循环。</p>
+<p>现在程序会悠闲地为我们打印更新流：</p>
+<pre><code>$ go build gopl.io/ch8/du2
+$ ./du2 -v $HOME /usr /bin /etc
+28608 files  8.3 GB
+54147 files  10.3 GB
+93591 files  15.1 GB
+127169 files  52.9 GB
+175931 files  62.2 GB
+213201 files  62.7 GB
+</code></pre><p>然而这个程序还是会花上很长时间才会结束。完全可以并发调用walkDir，从而发挥磁盘系统的并行性能。下面这个第三个版本的du，会对每一个walkDir的调用创建一个新的goroutine。它使用sync.WaitGroup（§8.5）来对仍旧活跃的walkDir调用进行计数，另一个goroutine会在计数器减为零的时候将fileSizes这个channel关闭。</p>
+<p><u><i>gopl.io/ch8/du3</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// ...determine roots...
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Traverse each root of the file tree in parallel.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fileSizes</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int64</span>)
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">root</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">roots</span> {
+		<span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">root</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">fileSizes</span>)
+	}
+	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Wait</span>()
+		close(<span style="color:#a6e22e">fileSizes</span>)
+	}()
+	<span style="color:#75715e">// ...select loop...
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">dir</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>, <span style="color:#a6e22e">fileSizes</span> <span style="color:#66d9ef">chan</span><span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">int64</span>) {
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Done</span>()
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">entry</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">dirents</span>(<span style="color:#a6e22e">dir</span>) {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">IsDir</span>() {
+			<span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+			<span style="color:#a6e22e">subdir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">Name</span>())
+			<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">walkDir</span>(<span style="color:#a6e22e">subdir</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">fileSizes</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">fileSizes</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">entry</span>.<span style="color:#a6e22e">Size</span>()
+		}
+	}
+}
+</code></pre></div><p>由于这个程序在高峰期会创建成百上千的goroutine，我们需要修改dirents函数，用计数信号量来阻止他同时打开太多的文件，就像我们在8.7节中的并发爬虫一样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// sema is a counting semaphore for limiting concurrency in dirents.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sema</span> = make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">struct</span>{}, <span style="color:#ae81ff">20</span>)
+
+<span style="color:#75715e">// dirents returns the entries of directory dir.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">dirents</span>(<span style="color:#a6e22e">dir</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">FileInfo</span> {
+	<span style="color:#a6e22e">sema</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">struct</span>{}{}        <span style="color:#75715e">// acquire token
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() { <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">sema</span> }() <span style="color:#75715e">// release token
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// ...
+</span></code></pre></div><p>这个版本比之前那个快了好几倍，尽管其具体效率还是和你的运行环境，机器配置相关。</p>
+<p><strong>练习 8.9：</strong> 编写一个du工具，每隔一段时间将root目录下的目录大小计算并显示出来。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/029ec77adcb81020389097d06d4cbdbf78bc9035" title='最后修改者 louyongjiu | 2020年8月21日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月21日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content//docs/8.%20Goroutines%20and%20Channels/ch8-08.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#88-示例-并发的目录遍历">8.8. 示例: 并发的目录遍历</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

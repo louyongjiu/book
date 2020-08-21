@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="11.2.3. 白盒测试 #  一种测试分类的方法是基于测试者是否需要了解被测试对象的内部工作原理。黑盒测试只需要测试包公开的文档和API行为，内部实现对测试代码是透明的。相反，白盒测试有访问包内部函数和数据结构的权限，因此可以做到一些普通客户端无法实现的测试。例如，一个白盒测试可以在每个操作之后检测不变量的数据类型。（白盒测试只是一个传统的名称，其实称为clear box测试会更准确。）
+黑盒和白盒这两种测试方法是互补的。黑盒测试一般更健壮，随着软件实现的完善测试代码很少需要更新。它们可以帮助测试者了解真实客户的需求，也可以帮助发现API设计的一些不足之处。相反，白盒测试则可以对内部一些棘手的实现提供更多的测试覆盖。
+我们已经看到两种测试的例子。TestIsPalindrome测试仅仅使用导出的IsPalindrome函数，因此这是一个黑盒测试。TestEcho测试则调用了内部的echo函数，并且更新了内部的out包级变量，这两个都是未导出的，因此这是白盒测试。
+当我们准备TestEcho测试的时候，我们修改了echo函数使用包级的out变量作为输出对象，因此测试代码可以用另一个实现代替标准输出，这样可以方便对比echo输出的数据。使用类似的技术，我们可以将产品代码的其他部分也替换为一个容易测试的伪对象。使用伪对象的好处是我们可以方便配置，容易预测，更可靠，也更容易观察。同时也可以避免一些不良的副作用，例如更新生产数据库或信用卡消费行为。
+下面的代码演示了为用户提供网络存储的web服务中的配额检测逻辑。当用户使用了超过90%的存储配额之后将发送提醒邮件。（译注：一般在实现业务机器监控，包括磁盘、cpu、网络等的时候，需要类似的到达阈值=&gt;触发报警的逻辑，所以是很实用的案例。）
+gopl.io/ch11/storage1
+package storage import ( &#34;fmt&#34; &#34;log&#34; &#34;net/smtp&#34; ) func bytesInUse(username string) int64 { return 0 /* ... */ } // Email sender configuration. // NOTE: never put passwords in source code! const sender = &#34;notifications@example.com&#34; const password = &#34;correcthorsebatterystaple&#34; const hostname = &#34;smtp.example.com&#34; const template = `Warning: you are using %d bytes of storage, %d%% of your quota.` func CheckQuota(username string) { used := bytesInUse(username) const quota = 1000000000 // 1GB 	percent := 100 * used / quota if percent &lt; 90 { return // OK 	} msg := fmt.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="11.2.3. 白盒测试 #  一种测试分类的方法是基于测试者是否需要了解被测试对象的内部工作原理。黑盒测试只需要测试包公开的文档和API行为，内部实现对测试代码是透明的。相反，白盒测试有访问包内部函数和数据结构的权限，因此可以做到一些普通客户端无法实现的测试。例如，一个白盒测试可以在每个操作之后检测不变量的数据类型。（白盒测试只是一个传统的名称，其实称为clear box测试会更准确。）
+黑盒和白盒这两种测试方法是互补的。黑盒测试一般更健壮，随着软件实现的完善测试代码很少需要更新。它们可以帮助测试者了解真实客户的需求，也可以帮助发现API设计的一些不足之处。相反，白盒测试则可以对内部一些棘手的实现提供更多的测试覆盖。
+我们已经看到两种测试的例子。TestIsPalindrome测试仅仅使用导出的IsPalindrome函数，因此这是一个黑盒测试。TestEcho测试则调用了内部的echo函数，并且更新了内部的out包级变量，这两个都是未导出的，因此这是白盒测试。
+当我们准备TestEcho测试的时候，我们修改了echo函数使用包级的out变量作为输出对象，因此测试代码可以用另一个实现代替标准输出，这样可以方便对比echo输出的数据。使用类似的技术，我们可以将产品代码的其他部分也替换为一个容易测试的伪对象。使用伪对象的好处是我们可以方便配置，容易预测，更可靠，也更容易观察。同时也可以避免一些不良的副作用，例如更新生产数据库或信用卡消费行为。
+下面的代码演示了为用户提供网络存储的web服务中的配额检测逻辑。当用户使用了超过90%的存储配额之后将发送提醒邮件。（译注：一般在实现业务机器监控，包括磁盘、cpu、网络等的时候，需要类似的到达阈值=&gt;触发报警的逻辑，所以是很实用的案例。）
+gopl.io/ch11/storage1
+package storage import ( &#34;fmt&#34; &#34;log&#34; &#34;net/smtp&#34; ) func bytesInUse(username string) int64 { return 0 /* ... */ } // Email sender configuration. // NOTE: never put passwords in source code! const sender = &#34;notifications@example.com&#34; const password = &#34;correcthorsebatterystaple&#34; const hostname = &#34;smtp.example.com&#34; const template = `Warning: you are using %d bytes of storage, %d%% of your quota.` func CheckQuota(username string) { used := bytesInUse(username) const quota = 1000000000 // 1GB 	percent := 100 * used / quota if percent &lt; 90 { return // OK 	} msg := fmt." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/11.-Testing/ch11-02-3/" />
+<meta property="article:modified_time" content="2020-08-21T16:04:53+08:00" />
+<title>Ch11 02 3 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.8ad77cb77d05fcbaeadaf72260e059e068125a3b770814705f3d5b62dedbc5fd.js" integrity="sha256-itd8t30F/Lrq2vciYOBZ4GgSWjt3CBRwXz1bYt7bxf0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-01/" class="">Ch2 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-02/" class="">Ch2 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-1/" class="">Ch2 03 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-2/" class="">Ch2 03 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-3/" class="">Ch2 03 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-4/" class="">Ch2 03 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03/" class="">Ch2 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-1/" class="">Ch2 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-2/" class="">Ch2 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04/" class="">Ch2 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-05/" class="">Ch2 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-1/" class="">Ch2 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-2/" class="">Ch2 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06/" class="">Ch2 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-07/" class="">Ch2 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-01/" class="">Ch3 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-02/" class="">Ch3 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-03/" class="">Ch3 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-04/" class="">Ch3 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-1/" class="">Ch3 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-2/" class="">Ch3 05 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-3/" class="">Ch3 05 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-4/" class="">Ch3 05 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-5/" class="">Ch3 05 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05/" class="">Ch3 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-1/" class="">Ch3 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-2/" class="">Ch3 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06/" class="">Ch3 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-01/" class="">Ch4 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-1/" class="">Ch4 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-2/" class="">Ch4 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02/" class="">Ch4 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-03/" class="">Ch4 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-1/" class="">Ch4 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-2/" class="">Ch4 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-3/" class="">Ch4 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04/" class="">Ch4 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-05/" class="">Ch4 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-06/" class="">Ch4 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-01/" class="">Ch5 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-02/" class="">Ch5 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-03/" class="">Ch5 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-1/" class="">Ch5 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-2/" class="">Ch5 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04/" class="">Ch5 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-05/" class="">Ch5 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06-1/" class="">Ch5 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06/" class="">Ch5 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-07/" class="">Ch5 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-08/" class="">Ch5 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-09/" class="">Ch5 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-10/" class="">Ch5 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-01/" class="">Ch6 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02-1/" class="">Ch6 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02/" class="">Ch6 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-03/" class="">Ch6 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-04/" class="">Ch6 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-05/" class="">Ch6 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-06/" class="">Ch6 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-01/" class="">Ch7 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-02/" class="">Ch7 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-03/" class="">Ch7 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-04/" class="">Ch7 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05-1/" class="">Ch7 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05/" class="">Ch7 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-06/" class="">Ch7 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-07/" class="">Ch7 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-08/" class="">Ch7 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-09/" class="">Ch7 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-10/" class="">Ch7 10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-11/" class="">Ch7 11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-12/" class="">Ch7 12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-13/" class="">Ch7 13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-14/" class="">Ch7 14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-15/" class="">Ch7 15</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-01/" class="">Ch8 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-02/" class="">Ch8 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-03/" class="">Ch8 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-1/" class="">Ch8 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-2/" class="">Ch8 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-3/" class="">Ch8 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-4/" class="">Ch8 04 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04/" class="">Ch8 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-05/" class="">Ch8 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-06/" class="">Ch8 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-07/" class="">Ch8 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-08/" class="">Ch8 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-09/" class="">Ch8 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-10/" class="">Ch8 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-01/" class="">Ch9 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-02/" class="">Ch9 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-03/" class="">Ch9 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-04/" class="">Ch9 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-05/" class="">Ch9 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-06/" class="">Ch9 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-07/" class="">Ch9 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/" class="">Ch9 08 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/" class="">Ch9 08 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/" class="">Ch9 08 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/" class="">Ch9 08 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08/" class="">Ch9 08</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-01/" class="">Ch10 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-02/" class="">Ch10 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-03/" class="">Ch10 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-04/" class="">Ch10 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-05/" class="">Ch10 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-06/" class="">Ch10 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-1/" class="">Ch10 07 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-2/" class="">Ch10 07 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-3/" class="">Ch10 07 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-4/" class="">Ch10 07 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-5/" class="">Ch10 07 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-6/" class="">Ch10 07 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07/" class="">Ch10 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-01/" class="">Ch11 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-1/" class="">Ch11 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-2/" class="">Ch11 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-3/" class="active">Ch11 02 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-4/" class="">Ch11 02 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-5/" class="">Ch11 02 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-6/" class="">Ch11 02 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02/" class="">Ch11 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-03/" class="">Ch11 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-04/" class="">Ch11 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-05/" class="">Ch11 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-06/" class="">Ch11 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-01/" class="">Ch12 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-02/" class="">Ch12 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-03/" class="">Ch12 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-04/" class="">Ch12 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-05/" class="">Ch12 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-06/" class="">Ch12 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-07/" class="">Ch12 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-08/" class="">Ch12 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-09/" class="">Ch12 09</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-01/" class="">Ch13 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-02/" class="">Ch13 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-03/" class="">Ch13 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-04/" class="">Ch13 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-05/" class="">Ch13 05</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch11 02 3</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1123-白盒测试">11.2.3. 白盒测试</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h3 id="1123-白盒测试">
+  11.2.3. 白盒测试
+  <a class="anchor" href="#1123-%e7%99%bd%e7%9b%92%e6%b5%8b%e8%af%95">#</a>
+</h3>
+<p>一种测试分类的方法是基于测试者是否需要了解被测试对象的内部工作原理。黑盒测试只需要测试包公开的文档和API行为，内部实现对测试代码是透明的。相反，白盒测试有访问包内部函数和数据结构的权限，因此可以做到一些普通客户端无法实现的测试。例如，一个白盒测试可以在每个操作之后检测不变量的数据类型。（白盒测试只是一个传统的名称，其实称为clear box测试会更准确。）</p>
+<p>黑盒和白盒这两种测试方法是互补的。黑盒测试一般更健壮，随着软件实现的完善测试代码很少需要更新。它们可以帮助测试者了解真实客户的需求，也可以帮助发现API设计的一些不足之处。相反，白盒测试则可以对内部一些棘手的实现提供更多的测试覆盖。</p>
+<p>我们已经看到两种测试的例子。TestIsPalindrome测试仅仅使用导出的IsPalindrome函数，因此这是一个黑盒测试。TestEcho测试则调用了内部的echo函数，并且更新了内部的out包级变量，这两个都是未导出的，因此这是白盒测试。</p>
+<p>当我们准备TestEcho测试的时候，我们修改了echo函数使用包级的out变量作为输出对象，因此测试代码可以用另一个实现代替标准输出，这样可以方便对比echo输出的数据。使用类似的技术，我们可以将产品代码的其他部分也替换为一个容易测试的伪对象。使用伪对象的好处是我们可以方便配置，容易预测，更可靠，也更容易观察。同时也可以避免一些不良的副作用，例如更新生产数据库或信用卡消费行为。</p>
+<p>下面的代码演示了为用户提供网络存储的web服务中的配额检测逻辑。当用户使用了超过90%的存储配额之后将发送提醒邮件。（译注：一般在实现业务机器监控，包括磁盘、cpu、网络等的时候，需要类似的到达阈值=&gt;触发报警的逻辑，所以是很实用的案例。）</p>
+<p><u><i>gopl.io/ch11/storage1</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/smtp&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">bytesInUse</span>(<span style="color:#a6e22e">username</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int64</span> { <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e">/* ... */</span> }
+
+<span style="color:#75715e">// Email sender configuration.
+</span><span style="color:#75715e">// NOTE: never put passwords in source code!
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sender</span> = <span style="color:#e6db74">&#34;notifications@example.com&#34;</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">password</span> = <span style="color:#e6db74">&#34;correcthorsebatterystaple&#34;</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">hostname</span> = <span style="color:#e6db74">&#34;smtp.example.com&#34;</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">template</span> = <span style="color:#e6db74">`Warning: you are using %d bytes of storage,
+</span><span style="color:#e6db74">%d%% of your quota.`</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CheckQuota</span>(<span style="color:#a6e22e">username</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">used</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bytesInUse</span>(<span style="color:#a6e22e">username</span>)
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">quota</span> = <span style="color:#ae81ff">1000000000</span> <span style="color:#75715e">// 1GB
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">percent</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">used</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">quota</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">percent</span> &lt; <span style="color:#ae81ff">90</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#a6e22e">template</span>, <span style="color:#a6e22e">used</span>, <span style="color:#a6e22e">percent</span>)
+	<span style="color:#a6e22e">auth</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">smtp</span>.<span style="color:#a6e22e">PlainAuth</span>(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">sender</span>, <span style="color:#a6e22e">password</span>, <span style="color:#a6e22e">hostname</span>)
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">smtp</span>.<span style="color:#a6e22e">SendMail</span>(<span style="color:#a6e22e">hostname</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:587&#34;</span>, <span style="color:#a6e22e">auth</span>, <span style="color:#a6e22e">sender</span>,
+		[]<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">username</span>}, []byte(<span style="color:#a6e22e">msg</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;smtp.SendMail(%s) failed: %s&#34;</span>, <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p>我们想测试这段代码，但是我们并不希望发送真实的邮件。因此我们将邮件处理逻辑放到一个私有的notifyUser函数中。</p>
+<p><u><i>gopl.io/ch11/storage2</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">notifyUser</span> = <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">msg</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">auth</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">smtp</span>.<span style="color:#a6e22e">PlainAuth</span>(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">sender</span>, <span style="color:#a6e22e">password</span>, <span style="color:#a6e22e">hostname</span>)
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">smtp</span>.<span style="color:#a6e22e">SendMail</span>(<span style="color:#a6e22e">hostname</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:587&#34;</span>, <span style="color:#a6e22e">auth</span>, <span style="color:#a6e22e">sender</span>,
+		[]<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">username</span>}, []byte(<span style="color:#a6e22e">msg</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;smtp.SendEmail(%s) failed: %s&#34;</span>, <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">err</span>)
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CheckQuota</span>(<span style="color:#a6e22e">username</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">used</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bytesInUse</span>(<span style="color:#a6e22e">username</span>)
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">quota</span> = <span style="color:#ae81ff">1000000000</span> <span style="color:#75715e">// 1GB
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">percent</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">used</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">quota</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">percent</span> &lt; <span style="color:#ae81ff">90</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#a6e22e">template</span>, <span style="color:#a6e22e">used</span>, <span style="color:#a6e22e">percent</span>)
+	<span style="color:#a6e22e">notifyUser</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">msg</span>)
+}
+</code></pre></div><p>现在我们可以在测试中用伪邮件发送函数替代真实的邮件发送函数。它只是简单记录要通知的用户和邮件的内容。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;strings&#34;</span>
+	<span style="color:#e6db74">&#34;testing&#34;</span>
+)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestCheckQuotaNotifiesUser</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">notifiedUser</span>, <span style="color:#a6e22e">notifiedMsg</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">notifyUser</span> = <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">msg</span> <span style="color:#66d9ef">string</span>) {
+		<span style="color:#a6e22e">notifiedUser</span>, <span style="color:#a6e22e">notifiedMsg</span> = <span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">msg</span>
+	}
+
+	<span style="color:#75715e">// ...simulate a 980MB-used condition...
+</span><span style="color:#75715e"></span>
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">user</span> = <span style="color:#e6db74">&#34;joe@example.org&#34;</span>
+	<span style="color:#a6e22e">CheckQuota</span>(<span style="color:#a6e22e">user</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">notifiedUser</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">notifiedMsg</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;notifyUser not called&#34;</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">notifiedUser</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">user</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;wrong user (%s) notified, want %s&#34;</span>,
+			<span style="color:#a6e22e">notifiedUser</span>, <span style="color:#a6e22e">user</span>)
+	}
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wantSubstring</span> = <span style="color:#e6db74">&#34;98% of your quota&#34;</span>
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">notifiedMsg</span>, <span style="color:#a6e22e">wantSubstring</span>) {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected notification message &lt;&lt;%s&gt;&gt;, &#34;</span><span style="color:#f92672">+</span>
+			<span style="color:#e6db74">&#34;want substring %q&#34;</span>, <span style="color:#a6e22e">notifiedMsg</span>, <span style="color:#a6e22e">wantSubstring</span>)
+	}
+}
+</code></pre></div><p>这里有一个问题：当测试函数返回后，CheckQuota将不能正常工作，因为notifyUsers依然使用的是测试函数的伪发送邮件函数（当更新全局对象的时候总会有这种风险）。 我们必须修改测试代码恢复notifyUsers原先的状态以便后续其他的测试没有影响，要确保所有的执行路径后都能恢复，包括测试失败或panic异常的情形。在这种情况下，我们建议使用defer语句来延后执行处理恢复的代码。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestCheckQuotaNotifiesUser</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#75715e">// Save and restore original notifyUser.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">saved</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">notifyUser</span>
+	<span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">notifyUser</span> = <span style="color:#a6e22e">saved</span> }()
+
+	<span style="color:#75715e">// Install the test&#39;s fake notifyUser.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">notifiedUser</span>, <span style="color:#a6e22e">notifiedMsg</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">notifyUser</span> = <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">msg</span> <span style="color:#66d9ef">string</span>) {
+		<span style="color:#a6e22e">notifiedUser</span>, <span style="color:#a6e22e">notifiedMsg</span> = <span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">msg</span>
+	}
+	<span style="color:#75715e">// ...rest of test...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>这种处理模式可以用来暂时保存和恢复所有的全局变量，包括命令行标志参数、调试选项和优化参数；安装和移除导致生产代码产生一些调试信息的钩子函数；还有有些诱导生产代码进入某些重要状态的改变，比如超时、错误，甚至是一些刻意制造的并发行为等因素。</p>
+<p>以这种方式使用全局变量是安全的，因为go test命令并不会同时并发地执行多个测试。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/029ec77adcb81020389097d06d4cbdbf78bc9035" title='最后修改者 louyongjiu | 2020年8月21日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月21日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content//docs/11.%20Testing/ch11-02-3.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1123-白盒测试">11.2.3. 白盒测试</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

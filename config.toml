@@ -1,6 +1,6 @@
 # hugo server --minify --themesDir ... --baseURL=http://0.0.0.0:1313/theme/hugo-book/
 
-baseURL = 'https://example.com/'
+baseURL = 'https://book.ninescloud.com/'
 title = 'Book'
 theme = 'book'
 
@@ -35,7 +35,7 @@ defaultContentLanguage = 'zh'
 # [[menu.before]]
 [[menu.after]]
   name = "Github"
-  url = "https://github.com/alex-shpak/hugo-book"
+  url = "https://github.com/louyongjiu/gopl-zh-hugo"
   weight = 10
 
 # [[menu.after]]
@@ -64,17 +64,17 @@ defaultContentLanguage = 'zh'
 
   # Set source repository location.
   # Used for 'Last Modified' and 'Edit this page' links.
-  BookRepo = 'https://github.com/alex-shpak/hugo-book'
+  BookRepo = 'https://github.com/louyongjiu/gopl-zh-hugo'
 
   # Enable "Edit this page" links for 'doc' page type.
   # Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
   # Edit path must point to root directory of repo.
-  BookEditPath = 'edit/master'
+  BookEditPath = 'edit/master/content'
 
   # Configure the date format used on the pages
   # - In git information
   # - In blog posts
-  BookDateFormat = 'January 2, 2006'
+  BookDateFormat = '2006年1月2日'
 
   # (Optional, default true) Enables search function with flexsearch,
   # Index is built on fly, therefore it might slowdown your website.

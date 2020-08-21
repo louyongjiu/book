@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>1. 入门 on Book</title>
+    <link>https://book.ninescloud.com/docs/1.-Tutorial/</link>
+    <description>Recent content in 1. 入门 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/1.-Tutorial/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>1.1. Hello, World</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.1.-Hello-World/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.1.-Hello-World/</guid>
+      <description>1.1. Hello, World #  我们以现已成为传统的“hello world”案例来开始吧，这个例子首次出现于1978年出版的C语言圣经 《The C Programming Language》（译注：本书作者之一Brian W. Kernighan也是《The C Programming Language》一书的作者）。C语言是直接影响Go语言设计的语言之一。这个例子体现了Go语言一些核心理念。
+gopl.io/ch1/helloworld
+package main import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello, 世界&amp;#34;) } Go是一门编译型语言，Go语言的工具链将源代码及其依赖转换成计算机的机器指令（译注：静态编译）。Go语言提供的工具都通过一个单独的命令go调用，go命令有一系列子命令。最简单的一个子命令就是run。这个命令编译一个或多个以.go结尾的源文件，链接库文件，并运行最终生成的可执行文件。（本书使用$表示命令行提示符。）
+$ go run helloworld.go 毫无意外，这个命令会输出：
+Hello, 世界 Go语言原生支持Unicode，它可以处理全世界任何语言的文本。
+如果不只是一次性实验，你肯定希望能够编译这个程序，保存编译结果以备将来之用。可以用build子命令：
+$ go build helloworld.go 这个命令生成一个名为helloworld的可执行的二进制文件（译注：Windows系统下生成的可执行文件是helloworld.exe，增加了.exe后缀名），之后你可以随时运行它（译注：在Windows系统下在命令行直接输入helloworld.exe命令运行），不需任何处理（译注：因为静态编译，所以不用担心在系统库更新的时候冲突，幸福感满满）。
+$ ./helloworld Hello, 世界 本书中所有示例代码上都有一行标记，利用这些标记可以从 gopl.io网站上本书源码仓库里获取代码：
+gopl.io/ch1/helloworld 执行 go get gopl.io/ch1/helloworld 命令，就会从网上获取代码，并放到对应目录中（需要先安装Git或Hg之类的版本管理工具，并将对应的命令添加到PATH环境变量中。序言已经提及，需要先设置好GOPATH环境变量，下载的代码会放在$GOPATH/src/gopl.io/ch1/helloworld目录）。2.6和10.7节有这方面更详细的介绍。
+来讨论下程序本身。Go语言的代码通过包（package）组织，包类似于其它语言里的库（libraries）或者模块（modules）。一个包由位于单个目录下的一个或多个.go源代码文件组成，目录定义包的作用。每个源文件都以一条package声明语句开始，这个例子里就是package main，表示该文件属于哪个包，紧跟着一系列导入（import）的包，之后是存储在这个文件里的程序语句。
+Go的标准库提供了100多个包，以支持常见功能，如输入、输出、排序以及文本处理。比如fmt包，就含有格式化输出、接收输入的函数。Println是其中一个基础函数，可以打印以空格间隔的一个或多个值，并在最后添加一个换行符，从而输出一整行。
+main包比较特殊。它定义了一个独立可执行的程序，而不是一个库。在main里的main 函数 也很特殊，它是整个程序执行时的入口（译注：C系语言差不多都这样）。main函数所做的事情就是程序做的。当然了，main函数一般调用其它包里的函数完成很多工作（如：fmt.Println）。
+必须告诉编译器源文件需要哪些包，这就是跟随在package声明后面的import声明扮演的角色。hello world例子只用到了一个包，大多数程序需要导入多个包。
+必须恰当导入需要的包，缺少了必要的包或者导入了不需要的包，程序都无法编译通过。这项严格要求避免了程序开发过程中引入未使用的包（译注：Go语言编译过程没有警告信息，争议特性之一）。
+import声明必须跟在文件的package声明之后。随后，则是组成程序的函数、变量、常量、类型的声明语句（分别由关键字func、var、const、type定义）。这些内容的声明顺序并不重要（译注：最好还是定一下规范）。这个例子的程序已经尽可能短了，只声明了一个函数，其中只调用了一个其他函数。为了节省篇幅，有些时候示例程序会省略package和import声明，但是，这些声明在源代码里有，并且必须得有才能编译。
+一个函数的声明由func关键字、函数名、参数列表、返回值列表（这个例子里的main函数参数列表和返回值都是空的）以及包含在大括号里的函数体组成。第五章进一步考察函数。
+Go语言不需要在语句或者声明的末尾添加分号，除非一行上有多条语句。实际上，编译器会主动把特定符号后的换行符转换为分号，因此换行符添加的位置会影响Go代码的正确解析（译注：比如行末是标识符、整数、浮点数、虚数、字符或字符串文字、关键字break、continue、fallthrough或return中的一个、运算符和分隔符++、--、)、]或}中的一个）。举个例子，函数的左括号{必须和func函数声明在同一行上，且位于末尾，不能独占一行，而在表达式x + y中，可在+后换行，不能在+前换行（译注：以+结尾的话不会被插入分号分隔符，但是以x结尾的话则会被分号分隔符，从而导致编译错误）。
+Go语言在代码格式上采取了很强硬的态度。gofmt工具把代码格式化为标准格式（译注：这个格式化工具没有任何可以调整代码格式的参数，Go语言就是这么任性），并且go工具中的fmt子命令会对指定包，否则默认为当前目录中所有.go源文件应用gofmt命令。本书中的所有代码都被gofmt过。你也应该养成格式化自己的代码的习惯。以法令方式规定标准的代码格式可以避免无尽的无意义的琐碎争执（译注：也导致了Go语言的TIOBE排名较低，因为缺少撕逼的话题）。更重要的是，这样可以做多种自动源码转换，如果放任Go语言代码格式，这些转换就不大可能了。
+很多文本编辑器都可以配置为保存文件时自动执行gofmt，这样你的源代码总会被恰当地格式化。还有个相关的工具，goimports，可以根据代码需要，自动地添加或删除import声明。这个工具并没有包含在标准的分发包中，可以用下面的命令安装：</description>
+    </item>
+    
+    <item>
+      <title>1.2. 命令行参数</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.2.-Command-Line-Arguments/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.2.-Command-Line-Arguments/</guid>
+      <description>1.2. 命令行参数 #  大多数的程序都是处理输入，产生输出；这也正是“计算”的定义。但是，程序如何获取要处理的输入数据呢？一些程序生成自己的数据，但通常情况下，输入来自于程序外部：文件、网络连接、其它程序的输出、敲键盘的用户、命令行参数或其它类似输入源。下面几个例子会讨论其中几个输入源，首先是命令行参数。
+os包以跨平台的方式，提供了一些与操作系统交互的函数和变量。程序的命令行参数可从os包的Args变量获取；os包外部使用os.Args访问该变量。
+os.Args变量是一个字符串（string）的切片（slice）（译注：slice和Python语言中的切片类似，是一个简版的动态数组），切片是Go语言的基础概念，稍后详细介绍。现在先把切片s当作数组元素序列，序列的长度动态变化，用s[i]访问单个元素，用s[m:n]获取子序列（译注：和python里的语法差不多）。序列的元素数目为len(s)。和大多数编程语言类似，区间索引时，Go言里也采用左闭右开形式，即，区间包括第一个索引元素，不包括最后一个，因为这样可以简化逻辑。（译注：比如a = [1, 2, 3, 4, 5], a[0:3] = [1, 2, 3]，不包含最后一个元素）。比如s[m:n]这个切片，0 ≤ m ≤ n ≤ len(s)，包含n-m个元素。
+os.Args的第一个元素：os.Args[0]，是命令本身的名字；其它的元素则是程序启动时传给它的参数。s[m:n]形式的切片表达式，产生从第m个元素到第n-1个元素的切片，下个例子用到的元素包含在os.Args[1:len(os.Args)]切片中。如果省略切片表达式的m或n，会默认传入0或len(s)，因此前面的切片可以简写成os.Args[1:]。
+下面是Unix里echo命令的一份实现，echo把它的命令行参数打印成一行。程序导入了两个包，用括号把它们括起来写成列表形式，而没有分开写成独立的import声明。两种形式都合法，列表形式习惯上用得多。包导入顺序并不重要；gofmt工具格式化时按照字母顺序对包名排序。（示例有多个版本时，我们会对示例编号，这样可以明确当前正在讨论的是哪个。）
+gopl.io/ch1/echo1
+// Echo1 prints its command-line arguments. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; ) func main() { var s, sep string for i := 1; i &amp;lt; len(os.Args); i++ { s += sep + os.Args[i] sep = &amp;#34; &amp;#34; } fmt.Println(s) } 注释语句以//开头。对于程序员来说，//之后到行末之间所有的内容都是注释，被编译器忽略。按照惯例，我们在每个包的包声明前添加注释；对于main package，注释包含一句或几句话，从整体角度对程序做个描述。</description>
+    </item>
+    
+    <item>
+      <title>1.3. 查找重复的行</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/</guid>
+      <description>1.3. 查找重复的行 #  对文件做拷贝、打印、搜索、排序、统计或类似事情的程序都有一个差不多的程序结构：一个处理输入的循环，在每个元素上执行计算处理，在处理的同时或最后产生输出。我们会展示一个名为dup的程序的三个版本；灵感来自于Unix的uniq命令，其寻找相邻的重复行。该程序使用的结构和包是个参考范例，可以方便地修改。
+dup的第一个版本打印标准输入中多次出现的行，以重复次数开头。该程序将引入if语句，map数据类型以及bufio包。
+gopl.io/ch1/dup1
+// Dup1 prints the text of each line that appears more than // once in the standard input, preceded by its count. package main import ( &amp;#34;bufio&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; ) func main() { counts := make(map[string]int) input := bufio.NewScanner(os.Stdin) for input.Scan() { counts[input.Text()]++ } // NOTE: ignoring potential errors from input.Err() 	for line, n := range counts { if n &amp;gt; 1 { fmt.</description>
+    </item>
+    
+    <item>
+      <title>1.4. GIF动画</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.4.-Animated-GIFs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.4.-Animated-GIFs/</guid>
+      <description>1.4. GIF动画 #  下面的程序会演示Go语言标准库里的image这个package的用法，我们会用这个包来生成一系列的bit-mapped图，然后将这些图片编码为一个GIF动画。我们生成的图形名字叫利萨如图形（Lissajous figures），这种效果是在1960年代的老电影里出现的一种视觉特效。它们是协振子在两个纬度上振动所产生的曲线，比如两个sin正弦波分别在x轴和y轴输入会产生的曲线。图1.1是这样的一个例子：
+ 译注：要看这个程序的结果，需要将标准输出重定向到一个GIF图像文件（使用 ./lissajous &amp;gt; output.gif 命令）。下面是GIF图像动画效果：
+ 这段代码里我们用了一些新的结构，包括const声明，struct结构体类型，复合声明。和我们举的其它的例子不太一样，这一个例子包含了浮点数运算。这些概念我们只在这里简单地说明一下，之后的章节会更详细地讲解。
+gopl.io/ch1/lissajous
+// Lissajous generates GIF animations of random Lissajous figures. package main import ( &amp;#34;image&amp;#34; &amp;#34;image/color&amp;#34; &amp;#34;image/gif&amp;#34; &amp;#34;io&amp;#34; &amp;#34;math&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;os&amp;#34; &amp;#34;time&amp;#34; ) var palette = []color.Color{color.White, color.Black} const ( whiteIndex = 0 // first color in palette 	blackIndex = 1 // next color in palette ) func main() { // The sequence of images is deterministic unless we seed 	// the pseudo-random number generator using the current time.</description>
+    </item>
+    
+    <item>
+      <title>1.5. 获取URL</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.5.-Fetching-a-URL/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.5.-Fetching-a-URL/</guid>
+      <description>1.5. 获取URL #  对于很多现代应用来说，访问互联网上的信息和访问本地文件系统一样重要。Go语言在net这个强大package的帮助下提供了一系列的package来做这件事情，使用这些包可以更简单地用网络收发信息，还可以建立更底层的网络连接，编写服务器程序。在这些情景下，Go语言原生的并发特性（在第八章中会介绍）显得尤其好用。
+为了最简单地展示基于HTTP获取信息的方式，下面给出一个示例程序fetch，这个程序将获取对应的url，并将其源文本打印出来；这个例子的灵感来源于curl工具（译注：unix下的一个用来发http请求的工具，具体可以man curl）。当然，curl提供的功能更为复杂丰富，这里只编写最简单的样例。这个样例之后还会多次被用到。
+gopl.io/ch1/fetch
+// Fetch prints the content found at a URL. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;io/ioutil&amp;#34; &amp;#34;net/http&amp;#34; &amp;#34;os&amp;#34; ) func main() { for _, url := range os.Args[1:] { resp, err := http.Get(url) if err != nil { fmt.Fprintf(os.Stderr, &amp;#34;fetch: %v\n&amp;#34;, err) os.Exit(1) } b, err := ioutil.ReadAll(resp.Body) resp.Body.Close() if err != nil { fmt.Fprintf(os.Stderr, &amp;#34;fetch: reading %s: %v\n&amp;#34;, url, err) os.Exit(1) } fmt.</description>
+    </item>
+    
+    <item>
+      <title>1.6. 并发获取多个URL</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/</guid>
+      <description>1.6. 并发获取多个URL #  Go语言最有意思并且最新奇的特性就是对并发编程的支持。并发编程是一个大话题，在第八章和第九章中会专门讲到。这里我们只浅尝辄止地来体验一下Go语言里的goroutine和channel。
+下面的例子fetchall，和前面小节的fetch程序所要做的工作基本一致，fetchall的特别之处在于它会同时去获取所有的URL，所以这个程序的总执行时间不会超过执行时间最长的那一个任务，前面的fetch程序执行时间则是所有任务执行时间之和。fetchall程序只会打印获取的内容大小和经过的时间，不会像之前那样打印获取的内容。
+gopl.io/ch1/fetchall
+// Fetchall fetches URLs in parallel and reports their times and sizes. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;io&amp;#34; &amp;#34;io/ioutil&amp;#34; &amp;#34;net/http&amp;#34; &amp;#34;os&amp;#34; &amp;#34;time&amp;#34; ) func main() { start := time.Now() ch := make(chan string) for _, url := range os.Args[1:] { go fetch(url, ch) // start a goroutine 	} for range os.Args[1:] { fmt.Println(&amp;lt;-ch) // receive from channel ch 	} fmt.Printf(&amp;#34;%.2fs elapsed\n&amp;#34;, time.</description>
+    </item>
+    
+    <item>
+      <title>1.7. Web服务</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.7.-A-Web-Server/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.7.-A-Web-Server/</guid>
+      <description>1.7. Web服务 #  Go语言的内置库使得写一个类似fetch的web服务器变得异常地简单。在本节中，我们会展示一个微型服务器，这个服务器的功能是返回当前用户正在访问的URL。比如用户访问的是 http://localhost:8000/hello ，那么响应是URL.Path = &amp;ldquo;hello&amp;rdquo;。
+gopl.io/ch1/server1
+// Server1 is a minimal &amp;#34;echo&amp;#34; server. package main import ( &amp;#34;fmt&amp;#34; &amp;#34;log&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, handler) // each request calls handler 	log.Fatal(http.ListenAndServe(&amp;#34;localhost:8000&amp;#34;, nil)) } // handler echoes the Path component of the request URL r. func handler(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, &amp;#34;URL.Path = %q\n&amp;#34;, r.URL.Path) } 我们只用了八九行代码就实现了一个Web服务程序，这都是多亏了标准库里的方法已经帮我们完成了大量工作。main函数将所有发送到/路径下的请求和handler函数关联起来，/开头的请求其实就是所有发送到当前站点上的请求，服务监听8000端口。发送到这个服务的“请求”是一个http.Request类型的对象，这个对象中包含了请求中的一系列相关字段，其中就包括我们需要的URL。当请求到达服务器时，这个请求会被传给handler函数来处理，这个函数会将/hello这个路径从请求的URL中解析出来，然后把其发送到响应中，这里我们用的是标准输出流的fmt.Fprintf。Web服务会在第7.7节中做更详细的阐述。
+让我们在后台运行这个服务程序。如果你的操作系统是Mac OS X或者Linux，那么在运行命令的末尾加上一个&amp;amp;符号，即可让程序简单地跑在后台，windows下可以在另外一个命令行窗口去运行这个程序。
+$ go run src/gopl.io/ch1/server1/main.go &amp;amp; 现在可以通过命令行来发送客户端请求了：</description>
+    </item>
+    
+    <item>
+      <title>1.8. 本章要点</title>
+      <link>https://book.ninescloud.com/docs/1.-Tutorial/1.8.-Loose-Ends/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/1.-Tutorial/1.8.-Loose-Ends/</guid>
+      <description>1.8. 本章要点 #  本章对Go语言做了一些介绍，Go语言很多方面在有限的篇幅中无法覆盖到。本节会把没有讲到的内容也做一些简单的介绍，这样读者在读到完整的内容之前，可以有个简单的印象。
+控制流： 在本章我们只介绍了if控制和for，但是没有提到switch多路选择。这里是一个简单的switch的例子：
+switch coinflip() { case &amp;#34;heads&amp;#34;: heads++ case &amp;#34;tails&amp;#34;: tails++ default: fmt.Println(&amp;#34;landed on edge!&amp;#34;) } 在翻转硬币的时候，例子里的coinflip函数返回几种不同的结果，每一个case都会对应一个返回结果，这里需要注意，Go语言并不需要显式地在每一个case后写break，语言默认执行完case后的逻辑语句会自动退出。当然了，如果你想要相邻的几个case都执行同一逻辑的话，需要自己显式地写上一个fallthrough语句来覆盖这种默认行为。不过fallthrough语句在一般的程序中很少用到。
+Go语言里的switch还可以不带操作对象（译注：switch不带操作对象时默认用true值代替，然后将每个case的表达式和true值进行比较）；可以直接罗列多种条件，像其它语言里面的多个if else一样，下面是一个例子：
+func Signum(x int) int { switch { case x &amp;gt; 0: return +1 default: return 0 case x &amp;lt; 0: return -1 } } 这种形式叫做无tag switch(tagless switch)；这和switch true是等价的。
+像for和if控制语句一样，switch也可以紧跟一个简短的变量声明，一个自增表达式、赋值语句，或者一个函数调用（译注：比其它语言丰富）。
+break和continue语句会改变控制流。和其它语言中的break和continue一样，break会中断当前的循环，并开始执行循环之后的内容，而continue会跳过当前循环，并开始执行下一次循环。这两个语句除了可以控制for循环，还可以用来控制switch和select语句（之后会讲到），在1.3节中我们看到，continue会跳过内层的循环，如果我们想跳过的是更外层的循环的话，我们可以在相应的位置加上label，这样break和continue就可以根据我们的想法来continue和break任意循环。这看起来甚至有点像goto语句的作用了。当然，一般程序员也不会用到这种操作。这两种行为更多地被用到机器生成的代码中。
+命名类型： 类型声明使得我们可以很方便地给一个特殊类型一个名字。因为struct类型声明通常非常地长，所以我们总要给这种struct取一个名字。本章中就有这样一个例子，二维点类型：
+type Point struct { X, Y int } var p Point 类型声明和命名类型会在第二章中介绍。
+指针： Go语言提供了指针。指针是一种直接存储了变量的内存地址的数据类型。在其它语言中，比如C语言，指针操作是完全不受约束的。在另外一些语言中，指针一般被处理为“引用”，除了到处传递这些指针之外，并不能对这些指针做太多事情。Go语言在这两种范围中取了一种平衡。指针是可见的内存地址，&amp;amp;操作符可以返回一个变量的内存地址，并且*操作符可以获取指针指向的变量内容，但是在Go语言里没有指针运算，也就是不能像c语言里可以对指针进行加或减操作。我们会在2.3.2中进行详细介绍。</description>
+    </item>
+    
+  </channel>
+</rss>

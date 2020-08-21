@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="7.9. 示例: 表达式求值 #  在本节中，我们会构建一个简单算术表达式的求值器。我们将使用一个接口Expr来表示Go语言中任意的表达式。现在这个接口不需要有方法，但是我们后面会为它增加一些。
+// An Expr is an arithmetic expression. type Expr interface{} 我们的表达式语言由浮点数符号（小数点）；二元操作符&#43;，-，*， 和/；一元操作符-x和&#43;x；调用pow(x,y)，sin(x)，和sqrt(x)的函数；例如x和pi的变量；当然也有括号和标准的优先级运算符。所有的值都是float64类型。这下面是一些表达式的例子：
+sqrt(A / pi) pow(x, 3) &#43; pow(y, 3) (F - 32) * 5 / 9 下面的五个具体类型表示了具体的表达式类型。Var类型表示对一个变量的引用。（我们很快会知道为什么它可以被输出。）literal类型表示一个浮点型常量。unary和binary类型表示有一到两个运算对象的运算符表达式，这些操作数可以是任意的Expr类型。call类型表示对一个函数的调用；我们限制它的fn字段只能是pow，sin或者sqrt。
+gopl.io/ch7/eval
+// A Var identifies a variable, e.g., x. type Var string // A literal is a numeric constant, e.g., 3.141. type literal float64 // A unary represents a unary operator expression, e.g., -x. type unary struct { op rune // one of &#39;&#43;&#39;, &#39;-&#39; 	x Expr } // A binary represents a binary operator expression, e.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="7.9. 示例: 表达式求值 #  在本节中，我们会构建一个简单算术表达式的求值器。我们将使用一个接口Expr来表示Go语言中任意的表达式。现在这个接口不需要有方法，但是我们后面会为它增加一些。
+// An Expr is an arithmetic expression. type Expr interface{} 我们的表达式语言由浮点数符号（小数点）；二元操作符&#43;，-，*， 和/；一元操作符-x和&#43;x；调用pow(x,y)，sin(x)，和sqrt(x)的函数；例如x和pi的变量；当然也有括号和标准的优先级运算符。所有的值都是float64类型。这下面是一些表达式的例子：
+sqrt(A / pi) pow(x, 3) &#43; pow(y, 3) (F - 32) * 5 / 9 下面的五个具体类型表示了具体的表达式类型。Var类型表示对一个变量的引用。（我们很快会知道为什么它可以被输出。）literal类型表示一个浮点型常量。unary和binary类型表示有一到两个运算对象的运算符表达式，这些操作数可以是任意的Expr类型。call类型表示对一个函数的调用；我们限制它的fn字段只能是pow，sin或者sqrt。
+gopl.io/ch7/eval
+// A Var identifies a variable, e.g., x. type Var string // A literal is a numeric constant, e.g., 3.141. type literal float64 // A unary represents a unary operator expression, e.g., -x. type unary struct { op rune // one of &#39;&#43;&#39;, &#39;-&#39; 	x Expr } // A binary represents a binary operator expression, e." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/7.-Interfaces/ch7-09/" />
+<meta property="article:modified_time" content="2020-08-21T16:04:53+08:00" />
+<title>Ch7 09 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.8ad77cb77d05fcbaeadaf72260e059e068125a3b770814705f3d5b62dedbc5fd.js" integrity="sha256-itd8t30F/Lrq2vciYOBZ4GgSWjt3CBRwXz1bYt7bxf0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-01/" class="">Ch2 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-02/" class="">Ch2 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-1/" class="">Ch2 03 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-2/" class="">Ch2 03 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-3/" class="">Ch2 03 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03-4/" class="">Ch2 03 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-03/" class="">Ch2 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-1/" class="">Ch2 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04-2/" class="">Ch2 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-04/" class="">Ch2 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-05/" class="">Ch2 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-1/" class="">Ch2 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06-2/" class="">Ch2 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-06/" class="">Ch2 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/ch2-07/" class="">Ch2 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-01/" class="">Ch3 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-02/" class="">Ch3 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-03/" class="">Ch3 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-04/" class="">Ch3 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-1/" class="">Ch3 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-2/" class="">Ch3 05 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-3/" class="">Ch3 05 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-4/" class="">Ch3 05 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05-5/" class="">Ch3 05 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-05/" class="">Ch3 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-1/" class="">Ch3 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06-2/" class="">Ch3 06 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/ch3-06/" class="">Ch3 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-01/" class="">Ch4 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-1/" class="">Ch4 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02-2/" class="">Ch4 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-02/" class="">Ch4 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-03/" class="">Ch4 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-1/" class="">Ch4 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-2/" class="">Ch4 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04-3/" class="">Ch4 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-04/" class="">Ch4 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-05/" class="">Ch4 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/ch4-06/" class="">Ch4 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-01/" class="">Ch5 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-02/" class="">Ch5 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-03/" class="">Ch5 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-1/" class="">Ch5 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04-2/" class="">Ch5 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-04/" class="">Ch5 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-05/" class="">Ch5 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06-1/" class="">Ch5 06 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-06/" class="">Ch5 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-07/" class="">Ch5 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-08/" class="">Ch5 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-09/" class="">Ch5 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/ch5-10/" class="">Ch5 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-01/" class="">Ch6 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02-1/" class="">Ch6 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-02/" class="">Ch6 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-03/" class="">Ch6 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-04/" class="">Ch6 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-05/" class="">Ch6 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/ch6-06/" class="">Ch6 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-01/" class="">Ch7 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-02/" class="">Ch7 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-03/" class="">Ch7 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-04/" class="">Ch7 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05-1/" class="">Ch7 05 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-05/" class="">Ch7 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-06/" class="">Ch7 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-07/" class="">Ch7 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-08/" class="">Ch7 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-09/" class="active">Ch7 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-10/" class="">Ch7 10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-11/" class="">Ch7 11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-12/" class="">Ch7 12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-13/" class="">Ch7 13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-14/" class="">Ch7 14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/ch7-15/" class="">Ch7 15</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-01/" class="">Ch8 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-02/" class="">Ch8 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-03/" class="">Ch8 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-1/" class="">Ch8 04 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-2/" class="">Ch8 04 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-3/" class="">Ch8 04 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04-4/" class="">Ch8 04 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-04/" class="">Ch8 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-05/" class="">Ch8 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-06/" class="">Ch8 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-07/" class="">Ch8 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-08/" class="">Ch8 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-09/" class="">Ch8 09</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/ch8-10/" class="">Ch8 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-01/" class="">Ch9 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-02/" class="">Ch9 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-03/" class="">Ch9 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-04/" class="">Ch9 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-05/" class="">Ch9 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-06/" class="">Ch9 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-07/" class="">Ch9 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/" class="">Ch9 08 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/" class="">Ch9 08 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/" class="">Ch9 08 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/" class="">Ch9 08 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/ch9-08/" class="">Ch9 08</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-01/" class="">Ch10 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-02/" class="">Ch10 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-03/" class="">Ch10 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-04/" class="">Ch10 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-05/" class="">Ch10 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-06/" class="">Ch10 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-1/" class="">Ch10 07 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-2/" class="">Ch10 07 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-3/" class="">Ch10 07 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-4/" class="">Ch10 07 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-5/" class="">Ch10 07 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07-6/" class="">Ch10 07 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/ch10-07/" class="">Ch10 07</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-01/" class="">Ch11 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-1/" class="">Ch11 02 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-2/" class="">Ch11 02 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-3/" class="">Ch11 02 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-4/" class="">Ch11 02 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-5/" class="">Ch11 02 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02-6/" class="">Ch11 02 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-02/" class="">Ch11 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-03/" class="">Ch11 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-04/" class="">Ch11 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-05/" class="">Ch11 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/ch11-06/" class="">Ch11 06</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-01/" class="">Ch12 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-02/" class="">Ch12 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-03/" class="">Ch12 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-04/" class="">Ch12 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-05/" class="">Ch12 05</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-06/" class="">Ch12 06</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-07/" class="">Ch12 07</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-08/" class="">Ch12 08</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/ch12-09/" class="">Ch12 09</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-01/" class="">Ch13 01</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-02/" class="">Ch13 02</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-03/" class="">Ch13 03</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-04/" class="">Ch13 04</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/ch13-05/" class="">Ch13 05</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch7 09</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#79-示例-表达式求值">7.9. 示例: 表达式求值</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="79-示例-表达式求值">
+  7.9. 示例: 表达式求值
+  <a class="anchor" href="#79-%e7%a4%ba%e4%be%8b-%e8%a1%a8%e8%be%be%e5%bc%8f%e6%b1%82%e5%80%bc">#</a>
+</h2>
+<p>在本节中，我们会构建一个简单算术表达式的求值器。我们将使用一个接口Expr来表示Go语言中任意的表达式。现在这个接口不需要有方法，但是我们后面会为它增加一些。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// An Expr is an arithmetic expression.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Expr</span> <span style="color:#66d9ef">interface</span>{}
+</code></pre></div><p>我们的表达式语言由浮点数符号（小数点）；二元操作符+，-，*， 和/；一元操作符-x和+x；调用pow(x,y)，sin(x)，和sqrt(x)的函数；例如x和pi的变量；当然也有括号和标准的优先级运算符。所有的值都是float64类型。这下面是一些表达式的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">A</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">pi</span>)
+<span style="color:#a6e22e">pow</span>(<span style="color:#a6e22e">x</span>, <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">pow</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">3</span>)
+(<span style="color:#a6e22e">F</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">32</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">9</span>
+</code></pre></div><p>下面的五个具体类型表示了具体的表达式类型。Var类型表示对一个变量的引用。（我们很快会知道为什么它可以被输出。）literal类型表示一个浮点型常量。unary和binary类型表示有一到两个运算对象的运算符表达式，这些操作数可以是任意的Expr类型。call类型表示对一个函数的调用；我们限制它的fn字段只能是pow，sin或者sqrt。</p>
+<p><u><i>gopl.io/ch7/eval</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// A Var identifies a variable, e.g., x.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Var</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#75715e">// A literal is a numeric constant, e.g., 3.141.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">literal</span> <span style="color:#66d9ef">float64</span>
+
+<span style="color:#75715e">// A unary represents a unary operator expression, e.g., -x.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">unary</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">op</span> <span style="color:#66d9ef">rune</span> <span style="color:#75715e">// one of &#39;+&#39;, &#39;-&#39;
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">x</span>  <span style="color:#a6e22e">Expr</span>
+}
+
+<span style="color:#75715e">// A binary represents a binary operator expression, e.g., x+y.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">binary</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">op</span>   <span style="color:#66d9ef">rune</span> <span style="color:#75715e">// one of &#39;+&#39;, &#39;-&#39;, &#39;*&#39;, &#39;/&#39;
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#a6e22e">Expr</span>
+}
+
+<span style="color:#75715e">// A call represents a function call expression, e.g., sin(x).
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">call</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">fn</span>   <span style="color:#66d9ef">string</span> <span style="color:#75715e">// one of &#34;pow&#34;, &#34;sin&#34;, &#34;sqrt&#34;
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">args</span> []<span style="color:#a6e22e">Expr</span>
+}
+</code></pre></div><p>为了计算一个包含变量的表达式，我们需要一个environment变量将变量的名字映射成对应的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Env</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">float64</span>
+</code></pre></div><p>我们也需要每个表达式去定义一个Eval方法，这个方法会根据给定的environment变量返回表达式的值。因为每个表达式都必须提供这个方法，我们将它加入到Expr接口中。这个包只会对外公开Expr，Env，和Var类型。调用方不需要获取其它的表达式类型就可以使用这个求值器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Expr</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#75715e">// Eval returns the value of this Expr in the environment env.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span>
+}
+</code></pre></div><p>下面给大家展示一个具体的Eval方法。Var类型的这个方法对一个environment变量进行查找，如果这个变量没有在environment中定义过这个方法会返回一个零值，literal类型的这个方法简单的返回它真实的值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">v</span> <span style="color:#a6e22e">Var</span>) <span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">env</span>[<span style="color:#a6e22e">v</span>]
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">l</span> <span style="color:#a6e22e">literal</span>) <span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">_</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">return</span> float64(<span style="color:#a6e22e">l</span>)
+}
+</code></pre></div><p>unary和binary的Eval方法会递归的计算它的运算对象，然后将运算符op作用到它们上。我们不将被零或无穷数除作为一个错误，因为它们都会产生一个固定的结果——无限。最后，call的这个方法会计算对于pow，sin，或者sqrt函数的参数值，然后调用对应在math包中的函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#a6e22e">unary</span>) <span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">op</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;+&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">+</span><span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;-&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	}
+	panic(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;unsupported unary operator: %q&#34;</span>, <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">op</span>))
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#a6e22e">binary</span>) <span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">op</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;+&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;-&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>) <span style="color:#f92672">-</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;*&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;/&#39;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>)
+	}
+	panic(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;unsupported binary operator: %q&#34;</span>, <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">op</span>))
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">call</span>) <span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">fn</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;pow&#34;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Pow</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">1</span>].<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>))
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;sin&#34;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Sin</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>))
+	<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;sqrt&#34;</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Sqrt</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span>))
+	}
+	panic(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;unsupported function call: %s&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">fn</span>))
+}
+</code></pre></div><p>一些方法会失败。例如，一个call表达式可能有未知的函数或者错误的参数个数。用一个无效的运算符如!或者&lt;去构建一个unary或者binary表达式也是可能会发生的（尽管下面提到的Parse函数不会这样做）。这些错误会让Eval方法panic。其它的错误，像计算一个没有在environment变量中出现过的Var，只会让Eval方法返回一个错误的结果。所有的这些错误都可以通过在计算前检查Expr来发现。这是我们接下来要讲的Check方法的工作，但是让我们先测试Eval方法。</p>
+<p>下面的TestEval函数是对evaluator的一个测试。它使用了我们会在第11章讲解的testing包，但是现在知道调用t.Errof会报告一个错误就足够了。这个函数循环遍历一个表格中的输入，这个表格中定义了三个表达式和针对每个表达式不同的环境变量。第一个表达式根据给定圆的面积A计算它的半径，第二个表达式通过两个变量x和y计算两个立方体的体积之和，第三个表达式将华氏温度F转换成摄氏度。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestEval</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">tests</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">struct</span> {
+		<span style="color:#a6e22e">expr</span> <span style="color:#66d9ef">string</span>
+		<span style="color:#a6e22e">env</span>  <span style="color:#a6e22e">Env</span>
+		<span style="color:#a6e22e">want</span> <span style="color:#66d9ef">string</span>
+	}{
+		{<span style="color:#e6db74">&#34;sqrt(A / pi)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;A&#34;</span>: <span style="color:#ae81ff">87616</span>, <span style="color:#e6db74">&#34;pi&#34;</span>: <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Pi</span>}, <span style="color:#e6db74">&#34;167&#34;</span>},
+		{<span style="color:#e6db74">&#34;pow(x, 3) + pow(y, 3)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;x&#34;</span>: <span style="color:#ae81ff">12</span>, <span style="color:#e6db74">&#34;y&#34;</span>: <span style="color:#ae81ff">1</span>}, <span style="color:#e6db74">&#34;1729&#34;</span>},
+		{<span style="color:#e6db74">&#34;pow(x, 3) + pow(y, 3)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;x&#34;</span>: <span style="color:#ae81ff">9</span>, <span style="color:#e6db74">&#34;y&#34;</span>: <span style="color:#ae81ff">10</span>}, <span style="color:#e6db74">&#34;1729&#34;</span>},
+		{<span style="color:#e6db74">&#34;5 / 9 * (F - 32)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;F&#34;</span>: <span style="color:#f92672">-</span><span style="color:#ae81ff">40</span>}, <span style="color:#e6db74">&#34;-40&#34;</span>},
+		{<span style="color:#e6db74">&#34;5 / 9 * (F - 32)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;F&#34;</span>: <span style="color:#ae81ff">32</span>}, <span style="color:#e6db74">&#34;0&#34;</span>},
+		{<span style="color:#e6db74">&#34;5 / 9 * (F - 32)&#34;</span>, <span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;F&#34;</span>: <span style="color:#ae81ff">212</span>}, <span style="color:#e6db74">&#34;100&#34;</span>},
+	}
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">prevExpr</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">test</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tests</span> {
+		<span style="color:#75715e">// Print expr only when it changes.
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">expr</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">prevExpr</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;\n%s\n&#34;</span>, <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">expr</span>)
+			<span style="color:#a6e22e">prevExpr</span> = <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">expr</span>
+		}
+		<span style="color:#a6e22e">expr</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">expr</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">err</span>) <span style="color:#75715e">// parse error
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">continue</span>
+		}
+		<span style="color:#a6e22e">got</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%.6g&#34;</span>, <span style="color:#a6e22e">expr</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">env</span>))
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;\t%v =&gt; %s\n&#34;</span>, <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">got</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">got</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">want</span> {
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;%s.Eval() in %v = %q, want %q\n&#34;</span>,
+			<span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">expr</span>, <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">got</span>, <span style="color:#a6e22e">test</span>.<span style="color:#a6e22e">want</span>)
+		}
+	}
+}
+</code></pre></div><p>对于表格中的每一条记录，这个测试会解析它的表达式然后在环境变量中计算它，输出结果。这里我们没有空间来展示Parse函数，但是如果你使用go get下载这个包你就可以看到这个函数。</p>
+<p>go test(§11.1) 命令会运行一个包的测试用例：</p>
+<pre><code>$ go test -v gopl.io/ch7/eval
+</code></pre><p>这个-v标识可以让我们看到测试用例打印的输出；正常情况下像这样一个成功的测试用例会阻止打印结果的输出。这里是测试用例里fmt.Printf语句的输出：</p>
+<pre><code>sqrt(A / pi)
+    map[A:87616 pi:3.141592653589793] =&gt; 167
+
+pow(x, 3) + pow(y, 3)
+    map[x:12 y:1] =&gt; 1729
+    map[x:9 y:10] =&gt; 1729
+
+5 / 9 * (F - 32)
+    map[F:-40] =&gt; -40
+    map[F:32] =&gt; 0
+    map[F:212] =&gt; 100
+</code></pre><p>幸运的是目前为止所有的输入都是适合的格式，但是我们的运气不可能一直都有。甚至在解释型语言中，为了静态错误检查语法是非常常见的；静态错误就是不用运行程序就可以检测出来的错误。通过将静态检查和动态的部分分开，我们可以快速的检查错误并且对于多次检查只执行一次而不是每次表达式计算的时候都进行检查。</p>
+<p>让我们往Expr接口中增加另一个方法。Check方法对一个表达式语义树检查出静态错误。我们马上会说明它的vars参数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Expr</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">env</span> <span style="color:#a6e22e">Env</span>) <span style="color:#66d9ef">float64</span>
+	<span style="color:#75715e">// Check reports errors in this Expr and adds its Vars to the set.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span>
+}
+</code></pre></div><p>具体的Check方法展示在下面。literal和Var类型的计算不可能失败，所以这些类型的Check方法会返回一个nil值。对于unary和binary的Check方法会首先检查操作符是否有效，然后递归的检查运算单元。相似地对于call的这个方法首先检查调用的函数是否已知并且有没有正确个数的参数，然后递归的检查每一个参数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">v</span> <span style="color:#a6e22e">Var</span>) <span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">vars</span>[<span style="color:#a6e22e">v</span>] = <span style="color:#66d9ef">true</span>
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">literal</span>) <span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#a6e22e">unary</span>) <span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ContainsRune</span>(<span style="color:#e6db74">&#34;+-&#34;</span>, <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">op</span>) {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected unary op %q&#34;</span>, <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">op</span>)
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#a6e22e">binary</span>) <span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ContainsRune</span>(<span style="color:#e6db74">&#34;+-*/&#34;</span>, <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">op</span>) {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected binary op %q&#34;</span>, <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">op</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">call</span>) <span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">arity</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">numParams</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">fn</span>]
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unknown function %q&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">fn</span>)
+	}
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">arity</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;call to %s has %d args, want %d&#34;</span>,
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">fn</span>, len(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>), <span style="color:#a6e22e">arity</span>)
+	}
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">arg</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">numParams</span> = <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{<span style="color:#e6db74">&#34;pow&#34;</span>: <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;sin&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;sqrt&#34;</span>: <span style="color:#ae81ff">1</span>}
+</code></pre></div><p>我们在两个组中有选择地列出有问题的输入和它们得出的错误。Parse函数（这里没有出现）会报出一个语法错误和Check函数会报出语义错误。</p>
+<pre><code>x % 2               unexpected '%'
+math.Pi             unexpected '.'
+!true               unexpected '!'
+&quot;hello&quot;             unexpected '&quot;'
+
+log(10)             unknown function &quot;log&quot;
+sqrt(1, 2)          call to sqrt has 2 args, want 1
+</code></pre><p>Check方法的参数是一个Var类型的集合，这个集合聚集从表达式中找到的变量名。为了保证成功的计算，这些变量中的每一个都必须出现在环境变量中。从逻辑上讲，这个集合就是调用Check方法返回的结果，但是因为这个方法是递归调用的，所以对于Check方法，填充结果到一个作为参数传入的集合中会更加的方便。调用方在初始调用时必须提供一个空的集合。</p>
+<p>在第3.2节中，我们绘制了一个在编译期才确定的函数f(x,y)。现在我们可以解析，检查和计算在字符串中的表达式，我们可以构建一个在运行时从客户端接收表达式的web应用并且它会绘制这个函数的表示的曲面。我们可以使用集合vars来检查表达式是否是一个只有两个变量x和y的函数——实际上是3个，因为我们为了方便会提供半径大小r。并且我们会在计算前使用Check方法拒绝有格式问题的表达式，这样我们就不会在下面函数的40000个计算过程（100x100个栅格，每一个有4个角）重复这些检查。</p>
+<p>这个ParseAndCheck函数混合了解析和检查步骤的过程：</p>
+<p><u><i>gopl.io/ch7/surface</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;gopl.io/ch7/eval&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">parseAndCheck</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Expr</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">s</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;empty expression&#34;</span>)
+	}
+	<span style="color:#a6e22e">expr</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">s</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#a6e22e">vars</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Var</span>]<span style="color:#66d9ef">bool</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">expr</span>.<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">vars</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">vars</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;y&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;r&#34;</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;undefined variable: %s&#34;</span>, <span style="color:#a6e22e">v</span>)
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">expr</span>, <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>为了编写这个web应用，所有我们需要做的就是下面这个plot函数，这个函数有和http.HandlerFunc相似的签名：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">plot</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">ParseForm</span>()
+	<span style="color:#a6e22e">expr</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">parseAndCheck</span>(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Form</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;expr&#34;</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;bad expr: &#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
+		<span style="color:#66d9ef">return</span>
+	}
+	<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;image/svg+xml&#34;</span>)
+	<span style="color:#a6e22e">surface</span>(<span style="color:#a6e22e">w</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+		<span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Hypot</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) <span style="color:#75715e">// distance from (0,0)
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">expr</span>.<span style="color:#a6e22e">Eval</span>(<span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Env</span>{<span style="color:#e6db74">&#34;x&#34;</span>: <span style="color:#a6e22e">x</span>, <span style="color:#e6db74">&#34;y&#34;</span>: <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;r&#34;</span>: <span style="color:#a6e22e">r</span>})
+	})
+}
+</code></pre></div><p>
+  <img src="/images/ch7-07.png" alt="" /></p>
+<p>这个plot函数解析和检查在HTTP请求中指定的表达式并且用它来创建一个两个变量的匿名函数。这个匿名函数和来自原来surface-plotting程序中的固定函数f有相同的签名，但是它计算一个用户提供的表达式。环境变量中定义了x，y和半径r。最后plot调用surface函数，它就是gopl.io/ch3/surface中的主要函数，修改后它可以接受plot中的函数和输出io.Writer作为参数，而不是使用固定的函数f和os.Stdout。图7.7中显示了通过程序产生的3个曲面。</p>
+<p><strong>练习 7.13：</strong> 为Expr增加一个String方法来打印美观的语法树。当再一次解析的时候，检查它的结果是否生成相同的语法树。</p>
+<p><strong>练习 7.14：</strong> 定义一个新的满足Expr接口的具体类型并且提供一个新的操作例如对它运算单元中的最小值的计算。因为Parse函数不会创建这个新类型的实例，为了使用它你可能需要直接构造一个语法树（或者继承parser接口）。</p>
+<p><strong>练习 7.15：</strong> 编写一个从标准输入中读取一个单一表达式的程序，用户及时地提供对于任意变量的值，然后在结果环境变量中计算表达式的值。优雅的处理所有遇到的错误。</p>
+<p><strong>练习 7.16：</strong> 编写一个基于web的计算器程序。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/029ec77adcb81020389097d06d4cbdbf78bc9035" title='最后修改者 louyongjiu | 2020年8月21日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月21日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content//docs/7.%20Interfaces/ch7-09.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#79-示例-表达式求值">7.9. 示例: 表达式求值</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 ---
 weight: 9
-title: "Goroutines和Channels"
+title: "8. Goroutines和Channels"
 ---
 
 # 第八章　Goroutines和Channels

@@ -1,6 +1,6 @@
 ---
-weight: 1
-title: ""
+weight: 6
+title: "2.6. 包和文件"
 ---
 
 ## 2.6. 包和文件

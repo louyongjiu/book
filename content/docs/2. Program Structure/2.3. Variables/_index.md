@@ -1,6 +1,6 @@
 ---
-weight: 1
-title: ""
+weight: 3
+title: "2.3. 变量"
 ---
 
 ## 2.3. 变量
@@ -37,10 +37,4 @@ var b, f, s = true, 2.3, "four" // bool, float64, string
 var f, err = os.Open(name) // os.Open returns a file and an error
 ```
 
-{% include "./ch2-03-1.md" %}
-
-{% include "./ch2-03-2.md" %}
-
-{% include "./ch2-03-3.md" %}
-
-{% include "./ch2-03-4.md" %}
+{{<section>}}

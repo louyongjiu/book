@@ -1,6 +1,6 @@
 ---
 weight: 7
-title: "方法"
+title: "6. 方法"
 ---
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>测试 on Book</title>
+    <title>11. 测试 on Book</title>
     <link>https://book.ninescloud.com/docs/11.-Testing/</link>
-    <description>Recent content in 测试 on Book</description>
+    <description>Recent content in 11. 测试 on Book</description>
     <generator>Hugo -- gohugo.io</generator>
     
 	<atom:link href="https://book.ninescloud.com/docs/11.-Testing/index.xml" rel="self" type="application/rss+xml" />

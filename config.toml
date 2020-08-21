@@ -21,15 +21,16 @@ defaultContentLanguage = 'zh'
 # There are different options to translate files
 # See https://gohugo.io/content-management/multilingual/#translation-by-filename
 # And https://gohugo.io/content-management/multilingual/#translation-by-content-directory
-# [languages]
-# [languages.zh]
-#   languageName = 'Chinese'
-#   contentDir = 'content'
-#   weight = 1
+[languages]
+[languages.zh]
+  languageName = 'Chinese'
+  contentDir = 'content'
+  weight = 1
 # [languages.en]
 #   languageName = 'English'
 #   contentDir = 'content.en'
 #   weight = 2
+
 
 [menu]
 # [[menu.before]]
@@ -69,7 +70,7 @@ defaultContentLanguage = 'zh'
   # Enable "Edit this page" links for 'doc' page type.
   # Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
   # Edit path must point to root directory of repo.
-  BookEditPath = 'edit/master/content'
+  BookEditPath = 'edit/master'
 
   # Configure the date format used on the pages
   # - In git information

@@ -198,81 +198,6 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-01/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-02/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-03-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-03-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-03-3/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-03-4/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-03/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-04-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-04-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-04/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-05/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-06-1/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-06-2/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-06/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/ch2-07/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/ch3-01/</loc>
     <lastmod>2020-08-21T16:04:53+08:00</lastmod>
   </url>
@@ -708,6 +633,26 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.1.-Names/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/Preface/The-Origins-of-Go/</loc>
     <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
@@ -728,6 +673,26 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.2.-Declarations/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/Preface/The-Go-Project/</loc>
     <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
@@ -738,13 +703,23 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Preface/Organization-of-the-Book/</loc>
-    <lastmod>2020-08-21T09:00:49+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Preface/Organization-of-the-Book/</loc>
+    <lastmod>2020-08-21T09:00:49+08:00</lastmod>
   </url>
   
   <url>
@@ -753,8 +728,18 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.4.-Assignments/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/3.-Basic-Data-Types/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
@@ -768,8 +753,13 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.5.-Type-Declarations/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/4.-Composite-Types/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
@@ -783,8 +773,13 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.6.-Packages-and-Files/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/5.-Functions/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
@@ -793,8 +788,13 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/2.-Program-Structure/2.7.-Scope/</loc>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/6.-Methods/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
@@ -804,37 +804,37 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/7.-Interfaces/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/8.-Goroutines-and-Channels/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/10.-Packages-and-the-Go-Tool/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/11.-Testing/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/12.-Reflection/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/13.-Low-Level-Programming/</loc>
-    <lastmod>2020-08-21T16:04:53+08:00</lastmod>
+    <lastmod>2020-08-21T17:02:15+08:00</lastmod>
   </url>
   
   <url>

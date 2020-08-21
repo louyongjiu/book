@@ -36,5 +36,3 @@ var b, f, s = true, 2.3, "four" // bool, float64, string
 ```Go
 var f, err = os.Open(name) // os.Open returns a file and an error
 ```
-
-{{<section>}}

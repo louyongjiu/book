@@ -10,11 +10,11 @@
     
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-01/</link>
+      <title>9.1. 竞争条件</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-01/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/</guid>
       <description>9.1. 竞争条件 #  在一个线性（就是说只有一个goroutine的）的程序中，程序的执行顺序只由程序的逻辑来决定。例如，我们有一段语句序列，第一个在第二个之前（废话），以此类推。在有两个或更多goroutine的程序中，每一个goroutine内的语句也是按照既定的顺序去执行的，但是一般情况下我们没法去知道分别位于两个goroutine的事件x和y的执行顺序，x是在y之前还是之后还是同时发生是没法判断的。当我们没有办法自信地确认一个事件是在另一个事件的前面或者后面发生的话，就说明x和y这两个事件是并发的。
 考虑一下，一个函数在线性程序中可以正确地工作。如果在并发的情况下，这个函数依然可以正确地工作的话，那么我们就说这个函数是并发安全的，并发安全的函数不需要额外的同步工作。我们可以把这个概念概括为一个特定类型的一些方法和操作函数，对于某个类型来说，如果其所有可访问的方法和操作都是并发安全的话，那么该类型便是并发安全的。
 在一个程序中有非并发安全的类型的情况下，我们依然可以使这个程序并发安全。确实，并发安全的类型是例外，而不是规则，所以只有当文档中明确地说明了其是并发安全的情况下，你才可以并发地去访问它。我们会避免并发访问大多数的类型，无论是将变量局限在单一的一个goroutine内，还是用互斥条件维持更高级别的不变性，都是为了这个目的。我们会在本章中说明这些术语。
@@ -29,11 +29,11 @@ Alice first Bob first Alice/Bob/Alice 0 0 0 A1 200 B 100 A1 200 A2 &amp;quot;= 2
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-02/</link>
+      <title>9.2. sync.Mutex互斥锁</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-02/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/</guid>
       <description>9.2. sync.Mutex互斥锁 #  在8.6节中，我们使用了一个buffered channel作为一个计数信号量，来保证最多只有20个goroutine会同时执行HTTP请求。同理，我们可以用一个容量只有1的channel来保证最多只有一个goroutine在同一时刻访问一个共享变量。一个只能为1和0的信号量叫做二元信号量（binary semaphore）。
 gopl.io/ch9/bank2
 var ( sema = make(chan struct{}, 1) // a binary semaphore guarding balance 	balance int ) func Deposit(amount int) { sema &amp;lt;- struct{}{} // acquire token 	balance = balance + amount &amp;lt;-sema // release token } func Balance() int { sema &amp;lt;- struct{}{} // acquire token 	b := balance &amp;lt;-sema // release token 	return b } 这种互斥很实用，而且被sync包里的Mutex类型直接支持。它的Lock方法能够获取到token(这里叫锁)，并且Unlock方法会释放这个token：
@@ -41,11 +41,11 @@ gopl.io/ch9/bank3</description>
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-03/</link>
+      <title>9.3. sync.RWMutex读写锁</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-03/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/</guid>
       <description>9.3. sync.RWMutex读写锁 #  在100刀的存款消失时不做记录多少还是会让我们有一些恐慌，Bob写了一个程序，每秒运行几百次来检查他的银行余额。他会在家，在工作中，甚至会在他的手机上来运行这个程序。银行注意到这些陡增的流量使得存款和取款有了延时，因为所有的余额查询请求是顺序执行的，这样会互斥地获得锁，并且会暂时阻止其它的goroutine运行。
 由于Balance函数只需要读取变量的状态，所以我们同时让多个Balance调用并发运行事实上是安全的，只要在运行的时候没有存款或者取款操作就行。在这种场景下我们需要一种特殊类型的锁，其允许多个只读操作并行执行，但写操作会完全互斥。这种锁叫作“多读单写”锁（multiple readers, single writer lock），Go语言提供的这样的锁是sync.RWMutex：
 var mu sync.RWMutex var balance int func Balance() int { mu.RLock() // readers lock 	defer mu.RUnlock() return balance } Balance函数现在调用了RLock和RUnlock方法来获取和释放一个读取或者共享锁。Deposit函数没有变化，会调用mu.Lock和mu.Unlock方法来获取和释放一个写或互斥锁。
@@ -55,11 +55,11 @@ RWMutex只有当获得锁的大部分goroutine都是读操作，而锁在竞争�
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-04/</link>
+      <title>9.4. 内存同步</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-04/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/</guid>
       <description>9.4. 内存同步 #  你可能比较纠结为什么Balance方法需要用到互斥条件，无论是基于channel还是基于互斥量。毕竟和存款不一样，它只由一个简单的操作组成，所以不会碰到其它goroutine在其执行“期间”执行其它逻辑的风险。这里使用mutex有两方面考虑。第一Balance不会在其它操作比如Withdraw“中间”执行。第二（更重要的）是“同步”不仅仅是一堆goroutine执行顺序的问题，同样也会涉及到内存的问题。
 在现代计算机中可能会有一堆处理器，每一个都会有其本地缓存（local cache）。为了效率，对内存的写入一般会在每一个处理器中缓冲，并在必要时一起flush到主存。这种情况下这些数据可能会以与当初goroutine写入顺序不同的顺序被提交到主存。像channel通信或者互斥量操作这样的原语会使处理器将其聚集的写入flush并commit，这样goroutine在某个时间点上的执行结果才能被其它处理器上运行的goroutine得到。
 考虑一下下面代码片段的可能输出：
@@ -72,11 +72,11 @@ x:0 y:0 y:0 x:0 根据所使用的编译器，CPU，或者其它很多影响因�
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-05/</link>
+      <title>9.5. sync.Once惰性初始化</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-05/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/</guid>
       <description>9.5. sync.Once惰性初始化 #  如果初始化成本比较大的话，那么将初始化延迟到需要的时候再去做就是一个比较好的选择。如果在程序启动的时候就去做这类初始化的话，会增加程序的启动时间，并且因为执行的时候可能也并不需要这些变量，所以实际上有一些浪费。让我们来看在本章早一些时候的icons变量：
 var icons map[string]image.Image 这个版本的Icon用到了懒初始化（lazy initialization）。
 func loadIcons() { icons = map[string]image.Image{ &amp;#34;spades.png&amp;#34;: loadIcon(&amp;#34;spades.png&amp;#34;), &amp;#34;hearts.png&amp;#34;: loadIcon(&amp;#34;hearts.png&amp;#34;), &amp;#34;diamonds.png&amp;#34;: loadIcon(&amp;#34;diamonds.png&amp;#34;), &amp;#34;clubs.png&amp;#34;:	loadIcon(&amp;#34;clubs.png&amp;#34;), } } // NOTE: not concurrency-safe! func Icon(name string) image.Image { if icons == nil { loadIcons() // one-time initialization 	} return icons[name] } 如果一个变量只被一个单独的goroutine所访问的话，我们可以使用上面的这种模板，但这种模板在Icon被并发调用时并不安全。就像前面银行的那个Deposit(存款)函数一样，Icon函数也是由多个步骤组成的：首先测试icons是否为空，然后load这些icons，之后将icons更新为一个非空的值。直觉会告诉我们最差的情况是loadIcons函数被多次访问会带来数据竞争。当第一个goroutine在忙着loading这些icons的时候，另一个goroutine进入了Icon函数，发现变量是nil，然后也会调用loadIcons函数。
@@ -85,11 +85,11 @@ func loadIcons() { icons = make(map[string]image.Image) icons[&amp;#34;spades.pn
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-06/</link>
+      <title>9.6. 竞争条件检测</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-06/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/</guid>
       <description>9.6. 竞争条件检测 #  即使我们小心到不能再小心，但在并发程序中犯错还是太容易了。幸运的是，Go的runtime和工具链为我们装备了一个复杂但好用的动态分析工具，竞争检查器（the race detector）。
 只要在go build，go run或者go test命令后面加上-race的flag，就会使编译器创建一个你的应用的“修改”版或者一个附带了能够记录所有运行期对共享变量访问工具的test，并且会记录下每一个读或者写共享变量的goroutine的身份信息。另外，修改版的程序会记录下所有的同步事件，比如go语句，channel操作，以及对(*sync.Mutex).Lock，(*sync.WaitGroup).Wait等等的调用。（完整的同步事件集合是在The Go Memory Model文档中有说明，该文档是和语言文档放在一起的。译注：https://golang.org/ref/mem ）
 竞争检查器会检查这些事件，会寻找在哪一个goroutine中出现了这样的case，例如其读或者写了一个共享变量，这个共享变量是被另一个goroutine在没有进行干预同步操作便直接写入的。这种情况也就表明了是对一个共享变量的并发访问，即数据竞争。这个工具会打印一份报告，内容包含变量身份，读取和写入的goroutine中活跃的函数的调用栈。这些信息在定位问题时通常很有用。9.7节中会有一个竞争检查器的实战样例。
@@ -98,73 +98,17 @@ func loadIcons() { icons = make(map[string]image.Image) icons[&amp;#34;spades.pn
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-07/</link>
+      <title>9.7. 示例: 并发的非阻塞缓存</title>
+      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-07/</guid>
+      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/</guid>
       <description>9.7. 示例: 并发的非阻塞缓存 #  本节中我们会做一个无阻塞的缓存，这种工具可以帮助我们来解决现实世界中并发程序出现但没有现成的库可以解决的问题。这个问题叫作缓存（memoizing）函数（译注：Memoization的定义： memoization 一词是Donald Michie 根据拉丁语memorandum杜撰的一个词。相应的动词、过去分词、ing形式有memoiz、memoized、memoizing），也就是说，我们需要缓存函数的返回结果，这样在对函数进行调用的时候，我们就只需要一次计算，之后只要返回计算的结果就可以了。我们的解决方案会是并发安全且会避免对整个缓存加锁而导致所有操作都去争一个锁的设计。
 我们将使用下面的httpGetBody函数作为我们需要缓存的函数的一个样例。这个函数会去进行HTTP GET请求并且获取http响应body。对这个函数的调用本身开销是比较大的，所以我们尽量避免在不必要的时候反复调用。
 func httpGetBody(url string) (interface{}, error) { resp, err := http.Get(url) if err != nil { return nil, err } defer resp.Body.Close() return ioutil.ReadAll(resp.Body) } 最后一行稍微隐藏了一些细节。ReadAll会返回两个结果，一个[]byte数组和一个错误，不过这两个对象可以被赋值给httpGetBody的返回声明里的interface{}和error类型，所以我们也就可以这样返回结果并且不需要额外的工作了。我们在httpGetBody中选用这种返回类型是为了使其可以与缓存匹配。
 下面是我们要设计的cache的第一个“草稿”：
 gopl.io/ch9/memo1
 // Package memo provides a concurrency-unsafe // memoization of a function of type Func. package memo // A Memo caches the results of calling a Func. type Memo struct { f Func cache map[string]result } // Func is the type of the function to memoize.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-1/</guid>
-      <description>9.8.1. 动态栈 #  每一个OS线程都有一个固定大小的内存块（一般会是2MB）来做栈，这个栈会用来存储当前正在被调用或挂起（指在调用其它函数时）的函数的内部变量。这个固定大小的栈同时很大又很小。因为2MB的栈对于一个小小的goroutine来说是很大的内存浪费，比如对于我们用到的，一个只是用来WaitGroup之后关闭channel的goroutine来说。而对于go程序来说，同时创建成百上千个goroutine是非常普遍的，如果每一个goroutine都需要这么大的栈的话，那这么多的goroutine就不太可能了。除去大小的问题之外，固定大小的栈对于更复杂或者更深层次的递归函数调用来说显然是不够的。修改固定的大小可以提升空间的利用率，允许创建更多的线程，并且可以允许更深的递归调用，不过这两者是没法同时兼备的。
-相反，一个goroutine会以一个很小的栈开始其生命周期，一般只需要2KB。一个goroutine的栈，和操作系统线程一样，会保存其活跃或挂起的函数调用的本地变量，但是和OS线程不太一样的是，一个goroutine的栈大小并不是固定的；栈的大小会根据需要动态地伸缩。而goroutine的栈的最大值有1GB，比传统的固定大小的线程栈要大得多，尽管一般情况下，大多goroutine都不需要这么大的栈。
-** 练习 9.4:** 创建一个流水线程序，支持用channel连接任意数量的goroutine，在跑爆内存之前，可以创建多少流水线阶段？一个变量通过整个流水线需要用多久？（这个练习题翻译不是很确定）</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-2/</guid>
-      <description>9.8.2. Goroutine调度 #  OS线程会被操作系统内核调度。每几毫秒，一个硬件计时器会中断处理器，这会调用一个叫作scheduler的内核函数。这个函数会挂起当前执行的线程并将它的寄存器内容保存到内存中，检查线程列表并决定下一次哪个线程可以被运行，并从内存中恢复该线程的寄存器信息，然后恢复执行该线程的现场并开始执行线程。因为操作系统线程是被内核所调度，所以从一个线程向另一个“移动”需要完整的上下文切换，也就是说，保存一个用户线程的状态到内存，恢复另一个线程的到寄存器，然后更新调度器的数据结构。这几步操作很慢，因为其局部性很差需要几次内存访问，并且会增加运行的cpu周期。
-Go的运行时包含了其自己的调度器，这个调度器使用了一些技术手段，比如m:n调度，因为其会在n个操作系统线程上多工（调度）m个goroutine。Go调度器的工作和内核的调度是相似的，但是这个调度器只关注单独的Go程序中的goroutine（译注：按程序独立）。
-和操作系统的线程调度不同的是，Go调度器并不是用一个硬件定时器，而是被Go语言“建筑”本身进行调度的。例如当一个goroutine调用了time.Sleep，或者被channel调用或者mutex操作阻塞时，调度器会使其进入休眠并开始执行另一个goroutine，直到时机到了再去唤醒第一个goroutine。因为这种调度方式不需要进入内核的上下文，所以重新调度一个goroutine比调度一个线程代价要低得多。
-** 练习 9.5: ** 写一个有两个goroutine的程序，两个goroutine会向两个无buffer channel反复地发送ping-pong消息。这样的程序每秒可以支持多少次通信？</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-3/</guid>
-      <description>9.8.3. GOMAXPROCS #  Go的调度器使用了一个叫做GOMAXPROCS的变量来决定会有多少个操作系统的线程同时执行Go的代码。其默认的值是运行机器上的CPU的核心数，所以在一个有8个核心的机器上时，调度器一次会在8个OS线程上去调度GO代码。（GOMAXPROCS是前面说的m:n调度中的n）。在休眠中的或者在通信中被阻塞的goroutine是不需要一个对应的线程来做调度的。在I/O中或系统调用中或调用非Go语言函数时，是需要一个对应的操作系统线程的，但是GOMAXPROCS并不需要将这几种情况计算在内。
-你可以用GOMAXPROCS的环境变量来显式地控制这个参数，或者也可以在运行时用runtime.GOMAXPROCS函数来修改它。我们在下面的小程序中会看到GOMAXPROCS的效果，这个程序会无限打印0和1。
-for { go fmt.Print(0) fmt.Print(1) } $ GOMAXPROCS=1 go run hacker-cliché.go 111111111111111111110000000000000000000011111... $ GOMAXPROCS=2 go run hacker-cliché.go 010101010101010101011001100101011010010100110... 在第一次执行时，最多同时只能有一个goroutine被执行。初始情况下只有main goroutine被执行，所以会打印很多1。过了一段时间后，GO调度器会将其置为休眠，并唤醒另一个goroutine，这时候就开始打印很多0了，在打印的时候，goroutine是被调度到操作系统线程上的。在第二次执行时，我们使用了两个操作系统线程，所以两个goroutine可以一起被执行，以同样的频率交替打印0和1。我们必须强调的是goroutine的调度是受很多因子影响的，而runtime也是在不断地发展演进的，所以这里的你实际得到的结果可能会因为版本的不同而与我们运行的结果有所不同。
-** 练习9.6:** 测试一下计算密集型的并发程序（练习8.5那样的）会被GOMAXPROCS怎样影响到。在你的电脑上最佳的值是多少？你的电脑CPU有多少个核心？</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08-4/</guid>
-      <description>9.8.4. Goroutine没有ID号 #  在大多数支持多线程的操作系统和程序语言中，当前的线程都有一个独特的身份（id），并且这个身份信息可以以一个普通值的形式被很容易地获取到，典型的可以是一个integer或者指针值。这种情况下我们做一个抽象化的thread-local storage（线程本地存储，多线程编程中不希望其它线程访问的内容）就很容易，只需要以线程的id作为key的一个map就可以解决问题，每一个线程以其id就能从中获取到值，且和其它线程互不冲突。
-goroutine没有可以被程序员获取到的身份（id）的概念。这一点是设计上故意而为之，由于thread-local storage总是会被滥用。比如说，一个web server是用一种支持tls的语言实现的，而非常普遍的是很多函数会去寻找HTTP请求的信息，这代表它们就是去其存储层（这个存储层有可能是tls）查找的。这就像是那些过分依赖全局变量的程序一样，会导致一种非健康的“距离外行为”，在这种行为下，一个函数的行为可能并不仅由自己的参数所决定，而是由其所运行在的线程所决定。因此，如果线程本身的身份会改变——比如一些worker线程之类的——那么函数的行为就会变得神秘莫测。
-Go鼓励更为简单的模式，这种模式下参数（译注：外部显式参数和内部显式参数。tls 中的内容算是&amp;quot;外部&amp;quot;隐式参数）对函数的影响都是显式的。这样不仅使程序变得更易读，而且会让我们自由地向一些给定的函数分配子任务时不用担心其身份信息影响行为。
-你现在应该已经明白了写一个Go程序所需要的所有语言特性信息。在后面两章节中，我们会回顾一些之前的实例和工具，支持我们写出更大规模的程序：如何将一个工程组织成一系列的包，如何获取，构建，测试，性能测试，剖析，写文档，并且将这些包分享出去。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/9.-Concurrency-with-Shared-Variables/ch9-08/</guid>
-      <description>9.8. Goroutines和线程 #  在上一章中我们说goroutine和操作系统的线程区别可以先忽略。尽管两者的区别实际上只是一个量的区别，但量变会引起质变的道理同样适用于goroutine和线程。现在正是我们来区分开两者的最佳时机。</description>
     </item>
     
   </channel>

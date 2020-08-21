@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>5.6. 匿名函数 on Book</title>
+    <link>https://book.ninescloud.com/docs/5.-Functions/5.6.-Anonymous-Functions/</link>
+    <description>Recent content in 5.6. 匿名函数 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/5.-Functions/5.6.-Anonymous-Functions/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>5.6.1. 警告：捕获迭代变量</title>
+      <link>https://book.ninescloud.com/docs/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</guid>
+      <description>5.6.1. 警告：捕获迭代变量 #  本节，将介绍Go词法作用域的一个陷阱。请务必仔细的阅读，弄清楚发生问题的原因。即使是经验丰富的程序员也会在这个问题上犯错误。
+考虑这样一个问题：你被要求首先创建一些目录，再将目录删除。在下面的例子中我们用函数值来完成删除操作。下面的示例代码需要引入os包。为了使代码简单，我们忽略了所有的异常处理。
+var rmdirs []func() for _, d := range tempDirs() { dir := d // NOTE: necessary! 	os.MkdirAll(dir, 0755) // creates parent directories too 	rmdirs = append(rmdirs, func() { os.RemoveAll(dir) }) } // ...do some work… for _, rmdir := range rmdirs { rmdir() // clean up } 你可能会感到困惑，为什么要在循环体中用循环变量d赋值一个新的局部变量，而不是像下面的代码一样直接使用循环变量dir。需要注意，下面的代码是错误的。
+var rmdirs []func() for _, dir := range tempDirs() { os.MkdirAll(dir, 0755) rmdirs = append(rmdirs, func() { os.</description>
+    </item>
+    
+  </channel>
+</rss>

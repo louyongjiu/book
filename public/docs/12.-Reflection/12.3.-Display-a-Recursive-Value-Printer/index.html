@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="12.3. Display，一个递归的值打印器 #  接下来，让我们看看如何改善聚合数据类型的显示。我们并不想完全克隆一个fmt.Sprint函数，我们只是构建一个用于调试用的Display函数：给定任意一个复杂类型 x，打印这个值对应的完整结构，同时标记每个元素的发现路径。让我们从一个例子开始。
+e, _ := eval.Parse(&#34;sqrt(A / pi)&#34;) Display(&#34;e&#34;, e) 在上面的调用中，传入Display函数的参数是在7.9节一个表达式求值函数返回的语法树。Display函数的输出如下：
+Display e (eval.call): e.fn = &#34;sqrt&#34; e.args[0].type = eval.binary e.args[0].value.op = 47 e.args[0].value.x.type = eval.Var e.args[0].value.x.value = &#34;A&#34; e.args[0].value.y.type = eval.Var e.args[0].value.y.value = &#34;pi&#34; 你应该尽量避免在一个包的API中暴露涉及反射的接口。我们将定义一个未导出的display函数用于递归处理工作，导出的是Display函数，它只是display函数简单的包装以接受interface{}类型的参数：
+gopl.io/ch12/display
+func Display(name string, x interface{}) { fmt.Printf(&#34;Display %s (%T):\n&#34;, name, x) display(name, reflect.ValueOf(x)) } 在display函数中，我们使用了前面定义的打印基础类型——基本类型、函数和chan等——元素值的formatAtom函数，但是我们会使用reflect.Value的方法来递归显示复杂类型的每一个成员。在递归下降过程中，path字符串，从最开始传入的起始值（这里是“e”），将逐步增长来表示是如何达到当前值（例如“e.args[0].value”）的。
+因为我们不再模拟fmt.Sprint函数，我们将直接使用fmt包来简化我们的例子实现。
+func display(path string, v reflect.Value) { switch v.Kind() { case reflect.Invalid: fmt.Printf(&#34;%s = invalid\n&#34;, path) case reflect.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="12.2. reflect.Type 和 reflect.Value" />
+<meta property="og:description" content="12.3. Display，一个递归的值打印器 #  接下来，让我们看看如何改善聚合数据类型的显示。我们并不想完全克隆一个fmt.Sprint函数，我们只是构建一个用于调试用的Display函数：给定任意一个复杂类型 x，打印这个值对应的完整结构，同时标记每个元素的发现路径。让我们从一个例子开始。
+e, _ := eval.Parse(&#34;sqrt(A / pi)&#34;) Display(&#34;e&#34;, e) 在上面的调用中，传入Display函数的参数是在7.9节一个表达式求值函数返回的语法树。Display函数的输出如下：
+Display e (eval.call): e.fn = &#34;sqrt&#34; e.args[0].type = eval.binary e.args[0].value.op = 47 e.args[0].value.x.type = eval.Var e.args[0].value.x.value = &#34;A&#34; e.args[0].value.y.type = eval.Var e.args[0].value.y.value = &#34;pi&#34; 你应该尽量避免在一个包的API中暴露涉及反射的接口。我们将定义一个未导出的display函数用于递归处理工作，导出的是Display函数，它只是display函数简单的包装以接受interface{}类型的参数：
+gopl.io/ch12/display
+func Display(name string, x interface{}) { fmt.Printf(&#34;Display %s (%T):\n&#34;, name, x) display(name, reflect.ValueOf(x)) } 在display函数中，我们使用了前面定义的打印基础类型——基本类型、函数和chan等——元素值的formatAtom函数，但是我们会使用reflect.Value的方法来递归显示复杂类型的每一个成员。在递归下降过程中，path字符串，从最开始传入的起始值（这里是“e”），将逐步增长来表示是如何达到当前值（例如“e.args[0].value”）的。
+因为我们不再模拟fmt.Sprint函数，我们将直接使用fmt包来简化我们的例子实现。
+func display(path string, v reflect.Value) { switch v.Kind() { case reflect.Invalid: fmt.Printf(&#34;%s = invalid\n&#34;, path) case reflect." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/12.-Reflection/12.3.-Display-a-Recursive-Value-Printer/" />
+
+<title>12.2. reflect.Type 和 reflect.Value | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.908bac324a24d22aca8de02bf05ff31c7b37f8cd16eb53ebde4ddf868373fe4b.js" integrity="sha256-kIusMkok0irKjeAr8F/zHHs3&#43;M0W61Pr3k3fhoNz/ks="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">2. 程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.1.-Names/" class="">2.1. 命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.2.-Declarations/" class="">2.2. 声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/" class="">2.3. 变量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/" class="">2.3.1. 简短变量声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/" class="">2.3.2. 指针</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/" class="">2.3.3. new函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/" class="">2.3.4. 变量的生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/" class="">2.4. 赋值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/" class="">2.4.1. 元组赋值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/" class="">2.4.2. 可赋值性</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.5.-Type-Declarations/" class="">2.5. 类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/" class="">2.6. 包和文件</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/" class="">2.6.1. 导入包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/" class="">2.6.2. 包的初始化</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.7.-Scope/" class="">2.7. 作用域</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">3. 基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.1.-Integers/" class="">3.1. 整型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/" class="">3.2. 浮点数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/" class="">3.3. 复数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.4.-Booleans/" class="">3.4. 布尔型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/" class="">3.5. 字符串</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/" class="">3.5.1. 字符串面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/" class="">3.5.2. Unicode</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/" class="">3.5.3. UTF-8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/" class="">3.5.4. 字符串和Byte切片</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/" class="">3.5.5. 字符串和数字的转换</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/" class="">3.6. 常量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/" class="">3.6.1. iota 常量生成器</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/" class="">3.6.2. 无类型常量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">4. 复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.1.-Arrays/" class="">4.1. 数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/" class="">4.2. Slice</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/" class="">4.2.1. append函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/" class="">4.2.2. Slice内存技巧</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.3.-Maps/" class="">4.3. Map</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/" class="">4.4. 结构体</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/" class="">4.4.1. 结构体字面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/" class="">4.4.2. 结构体比较</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/" class="">4.4.3. 结构体嵌入和匿名成员</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.5.-JSON/" class="">4.5. JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" class="">4.6. 文本和HTML模板</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">5. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.1.-Function-Declarations/" class="">5.1. 函数声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.2.-Recursion/" class="">5.2. 递归</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.3.-Multiple-Return-Values/" class="">5.3. 多返回值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/" class="">5.4. 错误</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/" class="">5.4.1. 错误处理策略</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/" class="">5.4.2. 文件结尾错误（EOF）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.5.-Function-Values/" class="">5.5. 函数值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.6.-Anonymous-Functions/" class="">5.6. 匿名函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/" class="">5.6.1. 警告：捕获迭代变量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.7.-Variadic-Functions/" class="">5.7. 可变参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.8.-Deferred-Function-Calls/" class="">5.8. Deferred函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.9.-Panic/" class="">5.9. Panic异常</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.10.-Recover/" class="">5.10. Recover捕获异常</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">6. 方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.1.-Method-Declarations/" class="">6.1. 方法声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/" class="">6.2. 基于指针对象的方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/" class="">6.2.1. Nil也是一个合法的接收器类型</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/" class="">6.3. 通过嵌入结构体来扩展类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.4.-Method-Values-and-Expressions/" class="">6.4. 方法值和方法表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.5.-Example-Bit-Vector-Type/" class="">6.5. 示例: Bit数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.6.-Encapsulation/" class="">6.6. 封装</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">7. 接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.1.-Interfaces-as-Contracts/" class="">7.1. 接口约定</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.2.-Interface-Types/" class="">7.2. 接口类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.3.-Interface-Satisfaction/" class="">7.3. 实现接口的条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.4.-Parsing-Flags-with-flag.Value/" class="">7.4. flag.Value接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.5.-Interface-Values/" class="">7.5. 接口值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/" class="">7.5.1. 警告：一个包含nil指针的接口不是nil接口</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.6.-Sorting-with-sort.Interface/" class="">7.6. sort.Interface接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.7.-The-http.Handler-Interface/" class="">7.7. http.Handler接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.8.-The-error-Interface/" class="">7.8. error接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.9.-Example-Expression-Evaluator/" class="">7.9. 示例: 表达式求值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.10.-Type-Assertions/" class="">7.10. 类型断言</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/" class="">7.11. 基于类型断言区别错误类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.12.-Querying-Behaviors-with-Interface-Type-Assertions/" class="">7.12. 通过类型断言询问行为</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.13.-Type-Switches/" class="">7.13. 类型分支</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/" class="">7.14. 示例: 基于标记的XML解码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/" class="">7.15. 一些建议</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">8. Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.1.-Goroutines/" class="">8.1. Goroutines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/" class="">8.2. 示例: 并发的Clock服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/" class="">8.3. 示例: 并发的Echo服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/" class="">8.4. Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/" class="">8.4.1. 不带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/" class="">8.4.2. 串联的Channels（Pipeline）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/" class="">8.4.3. 单方向的Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/" class="">8.4.4. 带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/" class="">8.5. 并发的循环</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/" class="">8.6. 示例: 并发的Web爬虫</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/" class="">8.7. 基于select的多路复用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/" class="">8.8. 示例: 并发的目录遍历</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.9.-Cancellation/" class="">8.9. 并发的退出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/" class="">8.10. 示例: 聊天服务</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">9. 基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/" class="">9.1. 竞争条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/" class="">9.2. sync.Mutex互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/" class="">9.3. sync.RWMutex读写锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/" class="">9.4. 内存同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/" class="">9.5. sync.Once惰性初始化</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/" class="">9.6. 竞争条件检测</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/" class="">9.7. 示例: 并发的非阻塞缓存</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/" class="">9.8. Goroutines和线程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/" class="">9.8.1. 动态栈
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/" class="">9.8.2. Goroutine调度</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/" class="">9.8.3. GOMAXPROCS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/" class="">9.8.4. Goroutine没有ID号</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">10. 包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.1.-Introduction/" class="">10.1. 包简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/" class="">10.2. 导入路径</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/" class="">10.3. 包声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/" class="">10.4. 导入声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.5.-Blank-Imports/" class="">10.5. 包的匿名导入</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/" class="">10.6. 包和命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/" class="">10.7. 工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/" class="">10.7.1. 工作区结构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/" class="">10.7.2. 下载包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/" class="">10.7.3. 构建包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/" class="">10.7.4. 包文档</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/" class="">10.7.5. 内部包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/" class="">10.7.6. 查询包</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">11. 测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.1.-The-go-test-Tool/" class="">go test</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/" class="">11.2. 测试函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/" class="">11.2.1. 随机测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/" class="">11.2.2. 测试一个命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/" class="">11.2.3. 白盒测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/" class="">11.2.4. 外部测试包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/" class="">11.2.5. 编写有效的测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/" class="">11.2.6. 避免脆弱的测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.3.-Coverage/" class="">11.3. 测试覆盖率</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.4.-Benchmark-Functions/" class="">11.4. 基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.5.-Profiling/" class="">11.5. 剖析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.6.-Example-Functions/" class="">11.6. 示例函数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">12. 反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.1.-Why-Reflection/" class="">12.1. 为何需要反射?</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.2.-reflect.Type-and-reflect.Value/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.3.-Display-a-Recursive-Value-Printer/" class="active">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.4.-Example-Encoding-S-Expressions/" class="">12.4. 示例: 编码为S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.5.-Setting-Variables-with-reflect.Value/" class="">12.5. 通过reflect.Value修改值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.6.-Example-Decoding-S-Expressions/" class="">12.6. 示例: 解码S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.7.-Accessing-Struct-Field-Tags/" class="">12.7. 获取结构体字段标签</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.8.-Displaying-the-Methods-of-a-Type/" class="">12.8. 显示一个类型的方法集</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.9.-A-Word-of-Caution/" class="">12.9. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">13. 底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.1.-unsafe.Sizeof-Alignof-and-Offsetof/" class="">13.1. unsafe.Sizeof, Alignof 和 Offsetof</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.2.-unsafe.Pointer/" class="">13.2. unsafe.Pointer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/" class="">13.3. 示例: 深度相等判断</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.4.-Calling-C-Code-with-cgo/" class="">13.4. 通过cgo调用C代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.5.-Another-Word-of-Caution/" class="">13.5. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>12.2. reflect.Type 和 reflect.Value</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#123-display一个递归的值打印器">12.3. Display，一个递归的值打印器</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="123-display一个递归的值打印器">
+  12.3. Display，一个递归的值打印器
+  <a class="anchor" href="#123-display%e4%b8%80%e4%b8%aa%e9%80%92%e5%bd%92%e7%9a%84%e5%80%bc%e6%89%93%e5%8d%b0%e5%99%a8">#</a>
+</h2>
+<p>接下来，让我们看看如何改善聚合数据类型的显示。我们并不想完全克隆一个fmt.Sprint函数，我们只是构建一个用于调试用的Display函数：给定任意一个复杂类型 x，打印这个值对应的完整结构，同时标记每个元素的发现路径。让我们从一个例子开始。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">e</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#e6db74">&#34;sqrt(A / pi)&#34;</span>)
+<span style="color:#a6e22e">Display</span>(<span style="color:#e6db74">&#34;e&#34;</span>, <span style="color:#a6e22e">e</span>)
+</code></pre></div><p>在上面的调用中，传入Display函数的参数是在7.9节一个表达式求值函数返回的语法树。Display函数的输出如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">Display</span> <span style="color:#a6e22e">e</span> (<span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">call</span>):
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">fn</span> = <span style="color:#e6db74">&#34;sqrt&#34;</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#66d9ef">type</span> = <span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">binary</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">op</span> = <span style="color:#ae81ff">47</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">x</span>.<span style="color:#66d9ef">type</span> = <span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Var</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">value</span> = <span style="color:#e6db74">&#34;A&#34;</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">y</span>.<span style="color:#66d9ef">type</span> = <span style="color:#a6e22e">eval</span>.<span style="color:#a6e22e">Var</span>
+<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">value</span> = <span style="color:#e6db74">&#34;pi&#34;</span>
+</code></pre></div><p>你应该尽量避免在一个包的API中暴露涉及反射的接口。我们将定义一个未导出的display函数用于递归处理工作，导出的是Display函数，它只是display函数简单的包装以接受interface{}类型的参数：</p>
+<p><u><i>gopl.io/ch12/display</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Display</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">x</span> <span style="color:#66d9ef">interface</span>{}) {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Display %s (%T):\n&#34;</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">x</span>)
+	<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">x</span>))
+}
+</code></pre></div><p>在display函数中，我们使用了前面定义的打印基础类型——基本类型、函数和chan等——元素值的formatAtom函数，但是我们会使用reflect.Value的方法来递归显示复杂类型的每一个成员。在递归下降过程中，path字符串，从最开始传入的起始值（这里是“e”），将逐步增长来表示是如何达到当前值（例如“e.args[0].value”）的。</p>
+<p>因为我们不再模拟fmt.Sprint函数，我们将直接使用fmt包来简化我们的例子实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">path</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">v</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>) {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Kind</span>() {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Invalid</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s = invalid\n&#34;</span>, <span style="color:#a6e22e">path</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Slice</span>, <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Array</span>:
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Len</span>(); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s[%d]&#34;</span>, <span style="color:#a6e22e">path</span>, <span style="color:#a6e22e">i</span>), <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">i</span>))
+		}
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Struct</span>:
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">NumField</span>(); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">fieldPath</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s.%s&#34;</span>, <span style="color:#a6e22e">path</span>, <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Type</span>().<span style="color:#a6e22e">Field</span>(<span style="color:#a6e22e">i</span>).<span style="color:#a6e22e">Name</span>)
+			<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">fieldPath</span>, <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Field</span>(<span style="color:#a6e22e">i</span>))
+		}
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Map</span>:
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">MapKeys</span>() {
+			<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s[%s]&#34;</span>, <span style="color:#a6e22e">path</span>,
+				<span style="color:#a6e22e">formatAtom</span>(<span style="color:#a6e22e">key</span>)), <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">MapIndex</span>(<span style="color:#a6e22e">key</span>))
+		}
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Ptr</span>:
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">IsNil</span>() {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s = nil\n&#34;</span>, <span style="color:#a6e22e">path</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;(*%s)&#34;</span>, <span style="color:#a6e22e">path</span>), <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Elem</span>())
+		}
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Interface</span>:
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">IsNil</span>() {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s = nil\n&#34;</span>, <span style="color:#a6e22e">path</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s.type = %s\n&#34;</span>, <span style="color:#a6e22e">path</span>, <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Elem</span>().<span style="color:#a6e22e">Type</span>())
+			<span style="color:#a6e22e">display</span>(<span style="color:#a6e22e">path</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;.value&#34;</span>, <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Elem</span>())
+		}
+	<span style="color:#66d9ef">default</span>: <span style="color:#75715e">// basic types, channels, funcs
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s = %s\n&#34;</span>, <span style="color:#a6e22e">path</span>, <span style="color:#a6e22e">formatAtom</span>(<span style="color:#a6e22e">v</span>))
+	}
+}
+</code></pre></div><p>让我们针对不同类型分别讨论。</p>
+<p><strong>Slice和数组：</strong> 两种的处理逻辑是一样的。Len方法返回slice或数组值中的元素个数，Index(i)获得索引i对应的元素，返回的也是一个reflect.Value；如果索引i超出范围的话将导致panic异常，这与数组或slice类型内建的len(a)和a[i]操作类似。display针对序列中的每个元素递归调用自身处理，我们通过在递归处理时向path附加“[i]”来表示访问路径。</p>
+<p>虽然reflect.Value类型带有很多方法，但是只有少数的方法能对任意值都安全调用。例如，Index方法只能对Slice、数组或字符串类型的值调用，如果对其它类型调用则会导致panic异常。</p>
+<p><strong>结构体：</strong> NumField方法报告结构体中成员的数量，Field(i)以reflect.Value类型返回第i个成员的值。成员列表也包括通过匿名字段提升上来的成员。为了在path添加“.f”来表示成员路径，我们必须获得结构体对应的reflect.Type类型信息，然后访问结构体第i个成员的名字。</p>
+<p><strong>Maps:</strong> MapKeys方法返回一个reflect.Value类型的slice，每一个元素对应map的一个key。和往常一样，遍历map时顺序是随机的。MapIndex(key)返回map中key对应的value。我们向path添加“[key]”来表示访问路径。（我们这里有一个未完成的工作。其实map的key的类型并不局限于formatAtom能完美处理的类型；数组、结构体和接口都可以作为map的key。针对这种类型，完善key的显示信息是练习12.1的任务。）</p>
+<p><strong>指针：</strong> Elem方法返回指针指向的变量，依然是reflect.Value类型。即使指针是nil，这个操作也是安全的，在这种情况下指针是Invalid类型，但是我们可以用IsNil方法来显式地测试一个空指针，这样我们可以打印更合适的信息。我们在path前面添加“*”，并用括弧包含以避免歧义。</p>
+<p><strong>接口：</strong> 再一次，我们使用IsNil方法来测试接口是否是nil，如果不是，我们可以调用v.Elem()来获取接口对应的动态值，并且打印对应的类型和值。</p>
+<p>现在我们的Display函数总算完工了，让我们看看它的表现吧。下面的Movie类型是在4.5节的电影类型上演变来的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Movie</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Title</span>, <span style="color:#a6e22e">Subtitle</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Year</span>            <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Color</span>           <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">Actor</span>           <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Oscars</span>          []<span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Sequel</span>          <span style="color:#f92672">*</span><span style="color:#66d9ef">string</span>
+}
+</code></pre></div><p>让我们声明一个该类型的变量，然后看看Display函数如何显示它：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">strangelove</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Movie</span>{
+	<span style="color:#a6e22e">Title</span>:    <span style="color:#e6db74">&#34;Dr. Strangelove&#34;</span>,
+	<span style="color:#a6e22e">Subtitle</span>: <span style="color:#e6db74">&#34;How I Learned to Stop Worrying and Love the Bomb&#34;</span>,
+	<span style="color:#a6e22e">Year</span>:     <span style="color:#ae81ff">1964</span>,
+	<span style="color:#a6e22e">Color</span>:    <span style="color:#66d9ef">false</span>,
+	<span style="color:#a6e22e">Actor</span>: <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>{
+		<span style="color:#e6db74">&#34;Dr. Strangelove&#34;</span>:            <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>,
+		<span style="color:#e6db74">&#34;Grp. Capt. Lionel Mandrake&#34;</span>: <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>,
+		<span style="color:#e6db74">&#34;Pres. Merkin Muffley&#34;</span>:       <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>,
+		<span style="color:#e6db74">&#34;Gen. Buck Turgidson&#34;</span>:        <span style="color:#e6db74">&#34;George C. Scott&#34;</span>,
+		<span style="color:#e6db74">&#34;Brig. Gen. Jack D. Ripper&#34;</span>:  <span style="color:#e6db74">&#34;Sterling Hayden&#34;</span>,
+		<span style="color:#e6db74">`Maj. T.J. &#34;King&#34; Kong`</span>:      <span style="color:#e6db74">&#34;Slim Pickens&#34;</span>,
+	},
+
+	<span style="color:#a6e22e">Oscars</span>: []<span style="color:#66d9ef">string</span>{
+		<span style="color:#e6db74">&#34;Best Actor (Nomin.)&#34;</span>,
+		<span style="color:#e6db74">&#34;Best Adapted Screenplay (Nomin.)&#34;</span>,
+		<span style="color:#e6db74">&#34;Best Director (Nomin.)&#34;</span>,
+		<span style="color:#e6db74">&#34;Best Picture (Nomin.)&#34;</span>,
+	},
+}
+</code></pre></div><p>Display(&ldquo;strangelove&rdquo;, strangelove)调用将显示（strangelove电影对应的中文名是《奇爱博士》）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">Display</span> <span style="color:#a6e22e">strangelove</span> (<span style="color:#a6e22e">display</span>.<span style="color:#a6e22e">Movie</span>):
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Title</span> = <span style="color:#e6db74">&#34;Dr. Strangelove&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Subtitle</span> = <span style="color:#e6db74">&#34;How I Learned to Stop Worrying and Love the Bomb&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Year</span> = <span style="color:#ae81ff">1964</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Color</span> = <span style="color:#66d9ef">false</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Gen. Buck Turgidson&#34;</span>] = <span style="color:#e6db74">&#34;George C. Scott&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Brig. Gen. Jack D. Ripper&#34;</span>] = <span style="color:#e6db74">&#34;Sterling Hayden&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Maj. T.J. \&#34;King\&#34; Kong&#34;</span>] = <span style="color:#e6db74">&#34;Slim Pickens&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Dr. Strangelove&#34;</span>] = <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Grp. Capt. Lionel Mandrake&#34;</span>] = <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Actor</span>[<span style="color:#e6db74">&#34;Pres. Merkin Muffley&#34;</span>] = <span style="color:#e6db74">&#34;Peter Sellers&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Oscars</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#e6db74">&#34;Best Actor (Nomin.)&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Oscars</span>[<span style="color:#ae81ff">1</span>] = <span style="color:#e6db74">&#34;Best Adapted Screenplay (Nomin.)&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Oscars</span>[<span style="color:#ae81ff">2</span>] = <span style="color:#e6db74">&#34;Best Director (Nomin.)&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Oscars</span>[<span style="color:#ae81ff">3</span>] = <span style="color:#e6db74">&#34;Best Picture (Nomin.)&#34;</span>
+<span style="color:#a6e22e">strangelove</span>.<span style="color:#a6e22e">Sequel</span> = <span style="color:#66d9ef">nil</span>
+</code></pre></div><p>我们也可以使用Display函数来显示标准库中类型的内部结构，例如<code>*os.File</code>类型：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">Display</span>(<span style="color:#e6db74">&#34;os.Stderr&#34;</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>)
+<span style="color:#75715e">// Output:
+</span><span style="color:#75715e">// Display os.Stderr (*os.File):
+</span><span style="color:#75715e">// (*(*os.Stderr).file).fd = 2
+</span><span style="color:#75715e">// (*(*os.Stderr).file).name = &#34;/dev/stderr&#34;
+</span><span style="color:#75715e">// (*(*os.Stderr).file).nepipe = 0
+</span></code></pre></div><p>可以看出，反射能够访问到结构体中未导出的成员。需要当心的是这个例子的输出在不同操作系统上可能是不同的，并且随着标准库的发展也可能导致结果不同。（这也是将这些成员定义为私有成员的原因之一！）我们甚至可以用Display函数来显示reflect.Value 的内部构造（在这里设置为<code>*os.File</code>的类型描述体）。<code>Display(&quot;rV&quot;, reflect.ValueOf(os.Stderr))</code>调用的输出如下，当然不同环境得到的结果可能有差异：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">Display</span> <span style="color:#a6e22e">rV</span> (<span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>):
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">size</span> = <span style="color:#ae81ff">8</span>
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">hash</span> = <span style="color:#ae81ff">871609668</span>
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">align</span> = <span style="color:#ae81ff">8</span>
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">fieldAlign</span> = <span style="color:#ae81ff">8</span>
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">kind</span> = <span style="color:#ae81ff">22</span>
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#66d9ef">string</span>) = <span style="color:#e6db74">&#34;*os.File&#34;</span>
+
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">uncommonType</span>).<span style="color:#a6e22e">methods</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">name</span>) = <span style="color:#e6db74">&#34;Chdir&#34;</span>
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">uncommonType</span>).<span style="color:#a6e22e">methods</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">mtyp</span>).<span style="color:#66d9ef">string</span>) = <span style="color:#e6db74">&#34;func() error&#34;</span>
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">rV</span>.<span style="color:#a6e22e">typ</span>).<span style="color:#a6e22e">uncommonType</span>).<span style="color:#a6e22e">methods</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">typ</span>).<span style="color:#66d9ef">string</span>) = <span style="color:#e6db74">&#34;func(*os.File) error&#34;</span>
+<span style="color:#f92672">...</span>
+</code></pre></div><p>观察下面两个例子的区别：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#66d9ef">interface</span>{} = <span style="color:#ae81ff">3</span>
+
+<span style="color:#a6e22e">Display</span>(<span style="color:#e6db74">&#34;i&#34;</span>, <span style="color:#a6e22e">i</span>)
+<span style="color:#75715e">// Output:
+</span><span style="color:#75715e">// Display i (int):
+</span><span style="color:#75715e">// i = 3
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">Display</span>(<span style="color:#e6db74">&#34;&amp;i&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">i</span>)
+<span style="color:#75715e">// Output:
+</span><span style="color:#75715e">// Display &amp;i (*interface {}):
+</span><span style="color:#75715e">// (*&amp;i).type = int
+</span><span style="color:#75715e">// (*&amp;i).value = 3
+</span></code></pre></div><p>在第一个例子中，Display函数调用reflect.ValueOf(i)，它返回一个Int类型的值。正如我们在12.2节中提到的，reflect.ValueOf总是返回一个具体类型的 Value，因为它是从一个接口值提取的内容。</p>
+<p>在第二个例子中，Display函数调用的是reflect.ValueOf(&amp;i)，它返回一个指向i的指针，对应Ptr类型。在switch的Ptr分支中，对这个值调用 Elem 方法，返回一个Value来表示变量 i 本身，对应Interface类型。像这样一个间接获得的Value，可能代表任意类型的值，包括接口类型。display函数递归调用自身，这次它分别打印了这个接口的动态类型和值。</p>
+<p>对于目前的实现，如果遇到对象图中含有回环，Display将会陷入死循环，例如下面这个首尾相连的链表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// a struct that points to itself
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Cycle</span> <span style="color:#66d9ef">struct</span>{ <span style="color:#a6e22e">Value</span> <span style="color:#66d9ef">int</span>; <span style="color:#a6e22e">Tail</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cycle</span> }
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">c</span> <span style="color:#a6e22e">Cycle</span>
+<span style="color:#a6e22e">c</span> = <span style="color:#a6e22e">Cycle</span>{<span style="color:#ae81ff">42</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>}
+<span style="color:#a6e22e">Display</span>(<span style="color:#e6db74">&#34;c&#34;</span>, <span style="color:#a6e22e">c</span>)
+</code></pre></div><p>Display会永远不停地进行深度递归打印：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">Display</span> <span style="color:#a6e22e">c</span> (<span style="color:#a6e22e">display</span>.<span style="color:#a6e22e">Cycle</span>):
+<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Value</span> = <span style="color:#ae81ff">42</span>
+(<span style="color:#f92672">*</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Value</span> = <span style="color:#ae81ff">42</span>
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Value</span> = <span style="color:#ae81ff">42</span>
+(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Tail</span>).<span style="color:#a6e22e">Value</span> = <span style="color:#ae81ff">42</span>
+<span style="color:#f92672">...</span><span style="color:#a6e22e">ad</span> <span style="color:#a6e22e">infinitum</span><span style="color:#f92672">...</span>
+</code></pre></div><p>许多Go语言程序都包含了一些循环的数据。让Display支持这类带环的数据结构需要些技巧，需要额外记录迄今访问的路径；相应会带来成本。通用的解决方案是采用 unsafe 的语言特性，我们将在13.3节看到具体的解决方案。</p>
+<p>带环的数据结构很少会对fmt.Sprint函数造成问题，因为它很少尝试打印完整的数据结构。例如，当它遇到一个指针的时候，它只是简单地打印指针的数字值。在打印包含自身的slice或map时可能卡住，但是这种情况很罕见，不值得付出为了处理回环所需的开销。</p>
+<p><strong>练习 12.1：</strong> 扩展Display函数，使它可以显示包含以结构体或数组作为map的key类型的值。</p>
+<p><strong>练习 12.2：</strong> 增强display函数的稳健性，通过记录边界的步数来确保在超出一定限制后放弃递归。（在13.3节，我们会看到另一种探测数据结构是否存在环的技术。）</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/12.%20Reflection/12.3.%20Display,%20a%20Recursive%20Value%20Printer.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#123-display一个递归的值打印器">12.3. Display，一个递归的值打印器</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

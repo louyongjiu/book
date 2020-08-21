@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="10.5. 包的匿名导入 #  如果只是导入一个包而并不使用导入的包将会导致一个编译错误。但是有时候我们只是想利用导入包而产生的副作用：它会计算包级变量的初始化表达式和执行导入包的init初始化函数（§2.6.2）。这时候我们需要抑制“unused import”编译错误，我们可以用下划线_来重命名导入的包。像往常一样，下划线_为空白标识符，并不能被访问。
+import _ &#34;image/png&#34; // register PNG decoder 这个被称为包的匿名导入。它通常是用来实现一个编译时机制，然后通过在main主程序入口选择性地导入附加的包。首先，让我们看看如何使用该特性，然后再看看它是如何工作的。
+标准库的image图像包包含了一个Decode函数，用于从io.Reader接口读取数据并解码图像，它调用底层注册的图像解码器来完成任务，然后返回image.Image类型的图像。使用image.Decode很容易编写一个图像格式的转换工具，读取一种格式的图像，然后编码为另一种图像格式：
+gopl.io/ch10/jpeg
+// The jpeg command reads a PNG image from the standard input // and writes it as a JPEG image to the standard output. package main import ( &#34;fmt&#34; &#34;image&#34; &#34;image/jpeg&#34; _ &#34;image/png&#34; // register PNG decoder 	&#34;io&#34; &#34;os&#34; ) func main() { if err := toJPEG(os.Stdin, os.Stdout); err != nil { fmt.Fprintf(os.Stderr, &#34;jpeg: %v\n&#34;, err) os.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="10.5. 包的匿名导入" />
+<meta property="og:description" content="10.5. 包的匿名导入 #  如果只是导入一个包而并不使用导入的包将会导致一个编译错误。但是有时候我们只是想利用导入包而产生的副作用：它会计算包级变量的初始化表达式和执行导入包的init初始化函数（§2.6.2）。这时候我们需要抑制“unused import”编译错误，我们可以用下划线_来重命名导入的包。像往常一样，下划线_为空白标识符，并不能被访问。
+import _ &#34;image/png&#34; // register PNG decoder 这个被称为包的匿名导入。它通常是用来实现一个编译时机制，然后通过在main主程序入口选择性地导入附加的包。首先，让我们看看如何使用该特性，然后再看看它是如何工作的。
+标准库的image图像包包含了一个Decode函数，用于从io.Reader接口读取数据并解码图像，它调用底层注册的图像解码器来完成任务，然后返回image.Image类型的图像。使用image.Decode很容易编写一个图像格式的转换工具，读取一种格式的图像，然后编码为另一种图像格式：
+gopl.io/ch10/jpeg
+// The jpeg command reads a PNG image from the standard input // and writes it as a JPEG image to the standard output. package main import ( &#34;fmt&#34; &#34;image&#34; &#34;image/jpeg&#34; _ &#34;image/png&#34; // register PNG decoder 	&#34;io&#34; &#34;os&#34; ) func main() { if err := toJPEG(os.Stdin, os.Stdout); err != nil { fmt.Fprintf(os.Stderr, &#34;jpeg: %v\n&#34;, err) os." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/10.-Packages-and-the-Go-Tool/10.5.-Blank-Imports/" />
+
+<title>10.5. 包的匿名导入 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.908bac324a24d22aca8de02bf05ff31c7b37f8cd16eb53ebde4ddf868373fe4b.js" integrity="sha256-kIusMkok0irKjeAr8F/zHHs3&#43;M0W61Pr3k3fhoNz/ks="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/" class="">2. 程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.1.-Names/" class="">2.1. 命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.2.-Declarations/" class="">2.2. 声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/" class="">2.3. 变量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/" class="">2.3.1. 简短变量声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/" class="">2.3.2. 指针</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/" class="">2.3.3. new函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/" class="">2.3.4. 变量的生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/" class="">2.4. 赋值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/" class="">2.4.1. 元组赋值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/" class="">2.4.2. 可赋值性</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.5.-Type-Declarations/" class="">2.5. 类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/" class="">2.6. 包和文件</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/" class="">2.6.1. 导入包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/" class="">2.6.2. 包的初始化</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/2.-Program-Structure/2.7.-Scope/" class="">2.7. 作用域</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/" class="">3. 基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.1.-Integers/" class="">3.1. 整型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/" class="">3.2. 浮点数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.3.-Complex-Numbers/" class="">3.3. 复数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.4.-Booleans/" class="">3.4. 布尔型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/" class="">3.5. 字符串</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/" class="">3.5.1. 字符串面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/" class="">3.5.2. Unicode</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/" class="">3.5.3. UTF-8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/" class="">3.5.4. 字符串和Byte切片</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/" class="">3.5.5. 字符串和数字的转换</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/" class="">3.6. 常量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/" class="">3.6.1. iota 常量生成器</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/" class="">3.6.2. 无类型常量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/" class="">4. 复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.1.-Arrays/" class="">4.1. 数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/" class="">4.2. Slice</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/" class="">4.2.1. append函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/" class="">4.2.2. Slice内存技巧</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.3.-Maps/" class="">4.3. Map</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/" class="">4.4. 结构体</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/" class="">4.4.1. 结构体字面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/" class="">4.4.2. 结构体比较</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/" class="">4.4.3. 结构体嵌入和匿名成员</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.5.-JSON/" class="">4.5. JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" class="">4.6. 文本和HTML模板</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/" class="">5. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.1.-Function-Declarations/" class="">5.1. 函数声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.2.-Recursion/" class="">5.2. 递归</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.3.-Multiple-Return-Values/" class="">5.3. 多返回值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/" class="">5.4. 错误</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/" class="">5.4.1. 错误处理策略</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/" class="">5.4.2. 文件结尾错误（EOF）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.5.-Function-Values/" class="">5.5. 函数值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.6.-Anonymous-Functions/" class="">5.6. 匿名函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/" class="">5.6.1. 警告：捕获迭代变量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.7.-Variadic-Functions/" class="">5.7. 可变参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.8.-Deferred-Function-Calls/" class="">5.8. Deferred函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.9.-Panic/" class="">5.9. Panic异常</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/5.-Functions/5.10.-Recover/" class="">5.10. Recover捕获异常</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/" class="">6. 方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.1.-Method-Declarations/" class="">6.1. 方法声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/" class="">6.2. 基于指针对象的方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/" class="">6.2.1. Nil也是一个合法的接收器类型</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/" class="">6.3. 通过嵌入结构体来扩展类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.4.-Method-Values-and-Expressions/" class="">6.4. 方法值和方法表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.5.-Example-Bit-Vector-Type/" class="">6.5. 示例: Bit数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/6.-Methods/6.6.-Encapsulation/" class="">6.6. 封装</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/" class="">7. 接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.1.-Interfaces-as-Contracts/" class="">7.1. 接口约定</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.2.-Interface-Types/" class="">7.2. 接口类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.3.-Interface-Satisfaction/" class="">7.3. 实现接口的条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.4.-Parsing-Flags-with-flag.Value/" class="">7.4. flag.Value接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.5.-Interface-Values/" class="">7.5. 接口值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/" class="">7.5.1. 警告：一个包含nil指针的接口不是nil接口</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.6.-Sorting-with-sort.Interface/" class="">7.6. sort.Interface接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.7.-The-http.Handler-Interface/" class="">7.7. http.Handler接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.8.-The-error-Interface/" class="">7.8. error接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.9.-Example-Expression-Evaluator/" class="">7.9. 示例: 表达式求值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.10.-Type-Assertions/" class="">7.10. 类型断言</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/" class="">7.11. 基于类型断言区别错误类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.12.-Querying-Behaviors-with-Interface-Type-Assertions/" class="">7.12. 通过类型断言询问行为</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.13.-Type-Switches/" class="">7.13. 类型分支</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/" class="">7.14. 示例: 基于标记的XML解码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/" class="">7.15. 一些建议</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/" class="">8. Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.1.-Goroutines/" class="">8.1. Goroutines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/" class="">8.2. 示例: 并发的Clock服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/" class="">8.3. 示例: 并发的Echo服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/" class="">8.4. Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/" class="">8.4.1. 不带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/" class="">8.4.2. 串联的Channels（Pipeline）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/" class="">8.4.3. 单方向的Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/" class="">8.4.4. 带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/" class="">8.5. 并发的循环</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/" class="">8.6. 示例: 并发的Web爬虫</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/" class="">8.7. 基于select的多路复用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/" class="">8.8. 示例: 并发的目录遍历</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.9.-Cancellation/" class="">8.9. 并发的退出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/" class="">8.10. 示例: 聊天服务</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/" class="">9. 基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/" class="">9.1. 竞争条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/" class="">9.2. sync.Mutex互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/" class="">9.3. sync.RWMutex读写锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/" class="">9.4. 内存同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/" class="">9.5. sync.Once惰性初始化</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/" class="">9.6. 竞争条件检测</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/" class="">9.7. 示例: 并发的非阻塞缓存</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/" class="">9.8. Goroutines和线程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/" class="">9.8.1. 动态栈
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/" class="">9.8.2. Goroutine调度</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/" class="">9.8.3. GOMAXPROCS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/" class="">9.8.4. Goroutine没有ID号</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/" class="">10. 包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.1.-Introduction/" class="">10.1. 包简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/" class="">10.2. 导入路径</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/" class="">10.3. 包声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/" class="">10.4. 导入声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.5.-Blank-Imports/" class="active">10.5. 包的匿名导入</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/" class="">10.6. 包和命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/" class="">10.7. 工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/" class="">10.7.1. 工作区结构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/" class="">10.7.2. 下载包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/" class="">10.7.3. 构建包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/" class="">10.7.4. 包文档</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/" class="">10.7.5. 内部包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/" class="">10.7.6. 查询包</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/" class="">11. 测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.1.-The-go-test-Tool/" class="">go test</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/" class="">11.2. 测试函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/" class="">11.2.1. 随机测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/" class="">11.2.2. 测试一个命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/" class="">11.2.3. 白盒测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/" class="">11.2.4. 外部测试包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/" class="">11.2.5. 编写有效的测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/" class="">11.2.6. 避免脆弱的测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.3.-Coverage/" class="">11.3. 测试覆盖率</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.4.-Benchmark-Functions/" class="">11.4. 基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.5.-Profiling/" class="">11.5. 剖析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/11.-Testing/11.6.-Example-Functions/" class="">11.6. 示例函数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/" class="">12. 反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.1.-Why-Reflection/" class="">12.1. 为何需要反射?</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.2.-reflect.Type-and-reflect.Value/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.3.-Display-a-Recursive-Value-Printer/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.4.-Example-Encoding-S-Expressions/" class="">12.4. 示例: 编码为S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.5.-Setting-Variables-with-reflect.Value/" class="">12.5. 通过reflect.Value修改值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.6.-Example-Decoding-S-Expressions/" class="">12.6. 示例: 解码S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.7.-Accessing-Struct-Field-Tags/" class="">12.7. 获取结构体字段标签</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.8.-Displaying-the-Methods-of-a-Type/" class="">12.8. 显示一个类型的方法集</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/12.-Reflection/12.9.-A-Word-of-Caution/" class="">12.9. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/" class="">13. 底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.1.-unsafe.Sizeof-Alignof-and-Offsetof/" class="">13.1. unsafe.Sizeof, Alignof 和 Offsetof</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.2.-unsafe.Pointer/" class="">13.2. unsafe.Pointer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/" class="">13.3. 示例: 深度相等判断</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.4.-Calling-C-Code-with-cgo/" class="">13.4. 通过cgo调用C代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/13.-Low-Level-Programming/13.5.-Another-Word-of-Caution/" class="">13.5. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>10.5. 包的匿名导入</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#105-包的匿名导入">10.5. 包的匿名导入</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="105-包的匿名导入">
+  10.5. 包的匿名导入
+  <a class="anchor" href="#105-%e5%8c%85%e7%9a%84%e5%8c%bf%e5%90%8d%e5%af%bc%e5%85%a5">#</a>
+</h2>
+<p>如果只是导入一个包而并不使用导入的包将会导致一个编译错误。但是有时候我们只是想利用导入包而产生的副作用：它会计算包级变量的初始化表达式和执行导入包的init初始化函数（§2.6.2）。这时候我们需要抑制“unused import”编译错误，我们可以用下划线<code>_</code>来重命名导入的包。像往常一样，下划线<code>_</code>为空白标识符，并不能被访问。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;image/png&#34;</span> <span style="color:#75715e">// register PNG decoder
+</span></code></pre></div><p>这个被称为包的匿名导入。它通常是用来实现一个编译时机制，然后通过在main主程序入口选择性地导入附加的包。首先，让我们看看如何使用该特性，然后再看看它是如何工作的。</p>
+<p>标准库的image图像包包含了一个<code>Decode</code>函数，用于从<code>io.Reader</code>接口读取数据并解码图像，它调用底层注册的图像解码器来完成任务，然后返回image.Image类型的图像。使用<code>image.Decode</code>很容易编写一个图像格式的转换工具，读取一种格式的图像，然后编码为另一种图像格式：</p>
+<p><u><i>gopl.io/ch10/jpeg</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// The jpeg command reads a PNG image from the standard input
+</span><span style="color:#75715e">// and writes it as a JPEG image to the standard output.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;image&#34;</span>
+	<span style="color:#e6db74">&#34;image/jpeg&#34;</span>
+	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;image/png&#34;</span> <span style="color:#75715e">// register PNG decoder
+</span><span style="color:#75715e"></span>	<span style="color:#e6db74">&#34;io&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">toJPEG</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdin</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>, <span style="color:#e6db74">&#34;jpeg: %v\n&#34;</span>, <span style="color:#a6e22e">err</span>)
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">toJPEG</span>(<span style="color:#a6e22e">in</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>, <span style="color:#a6e22e">out</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">img</span>, <span style="color:#a6e22e">kind</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Decode</span>(<span style="color:#a6e22e">in</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintln</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>, <span style="color:#e6db74">&#34;Input format =&#34;</span>, <span style="color:#a6e22e">kind</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">jpeg</span>.<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">img</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">jpeg</span>.<span style="color:#a6e22e">Options</span>{<span style="color:#a6e22e">Quality</span>: <span style="color:#ae81ff">95</span>})
+}
+</code></pre></div><p>如果我们将<code>gopl.io/ch3/mandelbrot</code>（§3.3）的输出导入到这个程序的标准输入，它将解码输入的PNG格式图像，然后转换为JPEG格式的图像输出（图3.3）。</p>
+<pre><code>$ go build gopl.io/ch3/mandelbrot
+$ go build gopl.io/ch10/jpeg
+$ ./mandelbrot | ./jpeg &gt;mandelbrot.jpg
+Input format = png
+</code></pre><p>要注意image/png包的匿名导入语句。如果没有这一行语句，程序依然可以编译和运行，但是它将不能正确识别和解码PNG格式的图像：</p>
+<pre><code>$ go build gopl.io/ch10/jpeg
+$ ./mandelbrot | ./jpeg &gt;mandelbrot.jpg
+jpeg: image: unknown format
+</code></pre><p>下面的代码演示了它的工作机制。标准库还提供了GIF、PNG和JPEG等格式图像的解码器，用户也可以提供自己的解码器，但是为了保持程序体积较小，很多解码器并没有被全部包含，除非是明确需要支持的格式。image.Decode函数在解码时会依次查询支持的格式列表。每个格式驱动列表的每个入口指定了四件事情：格式的名称；一个用于描述这种图像数据开头部分模式的字符串，用于解码器检测识别；一个Decode函数用于完成解码图像工作；一个DecodeConfig函数用于解码图像的大小和颜色空间的信息。每个驱动入口是通过调用image.RegisterFormat函数注册，一般是在每个格式包的init初始化函数中调用，例如image/png包是这样注册的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">png</span> <span style="color:#75715e">// image/png
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Decode</span>(<span style="color:#a6e22e">r</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>) (<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>, <span style="color:#66d9ef">error</span>)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">DecodeConfig</span>(<span style="color:#a6e22e">r</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>) (<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Config</span>, <span style="color:#66d9ef">error</span>)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">pngHeader</span> = <span style="color:#e6db74">&#34;\x89PNG\r\n\x1a\n&#34;</span>
+	<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">RegisterFormat</span>(<span style="color:#e6db74">&#34;png&#34;</span>, <span style="color:#a6e22e">pngHeader</span>, <span style="color:#a6e22e">Decode</span>, <span style="color:#a6e22e">DecodeConfig</span>)
+}
+</code></pre></div><p>最终的效果是，主程序只需要匿名导入特定图像驱动包就可以用image.Decode解码对应格式的图像了。</p>
+<p>数据库包database/sql也是采用了类似的技术，让用户可以根据自己需要选择导入必要的数据库驱动。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;database/sql&#34;</span>
+	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/lib/pq&#34;</span>              <span style="color:#75715e">// enable support for Postgres
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/go-sql-driver/mysql&#34;</span> <span style="color:#75715e">// enable support for MySQL
+</span><span style="color:#75715e"></span>)
+
+<span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;postgres&#34;</span>, <span style="color:#a6e22e">dbname</span>) <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dbname</span>)    <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;sqlite3&#34;</span>, <span style="color:#a6e22e">dbname</span>)  <span style="color:#75715e">// returns error: unknown driver &#34;sqlite3&#34;
+</span></code></pre></div><p><strong>练习 10.1：</strong> 扩展jpeg程序，以支持任意图像格式之间的相互转换，使用image.Decode检测支持的格式类型，然后通过flag命令行标志参数选择输出的格式。</p>
+<p><strong>练习 10.2：</strong> 设计一个通用的压缩文件读取框架，用来读取ZIP（archive/zip）和POSIX tar（archive/tar）格式压缩的文档。使用类似上面的注册技术来扩展支持不同的压缩格式，然后根据需要通过匿名导入选择导入要支持的压缩格式的驱动包。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/10.%20Packages%20and%20the%20Go%20Tool/10.5.%20Blank%20Imports.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#105-包的匿名导入">10.5. 包的匿名导入</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,11 +10,11 @@
     
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-01/</link>
+      <title>6.1. 方法声明</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.1.-Method-Declarations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-01/</guid>
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.1.-Method-Declarations/</guid>
       <description>6.1. 方法声明 #  在函数声明时，在其名字之前放上一个变量，即是一个方法。这个附加的参数会将该函数附加到这种类型上，即相当于为这种类型定义了一个独占的方法。
 下面来写我们第一个方法的例子，这个例子在package geometry下：
 gopl.io/ch6/geometry
@@ -25,40 +25,11 @@ p := Point{1, 2} q := Point{4, 6} fmt.Println(Distance(p, q)) // &amp;#34;5&amp;
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-02-1/</link>
+      <title>6.3. 通过嵌入结构体来扩展类型</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-02-1/</guid>
-      <description>6.2.1. Nil也是一个合法的接收器类型 #  就像一些函数允许nil指针作为参数一样，方法理论上也可以用nil指针作为其接收器，尤其当nil对于对象来说是合法的零值时，比如map或者slice。在下面的简单int链表的例子里，nil代表的是空链表：
-// An IntList is a linked list of integers. // A nil *IntList represents the empty list. type IntList struct { Value int Tail *IntList } // Sum returns the sum of the list elements. func (list *IntList) Sum() int { if list == nil { return 0 } return list.Value + list.Tail.Sum() } 当你定义一个允许nil作为接收器值的方法的类型时，在类型前面的注释中指出nil变量代表的意义是很有必要的，就像我们上面例子里做的这样。
-下面是net/url包里Values类型定义的一部分。
-net/url
-package url // Values maps a string key to a list of values.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-02/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-02/</guid>
-      <description>6.2. 基于指针对象的方法 #  当调用一个函数时，会对其每一个参数值进行拷贝，如果一个函数需要更新一个变量，或者函数的其中一个参数实在太大我们希望能够避免进行这种默认的拷贝，这种情况下我们就需要用到指针了。对应到我们这里用来更新接收器的对象的方法，当这个接受者变量本身比较大时，我们就可以用其指针而不是对象来声明方法，如下：
-func (p *Point) ScaleBy(factor float64) { p.X *= factor p.Y *= factor } 这个方法的名字是(*Point).ScaleBy。这里的括号是必须的；没有括号的话这个表达式可能会被理解为*(Point.ScaleBy)。
-在现实的程序里，一般会约定如果Point这个类有一个指针作为接收器的方法，那么所有Point的方法都必须有一个指针接收器，即使是那些并不需要这个指针接收器的函数。我们在这里打破了这个约定只是为了展示一下两种方法的异同而已。
-只有类型（Point）和指向他们的指针(*Point)，才可能是出现在接收器声明里的两种接收器。此外，为了避免歧义，在声明方法时，如果一个类型名本身是一个指针的话，是不允许其出现在接收器中的，比如下面这个例子：
-type P *int func (P) f() { /* ... */ } // compile error: invalid receiver type 想要调用指针类型方法(*Point).ScaleBy，只要提供一个Point类型的指针即可，像下面这样。
-r := &amp;amp;Point{1, 2} r.ScaleBy(2) fmt.Println(*r) // &amp;#34;{2, 4}&amp;#34; 或者这样：
-p := Point{1, 2} pptr := &amp;amp;p pptr.ScaleBy(2) fmt.Println(p) // &amp;#34;{2, 4}&amp;#34; 或者这样:
-p := Point{1, 2} (&amp;amp;p).ScaleBy(2) fmt.Println(p) // &amp;#34;{2, 4}&amp;#34; 不过后面两种方法有些笨拙。幸运的是，go语言本身在这种地方会帮到我们。如果接收器p是一个Point类型的变量，并且其方法需要一个Point指针作为接收器，我们可以用下面这种简短的写法：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-03/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-03/</guid>
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/</guid>
       <description>6.3. 通过嵌入结构体来扩展类型 #  来看看ColoredPoint这个类型：
 gopl.io/ch6/coloredpoint
 import &amp;#34;image/color&amp;#34; type Point struct{ X, Y float64 } type ColoredPoint struct { Point Color color.RGBA } 我们完全可以将ColoredPoint定义为一个有三个字段的struct，但是我们却将Point这个类型嵌入到ColoredPoint来提供X和Y这两个字段。像我们在4.4节中看到的那样，内嵌可以使我们在定义ColoredPoint时得到一种句法上的简写形式，并使其包含Point类型所具有的一切字段，然后再定义一些自己的。如果我们想要的话，我们可以直接认为通过嵌入的字段就是ColoredPoint自身的字段，而完全不需要在调用时指出Point，比如下面这样。
@@ -67,22 +38,22 @@ red := color.RGBA{255, 0, 0, 255} blue := color.RGBA{0, 0, 255, 255} var p = Col
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-04/</link>
+      <title>6.4. 方法值和方法表达式</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.4.-Method-Values-and-Expressions/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-04/</guid>
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.4.-Method-Values-and-Expressions/</guid>
       <description>6.4. 方法值和方法表达式 #  我们经常选择一个方法，并且在同一个表达式里执行，比如常见的p.Distance()形式，实际上将其分成两步来执行也是可能的。p.Distance叫作“选择器”，选择器会返回一个方法“值”-&amp;gt;一个将方法（Point.Distance）绑定到特定接收器变量的函数。这个函数可以不通过指定其接收器即可被调用；即调用时不需要指定接收器（译注：因为已经在前文中指定过了），只要传入函数的参数即可：
 p := Point{1, 2} q := Point{4, 6} distanceFromP := p.Distance // method value fmt.Println(distanceFromP(q)) // &amp;#34;5&amp;#34; var origin Point // {0, 0} fmt.Println(distanceFromP(origin)) // &amp;#34;2.23606797749979&amp;#34;, sqrt(5)  scaleP := p.ScaleBy // method value scaleP(2) // p becomes (2, 4) scaleP(3) // then (6, 12) scaleP(10) // then (60, 120) 在一个包的API需要一个函数值、且调用方希望操作的是某一个绑定了对象的方法的话，方法“值”会非常实用（``=_=`真是绕）。举例来说，下面例子中的time.AfterFunc这个函数的功能是在指定的延迟时间之后来执行一个（译注：另外的）函数。且这个函数操作的是一个Rocket对象r
 type Rocket struct { /* ... */ } func (r *Rocket) Launch() { /* .</description>
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-05/</link>
+      <title>6.5. 示例: Bit数组</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.5.-Example-Bit-Vector-Type/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-05/</guid>
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.5.-Example-Bit-Vector-Type/</guid>
       <description>6.5. 示例: Bit数组 #  Go语言里的集合一般会用map[T]bool这种形式来表示，T代表元素类型。集合用map类型来表示虽然非常灵活，但我们可以以一种更好的形式来表示它。例如在数据流分析领域，集合元素通常是一个非负整数，集合会包含很多元素，并且集合会经常进行并集、交集操作，这种情况下，bit数组会比map表现更加理想。（译注：这里再补充一个例子，比如我们执行一个http下载任务，把文件按照16kb一块划分为很多块，需要有一个全局变量来标识哪些块下载完成了，这种时候也需要用到bit数组。）
 一个bit数组通常会用一个无符号数或者称之为“字”的slice来表示，每一个元素的每一位都表示集合里的一个值。当集合的第i位被设置时，我们才说这个集合包含元素i。下面的这个程序展示了一个简单的bit数组类型，并且实现了三个函数来对这个bit数组来进行操作：
 gopl.io/ch6/intset
@@ -90,11 +61,11 @@ gopl.io/ch6/intset
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/6.-Methods/ch6-06/</link>
+      <title>6.6. 封装</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.6.-Encapsulation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/6.-Methods/ch6-06/</guid>
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.6.-Encapsulation/</guid>
       <description>6.6. 封装 #  一个对象的变量或者方法如果对调用方是不可见的话，一般就被定义为“封装”。封装有时候也被叫做信息隐藏，同时也是面向对象编程最关键的一个方面。
 Go语言只有一种控制可见性的手段：大写首字母的标识符会从定义它们的包中被导出，小写字母的则不会。这种限制包内成员的方式同样适用于struct或者一个类型的方法。因而如果我们想要封装一个对象，我们必须将其定义为一个struct。
 这也就是前面的小节中IntSet被定义为struct类型的原因，尽管它只有一个字段：

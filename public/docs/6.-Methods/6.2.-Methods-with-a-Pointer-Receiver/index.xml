@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6.2. 基于指针对象的方法 on Book</title>
+    <link>https://book.ninescloud.com/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/</link>
+    <description>Recent content in 6.2. 基于指针对象的方法 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>6.2.1. Nil也是一个合法的接收器类型</title>
+      <link>https://book.ninescloud.com/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/</guid>
+      <description>6.2.1. Nil也是一个合法的接收器类型 #  就像一些函数允许nil指针作为参数一样，方法理论上也可以用nil指针作为其接收器，尤其当nil对于对象来说是合法的零值时，比如map或者slice。在下面的简单int链表的例子里，nil代表的是空链表：
+// An IntList is a linked list of integers. // A nil *IntList represents the empty list. type IntList struct { Value int Tail *IntList } // Sum returns the sum of the list elements. func (list *IntList) Sum() int { if list == nil { return 0 } return list.Value + list.Tail.Sum() } 当你定义一个允许nil作为接收器值的方法的类型时，在类型前面的注释中指出nil变量代表的意义是很有必要的，就像我们上面例子里做的这样。
+下面是net/url包里Values类型定义的一部分。
+net/url
+package url // Values maps a string key to a list of values.</description>
+    </item>
+    
+  </channel>
+</rss>

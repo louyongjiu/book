@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="9.5. sync.Once惰性初始化 #  如果初始化成本比较大的话，那么将初始化延迟到需要的时候再去做就是一个比较好的选择。如果在程序启动的时候就去做这类初始化的话，会增加程序的启动时间，并且因为执行的时候可能也并不需要这些变量，所以实际上有一些浪费。让我们来看在本章早一些时候的icons变量：
+var icons map[string]image.Image 这个版本的Icon用到了懒初始化（lazy initialization）。
+func loadIcons() { icons = map[string]image.Image{ &#34;spades.png&#34;: loadIcon(&#34;spades.png&#34;), &#34;hearts.png&#34;: loadIcon(&#34;hearts.png&#34;), &#34;diamonds.png&#34;: loadIcon(&#34;diamonds.png&#34;), &#34;clubs.png&#34;:	loadIcon(&#34;clubs.png&#34;), } } // NOTE: not concurrency-safe! func Icon(name string) image.Image { if icons == nil { loadIcons() // one-time initialization 	} return icons[name] } 如果一个变量只被一个单独的goroutine所访问的话，我们可以使用上面的这种模板，但这种模板在Icon被并发调用时并不安全。就像前面银行的那个Deposit(存款)函数一样，Icon函数也是由多个步骤组成的：首先测试icons是否为空，然后load这些icons，之后将icons更新为一个非空的值。直觉会告诉我们最差的情况是loadIcons函数被多次访问会带来数据竞争。当第一个goroutine在忙着loading这些icons的时候，另一个goroutine进入了Icon函数，发现变量是nil，然后也会调用loadIcons函数。
+不过这种直觉是错误的。（我们希望你从现在开始能够构建自己对并发的直觉，也就是说对并发的直觉总是不能被信任的！），回忆一下9.4节。因为缺少显式的同步，编译器和CPU是可以随意地去更改访问内存的指令顺序，以任意方式，只要保证每一个goroutine自己的执行顺序一致。其中一种可能loadIcons的语句重排是下面这样。它会在填写icons变量的值之前先用一个空map来初始化icons变量。
+func loadIcons() { icons = make(map[string]image.Image) icons[&#34;spades.png&#34;] = loadIcon(&#34;spades.png&#34;) icons[&#34;hearts.png&#34;] = loadIcon(&#34;hearts.png&#34;) icons[&#34;diamonds.png&#34;] = loadIcon(&#34;diamonds.png&#34;) icons[&#34;clubs.png&#34;] = loadIcon(&#34;clubs.png&#34;) } 因此，一个goroutine在检查icons是非空时，也并不能就假设这个变量的初始化流程已经走完了（译注：可能只是塞了个空map，里面的值还没填完，也就是说填值的语句都没执行完呢）。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="9.5. sync.Once惰性初始化 #  如果初始化成本比较大的话，那么将初始化延迟到需要的时候再去做就是一个比较好的选择。如果在程序启动的时候就去做这类初始化的话，会增加程序的启动时间，并且因为执行的时候可能也并不需要这些变量，所以实际上有一些浪费。让我们来看在本章早一些时候的icons变量：
+var icons map[string]image.Image 这个版本的Icon用到了懒初始化（lazy initialization）。
+func loadIcons() { icons = map[string]image.Image{ &#34;spades.png&#34;: loadIcon(&#34;spades.png&#34;), &#34;hearts.png&#34;: loadIcon(&#34;hearts.png&#34;), &#34;diamonds.png&#34;: loadIcon(&#34;diamonds.png&#34;), &#34;clubs.png&#34;:	loadIcon(&#34;clubs.png&#34;), } } // NOTE: not concurrency-safe! func Icon(name string) image.Image { if icons == nil { loadIcons() // one-time initialization 	} return icons[name] } 如果一个变量只被一个单独的goroutine所访问的话，我们可以使用上面的这种模板，但这种模板在Icon被并发调用时并不安全。就像前面银行的那个Deposit(存款)函数一样，Icon函数也是由多个步骤组成的：首先测试icons是否为空，然后load这些icons，之后将icons更新为一个非空的值。直觉会告诉我们最差的情况是loadIcons函数被多次访问会带来数据竞争。当第一个goroutine在忙着loading这些icons的时候，另一个goroutine进入了Icon函数，发现变量是nil，然后也会调用loadIcons函数。
+不过这种直觉是错误的。（我们希望你从现在开始能够构建自己对并发的直觉，也就是说对并发的直觉总是不能被信任的！），回忆一下9.4节。因为缺少显式的同步，编译器和CPU是可以随意地去更改访问内存的指令顺序，以任意方式，只要保证每一个goroutine自己的执行顺序一致。其中一种可能loadIcons的语句重排是下面这样。它会在填写icons变量的值之前先用一个空map来初始化icons变量。
+func loadIcons() { icons = make(map[string]image.Image) icons[&#34;spades.png&#34;] = loadIcon(&#34;spades.png&#34;) icons[&#34;hearts.png&#34;] = loadIcon(&#34;hearts.png&#34;) icons[&#34;diamonds.png&#34;] = loadIcon(&#34;diamonds.png&#34;) icons[&#34;clubs.png&#34;] = loadIcon(&#34;clubs.png&#34;) } 因此，一个goroutine在检查icons是非空时，也并不能就假设这个变量的初始化流程已经走完了（译注：可能只是塞了个空map，里面的值还没填完，也就是说填值的语句都没执行完呢）。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/docs/ch9/ch9-05/" />
+
+<title>Ch9 05 | Hugo Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.7274e6413b1d4a32c98ed56250866993ea1b6e4e6df5b1983a42cd85991a6f9b.js" integrity="sha256-cnTmQTsdSjLJjtViUIZpk&#43;obbk5t9bGYOkLNhZkab5s="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Hugo Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/docs/ch0/"><strong>前言</strong></a>
+<ul>
+<li><a href="/docs/ch0/ch0-01/">Go语言起源</a></li>
+<li><a href="/docs/ch0/ch0-02/">Go语言项目</a></li>
+<li><a href="/docs/ch0/ch0-03/">本书的组织</a></li>
+<li><a href="/docs/ch0/ch0-04/">更多的信息</a></li>
+<li><a href="/docs/ch0/ch0-05/">致谢</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch1/ch1/"><strong>入门</strong></a>
+<ul>
+<li><a href="/docs/ch1/ch1-01/">Hello, World</a></li>
+<li><a href="/docs/ch1/ch1-02/">命令行参数</a></li>
+<li><a href="/docs/ch1/ch1-03/">查找重复的行</a></li>
+<li><a href="/docs/ch1/ch1-04/">GIF动画</a></li>
+<li><a href="/docs/ch1/ch1-05/">获取URL</a></li>
+<li><a href="/docs/ch1/ch1-06/">并发获取多个URL</a></li>
+<li><a href="/docs/ch1/ch1-07/">Web服务</a></li>
+<li><a href="/docs/ch1/ch1-08/">本章要点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch2/ch2/"><strong>程序结构</strong></a>
+<ul>
+<li><a href="/docs/ch2/ch2-01/">命名</a></li>
+<li><a href="/docs/ch2/ch2-02/">声明</a></li>
+<li><a href="/docs/ch2/ch2-03/">变量</a></li>
+<li><a href="/docs/ch2/ch2-04/">赋值</a></li>
+<li><a href="/docs/ch2/ch2-05/">类型</a></li>
+<li><a href="/docs/ch2/ch2-06/">包和文件</a></li>
+<li><a href="/docs/ch2/ch2-07/">作用域</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch3/ch3/"><strong>基础数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch3/ch3-01/">整型</a></li>
+<li><a href="/docs/ch3/ch3-02/">浮点数</a></li>
+<li><a href="/docs/ch3/ch3-03/">复数</a></li>
+<li><a href="/docs/ch3/ch3-04/">布尔型</a></li>
+<li><a href="/docs/ch3/ch3-05/">字符串</a></li>
+<li><a href="/docs/ch3/ch3-06/">常量</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch4/ch4/"><strong>复合数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch4/ch4-01/">数组</a></li>
+<li><a href="/docs/ch4/ch4-02/">Slice</a></li>
+<li><a href="/docs/ch4/ch4-03/">Map</a></li>
+<li><a href="/docs/ch4/ch4-04/">结构体</a></li>
+<li><a href="/docs/ch4/ch4-05/">JSON</a></li>
+<li><a href="/docs/ch4/ch4-06/">文本和HTML模板</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch5/ch5/"><strong>函数</strong></a>
+<ul>
+<li><a href="/docs/ch5/ch5-01/">函数声明</a></li>
+<li><a href="/docs/ch5/ch5-02/">递归</a></li>
+<li><a href="/docs/ch5/ch5-03/">多返回值</a></li>
+<li><a href="/docs/ch5/ch5-04/">错误</a></li>
+<li><a href="/docs/ch5/ch5-05/">函数值</a></li>
+<li><a href="/docs/ch5/ch5-06/">匿名函数</a></li>
+<li><a href="/docs/ch5/ch5-07/">可变参数</a></li>
+<li><a href="/docs/ch5/ch5-08/">Deferred函数</a></li>
+<li><a href="/docs/ch5/ch5-09/">Panic异常</a></li>
+<li><a href="/docs/ch5/ch5-10/">Recover捕获异常</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch6/ch6/"><strong>方法</strong></a>
+<ul>
+<li><a href="/docs/ch6/ch6-01/">方法声明</a></li>
+<li><a href="/docs/ch6/ch6-02/">基于指针对象的方法</a></li>
+<li><a href="/docs/ch6/ch6-03/">通过嵌入结构体来扩展类型</a></li>
+<li><a href="/docs/ch6/ch6-04/">方法值和方法表达式</a></li>
+<li><a href="/docs/ch6/ch6-05/">示例: Bit数组</a></li>
+<li><a href="/docs/ch6/ch6-06/">封装</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch7/ch7/"><strong>接口</strong></a>
+<ul>
+<li><a href="/docs/ch7/ch7-01/">接口是合约</a></li>
+<li><a href="/docs/ch7/ch7-02/">接口类型</a></li>
+<li><a href="/docs/ch7/ch7-03/">实现接口的条件</a></li>
+<li><a href="/docs/ch7/ch7-04/">flag.Value接口</a></li>
+<li><a href="/docs/ch7/ch7-05/">接口值</a></li>
+<li><a href="/docs/ch7/ch7-06/">sort.Interface接口</a></li>
+<li><a href="/docs/ch7/ch7-07/">http.Handler接口</a></li>
+<li><a href="/docs/ch7/ch7-08/">error接口</a></li>
+<li><a href="/docs/ch7/ch7-09/">示例: 表达式求值</a></li>
+<li><a href="/docs/ch7/ch7-10/">类型断言</a></li>
+<li><a href="/docs/ch7/ch7-11/">基于类型断言识别错误类型</a></li>
+<li><a href="/docs/ch7/ch7-12/">通过类型断言查询接口</a></li>
+<li><a href="/docs/ch7/ch7-13/">类型分支</a></li>
+<li><a href="/docs/ch7/ch7-14/">示例: 基于标记的XML解码</a></li>
+<li><a href="/docs/ch7/ch7-15/">补充几点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch8/ch8/"><strong>Goroutines和Channels</strong></a>
+<ul>
+<li><a href="/docs/ch8/ch8-01/">Goroutines</a></li>
+<li><a href="/docs/ch8/ch8-02/">示例: 并发的Clock服务</a></li>
+<li><a href="/docs/ch8/ch8-03/">示例: 并发的Echo服务</a></li>
+<li><a href="/docs/ch8/ch8-04/">Channels</a></li>
+<li><a href="/docs/ch8/ch8-05/">并发的循环</a></li>
+<li><a href="/docs/ch8/ch8-06/">示例: 并发的Web爬虫</a></li>
+<li><a href="/docs/ch8/ch8-07/">基于select的多路复用</a>
+ - <a href="/docs/ch8/ch8-08/">示例: 并发的目录遍历</a></li>
+<li><a href="/docs/ch8/ch8-09/">并发的退出</a></li>
+<li><a href="/docs/ch8/ch8-10/">示例: 聊天服务</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch9/ch9/"><strong>基于共享变量的并发</strong></a>
+<ul>
+<li><a href="/docs/ch9/ch9-01/">竞争条件</a></li>
+<li><a href="/docs/ch9/ch9-02/">sync.Mutex互斥锁</a></li>
+<li><a href="/docs/ch9/ch9-03/">sync.RWMutex读写锁</a></li>
+<li><a href="/docs/ch9/ch9-04/">内存同步</a>
+ - <a href="/docs/ch9/ch9-05/"class=active>sync.Once惰性初始化</a></li>
+<li><a href="/docs/ch9/ch9-06/">竞争条件检测</a></li>
+<li><a href="/docs/ch9/ch9-07/">示例: 并发的非阻塞缓存</a></li>
+<li><a href="/docs/ch9/ch9-08/">Goroutines和线程</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch10/ch10/"><strong>包和工具</strong></a>
+<ul>
+<li><a href="/docs/ch10/ch10-01/">包简介</a></li>
+<li><a href="/docs/ch10/ch10-02/">导入路径</a></li>
+<li><a href="/docs/ch10/ch10-03/">包声明</a></li>
+<li><a href="/docs/ch10/ch10-04/">导入声明</a></li>
+<li><a href="/docs/ch10/ch10-05/">包的匿名导入</a></li>
+<li><a href="/docs/ch10/ch10-06/">包和命名</a></li>
+<li><a href="/docs/ch10/ch10-07/">工具</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch11/ch11/"><strong>测试</strong></a>
+<ul>
+<li><a href="/docs/ch11/ch11-01/">go test</a></li>
+<li><a href="/docs/ch11/ch11-02/">测试函数</a></li>
+<li><a href="/docs/ch11/ch11-03/">测试覆盖率</a></li>
+<li><a href="/docs/ch11/ch11-04/">基准测试</a></li>
+<li><a href="/docs/ch11/ch11-05/">剖析</a></li>
+<li><a href="/docs/ch11/ch11-06/">示例函数</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch12/ch12/"><strong>反射</strong></a>
+<ul>
+<li><a href="/docs/ch12/ch12-01/">为何需要反射?</a></li>
+<li><a href="/docs/ch12/ch12-02/">reflect.Type和reflect.Value</a></li>
+<li><a href="/docs/ch12/ch12-03/">Display递归打印</a></li>
+<li><a href="/docs/ch12/ch12-04/">示例: 编码S表达式</a></li>
+<li><a href="/docs/ch12/ch12-05/">通过reflect.Value修改值</a></li>
+<li><a href="/docs/ch12/ch12-06/">示例: 解码S表达式</a>
+ - <a href="/docs/ch12/ch12-07/">获取结构体字段标签</a></li>
+<li><a href="/docs/ch12/ch12-08/">显示一个类型的方法集</a></li>
+<li><a href="/docs/ch12/ch12-09/">几点忠告</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch13/ch13/"><strong>底层编程</strong></a>
+<ul>
+<li><a href="/docs/ch13/ch13-01/">unsafe.Sizeof, Alignof 和 Offsetof</a></li>
+<li><a href="/docs/ch13/ch13-02/">unsafe.Pointer</a></li>
+<li><a href="/docs/ch13/ch13-03/">示例: 深度相等判断</a></li>
+<li><a href="/docs/ch13/ch13-04/">通过cgo调用C代码</a></li>
+<li><a href="/docs/ch13/ch13-05/">几点忠告</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/alex-shpak/hugo-book" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://themes.gohugo.io/hugo-book/" target="_blank" rel="noopener">
+        Hugo Themes
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch9 05</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#95-synconce惰性初始化">9.5. sync.Once惰性初始化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="95-synconce惰性初始化">
+  9.5. sync.Once惰性初始化
+  <a class="anchor" href="#95-synconce%e6%83%b0%e6%80%a7%e5%88%9d%e5%a7%8b%e5%8c%96">#</a>
+</h2>
+<p>如果初始化成本比较大的话，那么将初始化延迟到需要的时候再去做就是一个比较好的选择。如果在程序启动的时候就去做这类初始化的话，会增加程序的启动时间，并且因为执行的时候可能也并不需要这些变量，所以实际上有一些浪费。让我们来看在本章早一些时候的icons变量：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">icons</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>
+</code></pre></div><p>这个版本的Icon用到了懒初始化（lazy initialization）。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loadIcons</span>() {
+	<span style="color:#a6e22e">icons</span> = <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>{
+		<span style="color:#e6db74">&#34;spades.png&#34;</span>:   <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;spades.png&#34;</span>),
+		<span style="color:#e6db74">&#34;hearts.png&#34;</span>:   <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;hearts.png&#34;</span>),
+		<span style="color:#e6db74">&#34;diamonds.png&#34;</span>: <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;diamonds.png&#34;</span>),
+		<span style="color:#e6db74">&#34;clubs.png&#34;</span>:	<span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;clubs.png&#34;</span>),
+	}
+}
+
+<span style="color:#75715e">// NOTE: not concurrency-safe!
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Icon</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">icons</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">loadIcons</span>() <span style="color:#75715e">// one-time initialization
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">icons</span>[<span style="color:#a6e22e">name</span>]
+}
+</code></pre></div><p>如果一个变量只被一个单独的goroutine所访问的话，我们可以使用上面的这种模板，但这种模板在Icon被并发调用时并不安全。就像前面银行的那个Deposit(存款)函数一样，Icon函数也是由多个步骤组成的：首先测试icons是否为空，然后load这些icons，之后将icons更新为一个非空的值。直觉会告诉我们最差的情况是loadIcons函数被多次访问会带来数据竞争。当第一个goroutine在忙着loading这些icons的时候，另一个goroutine进入了Icon函数，发现变量是nil，然后也会调用loadIcons函数。</p>
+<p>不过这种直觉是错误的。（我们希望你从现在开始能够构建自己对并发的直觉，也就是说对并发的直觉总是不能被信任的！），回忆一下9.4节。因为缺少显式的同步，编译器和CPU是可以随意地去更改访问内存的指令顺序，以任意方式，只要保证每一个goroutine自己的执行顺序一致。其中一种可能loadIcons的语句重排是下面这样。它会在填写icons变量的值之前先用一个空map来初始化icons变量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loadIcons</span>() {
+	<span style="color:#a6e22e">icons</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>)
+	<span style="color:#a6e22e">icons</span>[<span style="color:#e6db74">&#34;spades.png&#34;</span>] = <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;spades.png&#34;</span>)
+	<span style="color:#a6e22e">icons</span>[<span style="color:#e6db74">&#34;hearts.png&#34;</span>] = <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;hearts.png&#34;</span>)
+	<span style="color:#a6e22e">icons</span>[<span style="color:#e6db74">&#34;diamonds.png&#34;</span>] = <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;diamonds.png&#34;</span>)
+	<span style="color:#a6e22e">icons</span>[<span style="color:#e6db74">&#34;clubs.png&#34;</span>] = <span style="color:#a6e22e">loadIcon</span>(<span style="color:#e6db74">&#34;clubs.png&#34;</span>)
+}
+</code></pre></div><p>因此，一个goroutine在检查icons是非空时，也并不能就假设这个变量的初始化流程已经走完了（译注：可能只是塞了个空map，里面的值还没填完，也就是说填值的语句都没执行完呢）。</p>
+<p>最简单且正确的保证所有goroutine能够观察到loadIcons效果的方式，是用一个mutex来同步检查。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">mu</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Mutex</span> <span style="color:#75715e">// guards icons
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">icons</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>
+
+<span style="color:#75715e">// Concurrency-safe.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Icon</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span> {
+	<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">Unlock</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">icons</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">loadIcons</span>()
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">icons</span>[<span style="color:#a6e22e">name</span>]
+}
+</code></pre></div><p>然而使用互斥访问icons的代价就是没有办法对该变量进行并发访问，即使变量已经被初始化完毕且再也不会进行变动。这里我们可以引入一个允许多读的锁：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">mu</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">RWMutex</span> <span style="color:#75715e">// guards icons
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">icons</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>
+<span style="color:#75715e">// Concurrency-safe.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Icon</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span> {
+	<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">RLock</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">icons</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">icon</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">icons</span>[<span style="color:#a6e22e">name</span>]
+		<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">RUnlock</span>()
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">icon</span>
+	}
+	<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">RUnlock</span>()
+
+	<span style="color:#75715e">// acquire an exclusive lock
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">icons</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> { <span style="color:#75715e">// NOTE: must recheck for nil
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">loadIcons</span>()
+	}
+	<span style="color:#a6e22e">icon</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">icons</span>[<span style="color:#a6e22e">name</span>]
+	<span style="color:#a6e22e">mu</span>.<span style="color:#a6e22e">Unlock</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">icon</span>
+}
+</code></pre></div><p>上面的代码有两个临界区。goroutine首先会获取一个读锁，查询map，然后释放锁。如果条目被找到了（一般情况下），那么会直接返回。如果没有找到，那goroutine会获取一个写锁。不释放共享锁的话，也没有任何办法来将一个共享锁升级为一个互斥锁，所以我们必须重新检查icons变量是否为nil，以防止在执行这一段代码的时候，icons变量已经被其它gorouine初始化过了。</p>
+<p>上面的模板使我们的程序能够更好的并发，但是有一点太复杂且容易出错。幸运的是，sync包为我们提供了一个专门的方案来解决这种一次性初始化的问题：sync.Once。概念上来讲，一次性的初始化需要一个互斥量mutex和一个boolean变量来记录初始化是不是已经完成了；互斥量用来保护boolean变量和客户端数据结构。Do这个唯一的方法需要接收初始化函数作为其参数。让我们用sync.Once来简化前面的Icon函数吧：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">loadIconsOnce</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Once</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">icons</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span>
+<span style="color:#75715e">// Concurrency-safe.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Icon</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Image</span> {
+	<span style="color:#a6e22e">loadIconsOnce</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">loadIcons</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">icons</span>[<span style="color:#a6e22e">name</span>]
+}
+</code></pre></div><p>每一次对Do(loadIcons)的调用都会锁定mutex，并会检查boolean变量（译注：Go1.9中会先判断boolean变量是否为1(true)，只有不为1才锁定mutex，不再需要每次都锁定mutex）。在第一次调用时，boolean变量的值是false，Do会调用loadIcons并会将boolean变量设置为true。随后的调用什么都不会做，但是mutex同步会保证loadIcons对内存（这里其实就是指icons变量啦）产生的效果能够对所有goroutine可见。用这种方式来使用sync.Once的话，我们能够避免在变量被构建完成之前和其它goroutine共享该变量。</p>
+<p><strong>练习 9.2：</strong> 重写2.6.2节中的PopCount的例子，使用sync.Once，只在第一次需要用到的时候进行初始化。（虽然实际上，对PopCount这样很小且高度优化的函数进行同步可能代价没法接受。）</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/edit/master//docs/ch9/ch9-05.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#95-synconce惰性初始化">9.5. sync.Once惰性初始化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

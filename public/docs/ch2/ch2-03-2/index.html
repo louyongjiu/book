@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2.3.2. 指针 #  一个变量对应一个保存了变量对应类型值的内存空间。普通变量在声明语句创建时被绑定到一个变量名，比如叫x的变量，但是还有很多变量始终以表达式方式引入，例如x[i]或x.f变量。所有这些表达式一般都是读取一个变量的值，除非它们是出现在赋值语句的左边，这种时候是给对应变量赋予一个新的值。
+一个指针的值是另一个变量的地址。一个指针对应变量在内存中的存储位置。并不是每一个值都会有一个内存地址，但是对于每一个变量必然有对应的内存地址。通过指针，我们可以直接读或更新对应变量的值，而不需要知道该变量的名字（如果变量有名字的话）。
+如果用“var x int”声明语句声明一个x变量，那么&amp;x表达式（取x变量的内存地址）将产生一个指向该整数变量的指针，指针对应的数据类型是*int，指针被称之为“指向int类型的指针”。如果指针名字为p，那么可以说“p指针指向变量x”，或者说“p指针保存了x变量的内存地址”。同时*p表达式对应p指针指向的变量的值。一般*p表达式读取指针指向的变量的值，这里为int类型的值，同时因为*p对应一个变量，所以该表达式也可以出现在赋值语句的左边，表示更新指针所指向的变量的值。
+x := 1 p := &amp;x // p, of type *int, points to x fmt.Println(*p) // &#34;1&#34; *p = 2 // equivalent to x = 2 fmt.Println(x) // &#34;2&#34; 对于聚合类型每个成员——比如结构体的每个字段、或者是数组的每个元素——也都是对应一个变量，因此可以被取地址。
+变量有时候被称为可寻址的值。即使变量由表达式临时生成，那么表达式也必须能接受&amp;取地址操作。
+任何类型的指针的零值都是nil。如果p指向某个有效变量，那么p != nil测试为真。指针之间也是可以进行相等测试的，只有当它们指向同一个变量或全部是nil时才相等。
+var x, y int fmt.Println(&amp;x == &amp;x, &amp;x == &amp;y, &amp;x == nil) // &#34;true false false&#34; 在Go语言中，返回函数中局部变量的地址也是安全的。例如下面的代码，调用f函数时创建局部变量v，在局部变量地址被返回之后依然有效，因为指针p依然引用这个变量。
+var p = f() func f() *int { v := 1 return &amp;v } 每次调用f函数都将返回不同的结果：">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="2.3.2. 指针 #  一个变量对应一个保存了变量对应类型值的内存空间。普通变量在声明语句创建时被绑定到一个变量名，比如叫x的变量，但是还有很多变量始终以表达式方式引入，例如x[i]或x.f变量。所有这些表达式一般都是读取一个变量的值，除非它们是出现在赋值语句的左边，这种时候是给对应变量赋予一个新的值。
+一个指针的值是另一个变量的地址。一个指针对应变量在内存中的存储位置。并不是每一个值都会有一个内存地址，但是对于每一个变量必然有对应的内存地址。通过指针，我们可以直接读或更新对应变量的值，而不需要知道该变量的名字（如果变量有名字的话）。
+如果用“var x int”声明语句声明一个x变量，那么&amp;x表达式（取x变量的内存地址）将产生一个指向该整数变量的指针，指针对应的数据类型是*int，指针被称之为“指向int类型的指针”。如果指针名字为p，那么可以说“p指针指向变量x”，或者说“p指针保存了x变量的内存地址”。同时*p表达式对应p指针指向的变量的值。一般*p表达式读取指针指向的变量的值，这里为int类型的值，同时因为*p对应一个变量，所以该表达式也可以出现在赋值语句的左边，表示更新指针所指向的变量的值。
+x := 1 p := &amp;x // p, of type *int, points to x fmt.Println(*p) // &#34;1&#34; *p = 2 // equivalent to x = 2 fmt.Println(x) // &#34;2&#34; 对于聚合类型每个成员——比如结构体的每个字段、或者是数组的每个元素——也都是对应一个变量，因此可以被取地址。
+变量有时候被称为可寻址的值。即使变量由表达式临时生成，那么表达式也必须能接受&amp;取地址操作。
+任何类型的指针的零值都是nil。如果p指向某个有效变量，那么p != nil测试为真。指针之间也是可以进行相等测试的，只有当它们指向同一个变量或全部是nil时才相等。
+var x, y int fmt.Println(&amp;x == &amp;x, &amp;x == &amp;y, &amp;x == nil) // &#34;true false false&#34; 在Go语言中，返回函数中局部变量的地址也是安全的。例如下面的代码，调用f函数时创建局部变量v，在局部变量地址被返回之后依然有效，因为指针p依然引用这个变量。
+var p = f() func f() *int { v := 1 return &amp;v } 每次调用f函数都将返回不同的结果：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/docs/ch2/ch2-03-2/" />
+
+<title>Ch2 03 2 | Hugo Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.7274e6413b1d4a32c98ed56250866993ea1b6e4e6df5b1983a42cd85991a6f9b.js" integrity="sha256-cnTmQTsdSjLJjtViUIZpk&#43;obbk5t9bGYOkLNhZkab5s="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Hugo Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/docs/ch0/"><strong>前言</strong></a>
+<ul>
+<li><a href="/docs/ch0/ch0-01/">Go语言起源</a></li>
+<li><a href="/docs/ch0/ch0-02/">Go语言项目</a></li>
+<li><a href="/docs/ch0/ch0-03/">本书的组织</a></li>
+<li><a href="/docs/ch0/ch0-04/">更多的信息</a></li>
+<li><a href="/docs/ch0/ch0-05/">致谢</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch1/ch1/"><strong>入门</strong></a>
+<ul>
+<li><a href="/docs/ch1/ch1-01/">Hello, World</a></li>
+<li><a href="/docs/ch1/ch1-02/">命令行参数</a></li>
+<li><a href="/docs/ch1/ch1-03/">查找重复的行</a></li>
+<li><a href="/docs/ch1/ch1-04/">GIF动画</a></li>
+<li><a href="/docs/ch1/ch1-05/">获取URL</a></li>
+<li><a href="/docs/ch1/ch1-06/">并发获取多个URL</a></li>
+<li><a href="/docs/ch1/ch1-07/">Web服务</a></li>
+<li><a href="/docs/ch1/ch1-08/">本章要点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch2/ch2/"><strong>程序结构</strong></a>
+<ul>
+<li><a href="/docs/ch2/ch2-01/">命名</a></li>
+<li><a href="/docs/ch2/ch2-02/">声明</a></li>
+<li><a href="/docs/ch2/ch2-03/">变量</a></li>
+<li><a href="/docs/ch2/ch2-04/">赋值</a></li>
+<li><a href="/docs/ch2/ch2-05/">类型</a></li>
+<li><a href="/docs/ch2/ch2-06/">包和文件</a></li>
+<li><a href="/docs/ch2/ch2-07/">作用域</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch3/ch3/"><strong>基础数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch3/ch3-01/">整型</a></li>
+<li><a href="/docs/ch3/ch3-02/">浮点数</a></li>
+<li><a href="/docs/ch3/ch3-03/">复数</a></li>
+<li><a href="/docs/ch3/ch3-04/">布尔型</a></li>
+<li><a href="/docs/ch3/ch3-05/">字符串</a></li>
+<li><a href="/docs/ch3/ch3-06/">常量</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch4/ch4/"><strong>复合数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch4/ch4-01/">数组</a></li>
+<li><a href="/docs/ch4/ch4-02/">Slice</a></li>
+<li><a href="/docs/ch4/ch4-03/">Map</a></li>
+<li><a href="/docs/ch4/ch4-04/">结构体</a></li>
+<li><a href="/docs/ch4/ch4-05/">JSON</a></li>
+<li><a href="/docs/ch4/ch4-06/">文本和HTML模板</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch5/ch5/"><strong>函数</strong></a>
+<ul>
+<li><a href="/docs/ch5/ch5-01/">函数声明</a></li>
+<li><a href="/docs/ch5/ch5-02/">递归</a></li>
+<li><a href="/docs/ch5/ch5-03/">多返回值</a></li>
+<li><a href="/docs/ch5/ch5-04/">错误</a></li>
+<li><a href="/docs/ch5/ch5-05/">函数值</a></li>
+<li><a href="/docs/ch5/ch5-06/">匿名函数</a></li>
+<li><a href="/docs/ch5/ch5-07/">可变参数</a></li>
+<li><a href="/docs/ch5/ch5-08/">Deferred函数</a></li>
+<li><a href="/docs/ch5/ch5-09/">Panic异常</a></li>
+<li><a href="/docs/ch5/ch5-10/">Recover捕获异常</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch6/ch6/"><strong>方法</strong></a>
+<ul>
+<li><a href="/docs/ch6/ch6-01/">方法声明</a></li>
+<li><a href="/docs/ch6/ch6-02/">基于指针对象的方法</a></li>
+<li><a href="/docs/ch6/ch6-03/">通过嵌入结构体来扩展类型</a></li>
+<li><a href="/docs/ch6/ch6-04/">方法值和方法表达式</a></li>
+<li><a href="/docs/ch6/ch6-05/">示例: Bit数组</a></li>
+<li><a href="/docs/ch6/ch6-06/">封装</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch7/ch7/"><strong>接口</strong></a>
+<ul>
+<li><a href="/docs/ch7/ch7-01/">接口是合约</a></li>
+<li><a href="/docs/ch7/ch7-02/">接口类型</a></li>
+<li><a href="/docs/ch7/ch7-03/">实现接口的条件</a></li>
+<li><a href="/docs/ch7/ch7-04/">flag.Value接口</a></li>
+<li><a href="/docs/ch7/ch7-05/">接口值</a></li>
+<li><a href="/docs/ch7/ch7-06/">sort.Interface接口</a></li>
+<li><a href="/docs/ch7/ch7-07/">http.Handler接口</a></li>
+<li><a href="/docs/ch7/ch7-08/">error接口</a></li>
+<li><a href="/docs/ch7/ch7-09/">示例: 表达式求值</a></li>
+<li><a href="/docs/ch7/ch7-10/">类型断言</a></li>
+<li><a href="/docs/ch7/ch7-11/">基于类型断言识别错误类型</a></li>
+<li><a href="/docs/ch7/ch7-12/">通过类型断言查询接口</a></li>
+<li><a href="/docs/ch7/ch7-13/">类型分支</a></li>
+<li><a href="/docs/ch7/ch7-14/">示例: 基于标记的XML解码</a></li>
+<li><a href="/docs/ch7/ch7-15/">补充几点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch8/ch8/"><strong>Goroutines和Channels</strong></a>
+<ul>
+<li><a href="/docs/ch8/ch8-01/">Goroutines</a></li>
+<li><a href="/docs/ch8/ch8-02/">示例: 并发的Clock服务</a></li>
+<li><a href="/docs/ch8/ch8-03/">示例: 并发的Echo服务</a></li>
+<li><a href="/docs/ch8/ch8-04/">Channels</a></li>
+<li><a href="/docs/ch8/ch8-05/">并发的循环</a></li>
+<li><a href="/docs/ch8/ch8-06/">示例: 并发的Web爬虫</a></li>
+<li><a href="/docs/ch8/ch8-07/">基于select的多路复用</a>
+ - <a href="/docs/ch8/ch8-08/">示例: 并发的目录遍历</a></li>
+<li><a href="/docs/ch8/ch8-09/">并发的退出</a></li>
+<li><a href="/docs/ch8/ch8-10/">示例: 聊天服务</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch9/ch9/"><strong>基于共享变量的并发</strong></a>
+<ul>
+<li><a href="/docs/ch9/ch9-01/">竞争条件</a></li>
+<li><a href="/docs/ch9/ch9-02/">sync.Mutex互斥锁</a></li>
+<li><a href="/docs/ch9/ch9-03/">sync.RWMutex读写锁</a></li>
+<li><a href="/docs/ch9/ch9-04/">内存同步</a>
+ - <a href="/docs/ch9/ch9-05/">sync.Once惰性初始化</a></li>
+<li><a href="/docs/ch9/ch9-06/">竞争条件检测</a></li>
+<li><a href="/docs/ch9/ch9-07/">示例: 并发的非阻塞缓存</a></li>
+<li><a href="/docs/ch9/ch9-08/">Goroutines和线程</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch10/ch10/"><strong>包和工具</strong></a>
+<ul>
+<li><a href="/docs/ch10/ch10-01/">包简介</a></li>
+<li><a href="/docs/ch10/ch10-02/">导入路径</a></li>
+<li><a href="/docs/ch10/ch10-03/">包声明</a></li>
+<li><a href="/docs/ch10/ch10-04/">导入声明</a></li>
+<li><a href="/docs/ch10/ch10-05/">包的匿名导入</a></li>
+<li><a href="/docs/ch10/ch10-06/">包和命名</a></li>
+<li><a href="/docs/ch10/ch10-07/">工具</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch11/ch11/"><strong>测试</strong></a>
+<ul>
+<li><a href="/docs/ch11/ch11-01/">go test</a></li>
+<li><a href="/docs/ch11/ch11-02/">测试函数</a></li>
+<li><a href="/docs/ch11/ch11-03/">测试覆盖率</a></li>
+<li><a href="/docs/ch11/ch11-04/">基准测试</a></li>
+<li><a href="/docs/ch11/ch11-05/">剖析</a></li>
+<li><a href="/docs/ch11/ch11-06/">示例函数</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch12/ch12/"><strong>反射</strong></a>
+<ul>
+<li><a href="/docs/ch12/ch12-01/">为何需要反射?</a></li>
+<li><a href="/docs/ch12/ch12-02/">reflect.Type和reflect.Value</a></li>
+<li><a href="/docs/ch12/ch12-03/">Display递归打印</a></li>
+<li><a href="/docs/ch12/ch12-04/">示例: 编码S表达式</a></li>
+<li><a href="/docs/ch12/ch12-05/">通过reflect.Value修改值</a></li>
+<li><a href="/docs/ch12/ch12-06/">示例: 解码S表达式</a>
+ - <a href="/docs/ch12/ch12-07/">获取结构体字段标签</a></li>
+<li><a href="/docs/ch12/ch12-08/">显示一个类型的方法集</a></li>
+<li><a href="/docs/ch12/ch12-09/">几点忠告</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch13/ch13/"><strong>底层编程</strong></a>
+<ul>
+<li><a href="/docs/ch13/ch13-01/">unsafe.Sizeof, Alignof 和 Offsetof</a></li>
+<li><a href="/docs/ch13/ch13-02/">unsafe.Pointer</a></li>
+<li><a href="/docs/ch13/ch13-03/">示例: 深度相等判断</a></li>
+<li><a href="/docs/ch13/ch13-04/">通过cgo调用C代码</a></li>
+<li><a href="/docs/ch13/ch13-05/">几点忠告</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/alex-shpak/hugo-book" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://themes.gohugo.io/hugo-book/" target="_blank" rel="noopener">
+        Hugo Themes
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch2 03 2</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#232-指针">2.3.2. 指针</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h3 id="232-指针">
+  2.3.2. 指针
+  <a class="anchor" href="#232-%e6%8c%87%e9%92%88">#</a>
+</h3>
+<p>一个变量对应一个保存了变量对应类型值的内存空间。普通变量在声明语句创建时被绑定到一个变量名，比如叫x的变量，但是还有很多变量始终以表达式方式引入，例如x[i]或x.f变量。所有这些表达式一般都是读取一个变量的值，除非它们是出现在赋值语句的左边，这种时候是给对应变量赋予一个新的值。</p>
+<p>一个指针的值是另一个变量的地址。一个指针对应变量在内存中的存储位置。并不是每一个值都会有一个内存地址，但是对于每一个变量必然有对应的内存地址。通过指针，我们可以直接读或更新对应变量的值，而不需要知道该变量的名字（如果变量有名字的话）。</p>
+<p>如果用“var x int”声明语句声明一个x变量，那么&amp;x表达式（取x变量的内存地址）将产生一个指向该整数变量的指针，指针对应的数据类型是<code>*int</code>，指针被称之为“指向int类型的指针”。如果指针名字为p，那么可以说“p指针指向变量x”，或者说“p指针保存了x变量的内存地址”。同时<code>*p</code>表达式对应p指针指向的变量的值。一般<code>*p</code>表达式读取指针指向的变量的值，这里为int类型的值，同时因为<code>*p</code>对应一个变量，所以该表达式也可以出现在赋值语句的左边，表示更新指针所指向的变量的值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>         <span style="color:#75715e">// p, of type *int, points to x
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">p</span>) <span style="color:#75715e">// &#34;1&#34;
+</span><span style="color:#75715e"></span><span style="color:#f92672">*</span><span style="color:#a6e22e">p</span> = <span style="color:#ae81ff">2</span>          <span style="color:#75715e">// equivalent to x = 2
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span>)  <span style="color:#75715e">// &#34;2&#34;
+</span></code></pre></div><p>对于聚合类型每个成员——比如结构体的每个字段、或者是数组的每个元素——也都是对应一个变量，因此可以被取地址。</p>
+<p>变量有时候被称为可寻址的值。即使变量由表达式临时生成，那么表达式也必须能接受<code>&amp;</code>取地址操作。</p>
+<p>任何类型的指针的零值都是nil。如果p指向某个有效变量，那么<code>p != nil</code>测试为真。指针之间也是可以进行相等测试的，只有当它们指向同一个变量或全部是nil时才相等。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">int</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">y</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span>) <span style="color:#75715e">// &#34;true false false&#34;
+</span></code></pre></div><p>在Go语言中，返回函数中局部变量的地址也是安全的。例如下面的代码，调用f函数时创建局部变量v，在局部变量地址被返回之后依然有效，因为指针p依然引用这个变量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p</span> = <span style="color:#a6e22e">f</span>()
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() <span style="color:#f92672">*</span><span style="color:#66d9ef">int</span> {
+	<span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v</span>
+}
+</code></pre></div><p>每次调用f函数都将返回不同的结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">f</span>() <span style="color:#f92672">==</span> <span style="color:#a6e22e">f</span>()) <span style="color:#75715e">// &#34;false&#34;
+</span></code></pre></div><p>因为指针包含了一个变量的地址，因此如果将指针作为参数调用函数，那将可以在函数中通过该指针来更新变量的值。例如下面这个例子就是通过指针来更新变量的值，然后返回更新后的值，可用在一个表达式中（译注：这是对C语言中<code>++v</code>操作的模拟，这里只是为了说明指针的用法，incr函数模拟的做法并不推荐）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">incr</span>(<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+	<span style="color:#f92672">*</span><span style="color:#a6e22e">p</span><span style="color:#f92672">++</span> <span style="color:#75715e">// 非常重要：只是增加p指向的变量的值，并不改变p指针！！！
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">p</span>
+}
+
+<span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<span style="color:#a6e22e">incr</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v</span>)              <span style="color:#75715e">// side effect: v is now 2
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">incr</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v</span>)) <span style="color:#75715e">// &#34;3&#34; (and v is 3)
+</span></code></pre></div><p>每次我们对一个变量取地址，或者复制指针，我们都是为原变量创建了新的别名。例如，<code>*p</code>就是变量v的别名。指针特别有价值的地方在于我们可以不用名字而访问一个变量，但是这是一把双刃剑：要找到一个变量的所有访问者并不容易，我们必须知道变量全部的别名（译注：这是Go语言的垃圾回收器所做的工作）。不仅仅是指针会创建别名，很多其他引用类型也会创建别名，例如slice、map和chan，甚至结构体、数组和接口都会创建所引用变量的别名。</p>
+<p>指针是实现标准库中flag包的关键技术，它使用命令行参数来设置对应变量的值，而这些对应命令行标志参数的变量可能会零散分布在整个程序中。为了说明这一点，在早些的echo版本中，就包含了两个可选的命令行参数：<code>-n</code>用于忽略行尾的换行符，<code>-s sep</code>用于指定分隔字符（默认是空格）。下面这是第四个版本，对应包路径为gopl.io/ch2/echo4。</p>
+<p><u><i>gopl.io/ch2/echo4</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Echo4 prints its command-line arguments.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;flag&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;strings&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> = <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Bool</span>(<span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#66d9ef">false</span>, <span style="color:#e6db74">&#34;omit trailing newline&#34;</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sep</span> = <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;s&#34;</span>, <span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;separator&#34;</span>)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Args</span>(), <span style="color:#f92672">*</span><span style="color:#a6e22e">sep</span>))
+	<span style="color:#66d9ef">if</span> !<span style="color:#f92672">*</span><span style="color:#a6e22e">n</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
+	}
+}
+</code></pre></div><p>调用flag.Bool函数会创建一个新的对应布尔型标志参数的变量。它有三个属性：第一个是命令行标志参数的名字“n”，然后是该标志参数的默认值（这里是false），最后是该标志参数对应的描述信息。如果用户在命令行输入了一个无效的标志参数，或者输入<code>-h</code>或<code>-help</code>参数，那么将打印所有标志参数的名字、默认值和描述信息。类似的，调用flag.String函数将创建一个对应字符串类型的标志参数变量，同样包含命令行标志参数对应的参数名、默认值、和描述信息。程序中的<code>sep</code>和<code>n</code>变量分别是指向对应命令行标志参数变量的指针，因此必须用<code>*sep</code>和<code>*n</code>形式的指针语法间接引用它们。</p>
+<p>当程序运行时，必须在使用标志参数对应的变量之前先调用flag.Parse函数，用于更新每个标志参数对应变量的值（之前是默认值）。对于非标志参数的普通命令行参数可以通过调用flag.Args()函数来访问，返回值对应一个字符串类型的slice。如果在flag.Parse函数解析命令行参数时遇到错误，默认将打印相关的提示信息，然后调用os.Exit(2)终止程序。</p>
+<p>让我们运行一些echo测试用例：</p>
+<pre><code>$ go build gopl.io/ch2/echo4
+$ ./echo4 a bc def
+a bc def
+$ ./echo4 -s / a bc def
+a/bc/def
+$ ./echo4 -n a bc def
+a bc def$
+$ ./echo4 -help
+Usage of ./echo4:
+  -n    omit trailing newline
+  -s string
+        separator (default &quot; &quot;)
+</code></pre></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/edit/master//docs/ch2/ch2-03-2.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#232-指针">2.3.2. 指针</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

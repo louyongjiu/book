@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="8.4.1. 不带缓存的Channels #  一个基于无缓存Channels的发送操作将导致发送者goroutine阻塞，直到另一个goroutine在相同的Channels上执行接收操作，当发送的值通过Channels成功传输之后，两个goroutine可以继续执行后面的语句。反之，如果接收操作先发生，那么接收者goroutine也将阻塞，直到有另一个goroutine在相同的Channels上执行发送操作。
+基于无缓存Channels的发送和接收操作将导致两个goroutine做一次同步操作。因为这个原因，无缓存Channels有时候也被称为同步Channels。当通过一个无缓存Channels发送数据时，接收者收到数据发生在再次唤醒唤醒发送者goroutine之前（译注：happens before，这是Go语言并发内存模型的一个关键术语！）。
+在讨论并发编程时，当我们说x事件在y事件之前发生（happens before），我们并不是说x事件在时间上比y时间更早；我们要表达的意思是要保证在此之前的事件都已经完成了，例如在此之前的更新某些变量的操作已经完成，你可以放心依赖这些已完成的事件了。
+当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。这并不是意味着x事件和y事件就一定是同时发生的，我们只是不能确定这两个事件发生的先后顺序。在下一章中我们将看到，当两个goroutine并发访问了相同的变量时，我们有必要保证某些事件的执行顺序，以避免出现某些并发问题。
+在8.3节的客户端程序，它在主goroutine中（译注：就是执行main函数的goroutine）将标准输入复制到server，因此当客户端程序关闭标准输入时，后台goroutine可能依然在工作。我们需要让主goroutine等待后台goroutine完成工作后再退出，我们使用了一个channel来同步两个goroutine：
+gopl.io/ch8/netcat3
+func main() { conn, err := net.Dial(&#34;tcp&#34;, &#34;localhost:8000&#34;) if err != nil { log.Fatal(err) } done := make(chan struct{}) go func() { io.Copy(os.Stdout, conn) // NOTE: ignoring errors 	log.Println(&#34;done&#34;) done &lt;- struct{}{} // signal the main goroutine 	}() mustCopy(conn, os.Stdin) conn.Close() &lt;-done // wait for background goroutine to finish } 当用户关闭了标准输入，主goroutine中的mustCopy函数调用将返回，然后调用conn.Close()关闭读和写方向的网络连接。关闭网络连接中的写方向的连接将导致server程序收到一个文件（end-of-file）结束的信号。关闭网络连接中读方向的连接将导致后台goroutine的io.Copy函数调用返回一个“read from closed connection”（“从关闭的连接读”）类似的错误，因此我们临时移除了错误日志语句；在练习8.3将会提供一个更好的解决方案。（需要注意的是go语句调用了一个函数字面量，这是Go语言中启动goroutine常用的形式。）
+在后台goroutine返回之前，它先打印一个日志信息，然后向done对应的channel发送一个值。主goroutine在退出前先等待从done对应的channel接收一个值。因此，总是可以在程序退出前正确输出“done”消息。
+基于channels发送消息有两个重要方面。首先每个消息都有一个值，但是有时候通讯的事实和发生的时刻也同样重要。当我们更希望强调通讯发生的时刻时，我们将它称为消息事件。有些消息事件并不携带额外的信息，它仅仅是用作两个goroutine之间的同步，这时候我们可以用struct{}空结构体作为channels元素的类型，虽然也可以使用bool或int类型实现同样的功能，done &lt;- 1语句也比done &lt;- struct{}{}更短。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="8.4.1. 不带缓存的Channels #  一个基于无缓存Channels的发送操作将导致发送者goroutine阻塞，直到另一个goroutine在相同的Channels上执行接收操作，当发送的值通过Channels成功传输之后，两个goroutine可以继续执行后面的语句。反之，如果接收操作先发生，那么接收者goroutine也将阻塞，直到有另一个goroutine在相同的Channels上执行发送操作。
+基于无缓存Channels的发送和接收操作将导致两个goroutine做一次同步操作。因为这个原因，无缓存Channels有时候也被称为同步Channels。当通过一个无缓存Channels发送数据时，接收者收到数据发生在再次唤醒唤醒发送者goroutine之前（译注：happens before，这是Go语言并发内存模型的一个关键术语！）。
+在讨论并发编程时，当我们说x事件在y事件之前发生（happens before），我们并不是说x事件在时间上比y时间更早；我们要表达的意思是要保证在此之前的事件都已经完成了，例如在此之前的更新某些变量的操作已经完成，你可以放心依赖这些已完成的事件了。
+当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。这并不是意味着x事件和y事件就一定是同时发生的，我们只是不能确定这两个事件发生的先后顺序。在下一章中我们将看到，当两个goroutine并发访问了相同的变量时，我们有必要保证某些事件的执行顺序，以避免出现某些并发问题。
+在8.3节的客户端程序，它在主goroutine中（译注：就是执行main函数的goroutine）将标准输入复制到server，因此当客户端程序关闭标准输入时，后台goroutine可能依然在工作。我们需要让主goroutine等待后台goroutine完成工作后再退出，我们使用了一个channel来同步两个goroutine：
+gopl.io/ch8/netcat3
+func main() { conn, err := net.Dial(&#34;tcp&#34;, &#34;localhost:8000&#34;) if err != nil { log.Fatal(err) } done := make(chan struct{}) go func() { io.Copy(os.Stdout, conn) // NOTE: ignoring errors 	log.Println(&#34;done&#34;) done &lt;- struct{}{} // signal the main goroutine 	}() mustCopy(conn, os.Stdin) conn.Close() &lt;-done // wait for background goroutine to finish } 当用户关闭了标准输入，主goroutine中的mustCopy函数调用将返回，然后调用conn.Close()关闭读和写方向的网络连接。关闭网络连接中的写方向的连接将导致server程序收到一个文件（end-of-file）结束的信号。关闭网络连接中读方向的连接将导致后台goroutine的io.Copy函数调用返回一个“read from closed connection”（“从关闭的连接读”）类似的错误，因此我们临时移除了错误日志语句；在练习8.3将会提供一个更好的解决方案。（需要注意的是go语句调用了一个函数字面量，这是Go语言中启动goroutine常用的形式。）
+在后台goroutine返回之前，它先打印一个日志信息，然后向done对应的channel发送一个值。主goroutine在退出前先等待从done对应的channel接收一个值。因此，总是可以在程序退出前正确输出“done”消息。
+基于channels发送消息有两个重要方面。首先每个消息都有一个值，但是有时候通讯的事实和发生的时刻也同样重要。当我们更希望强调通讯发生的时刻时，我们将它称为消息事件。有些消息事件并不携带额外的信息，它仅仅是用作两个goroutine之间的同步，这时候我们可以用struct{}空结构体作为channels元素的类型，虽然也可以使用bool或int类型实现同样的功能，done &lt;- 1语句也比done &lt;- struct{}{}更短。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/docs/ch8/ch8-04-1/" />
+
+<title>Ch8 04 1 | Hugo Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.7274e6413b1d4a32c98ed56250866993ea1b6e4e6df5b1983a42cd85991a6f9b.js" integrity="sha256-cnTmQTsdSjLJjtViUIZpk&#43;obbk5t9bGYOkLNhZkab5s="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Hugo Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/docs/ch0/"><strong>前言</strong></a>
+<ul>
+<li><a href="/docs/ch0/ch0-01/">Go语言起源</a></li>
+<li><a href="/docs/ch0/ch0-02/">Go语言项目</a></li>
+<li><a href="/docs/ch0/ch0-03/">本书的组织</a></li>
+<li><a href="/docs/ch0/ch0-04/">更多的信息</a></li>
+<li><a href="/docs/ch0/ch0-05/">致谢</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch1/ch1/"><strong>入门</strong></a>
+<ul>
+<li><a href="/docs/ch1/ch1-01/">Hello, World</a></li>
+<li><a href="/docs/ch1/ch1-02/">命令行参数</a></li>
+<li><a href="/docs/ch1/ch1-03/">查找重复的行</a></li>
+<li><a href="/docs/ch1/ch1-04/">GIF动画</a></li>
+<li><a href="/docs/ch1/ch1-05/">获取URL</a></li>
+<li><a href="/docs/ch1/ch1-06/">并发获取多个URL</a></li>
+<li><a href="/docs/ch1/ch1-07/">Web服务</a></li>
+<li><a href="/docs/ch1/ch1-08/">本章要点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch2/ch2/"><strong>程序结构</strong></a>
+<ul>
+<li><a href="/docs/ch2/ch2-01/">命名</a></li>
+<li><a href="/docs/ch2/ch2-02/">声明</a></li>
+<li><a href="/docs/ch2/ch2-03/">变量</a></li>
+<li><a href="/docs/ch2/ch2-04/">赋值</a></li>
+<li><a href="/docs/ch2/ch2-05/">类型</a></li>
+<li><a href="/docs/ch2/ch2-06/">包和文件</a></li>
+<li><a href="/docs/ch2/ch2-07/">作用域</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch3/ch3/"><strong>基础数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch3/ch3-01/">整型</a></li>
+<li><a href="/docs/ch3/ch3-02/">浮点数</a></li>
+<li><a href="/docs/ch3/ch3-03/">复数</a></li>
+<li><a href="/docs/ch3/ch3-04/">布尔型</a></li>
+<li><a href="/docs/ch3/ch3-05/">字符串</a></li>
+<li><a href="/docs/ch3/ch3-06/">常量</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch4/ch4/"><strong>复合数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch4/ch4-01/">数组</a></li>
+<li><a href="/docs/ch4/ch4-02/">Slice</a></li>
+<li><a href="/docs/ch4/ch4-03/">Map</a></li>
+<li><a href="/docs/ch4/ch4-04/">结构体</a></li>
+<li><a href="/docs/ch4/ch4-05/">JSON</a></li>
+<li><a href="/docs/ch4/ch4-06/">文本和HTML模板</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch5/ch5/"><strong>函数</strong></a>
+<ul>
+<li><a href="/docs/ch5/ch5-01/">函数声明</a></li>
+<li><a href="/docs/ch5/ch5-02/">递归</a></li>
+<li><a href="/docs/ch5/ch5-03/">多返回值</a></li>
+<li><a href="/docs/ch5/ch5-04/">错误</a></li>
+<li><a href="/docs/ch5/ch5-05/">函数值</a></li>
+<li><a href="/docs/ch5/ch5-06/">匿名函数</a></li>
+<li><a href="/docs/ch5/ch5-07/">可变参数</a></li>
+<li><a href="/docs/ch5/ch5-08/">Deferred函数</a></li>
+<li><a href="/docs/ch5/ch5-09/">Panic异常</a></li>
+<li><a href="/docs/ch5/ch5-10/">Recover捕获异常</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch6/ch6/"><strong>方法</strong></a>
+<ul>
+<li><a href="/docs/ch6/ch6-01/">方法声明</a></li>
+<li><a href="/docs/ch6/ch6-02/">基于指针对象的方法</a></li>
+<li><a href="/docs/ch6/ch6-03/">通过嵌入结构体来扩展类型</a></li>
+<li><a href="/docs/ch6/ch6-04/">方法值和方法表达式</a></li>
+<li><a href="/docs/ch6/ch6-05/">示例: Bit数组</a></li>
+<li><a href="/docs/ch6/ch6-06/">封装</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch7/ch7/"><strong>接口</strong></a>
+<ul>
+<li><a href="/docs/ch7/ch7-01/">接口是合约</a></li>
+<li><a href="/docs/ch7/ch7-02/">接口类型</a></li>
+<li><a href="/docs/ch7/ch7-03/">实现接口的条件</a></li>
+<li><a href="/docs/ch7/ch7-04/">flag.Value接口</a></li>
+<li><a href="/docs/ch7/ch7-05/">接口值</a></li>
+<li><a href="/docs/ch7/ch7-06/">sort.Interface接口</a></li>
+<li><a href="/docs/ch7/ch7-07/">http.Handler接口</a></li>
+<li><a href="/docs/ch7/ch7-08/">error接口</a></li>
+<li><a href="/docs/ch7/ch7-09/">示例: 表达式求值</a></li>
+<li><a href="/docs/ch7/ch7-10/">类型断言</a></li>
+<li><a href="/docs/ch7/ch7-11/">基于类型断言识别错误类型</a></li>
+<li><a href="/docs/ch7/ch7-12/">通过类型断言查询接口</a></li>
+<li><a href="/docs/ch7/ch7-13/">类型分支</a></li>
+<li><a href="/docs/ch7/ch7-14/">示例: 基于标记的XML解码</a></li>
+<li><a href="/docs/ch7/ch7-15/">补充几点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch8/ch8/"><strong>Goroutines和Channels</strong></a>
+<ul>
+<li><a href="/docs/ch8/ch8-01/">Goroutines</a></li>
+<li><a href="/docs/ch8/ch8-02/">示例: 并发的Clock服务</a></li>
+<li><a href="/docs/ch8/ch8-03/">示例: 并发的Echo服务</a></li>
+<li><a href="/docs/ch8/ch8-04/">Channels</a></li>
+<li><a href="/docs/ch8/ch8-05/">并发的循环</a></li>
+<li><a href="/docs/ch8/ch8-06/">示例: 并发的Web爬虫</a></li>
+<li><a href="/docs/ch8/ch8-07/">基于select的多路复用</a>
+ - <a href="/docs/ch8/ch8-08/">示例: 并发的目录遍历</a></li>
+<li><a href="/docs/ch8/ch8-09/">并发的退出</a></li>
+<li><a href="/docs/ch8/ch8-10/">示例: 聊天服务</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch9/ch9/"><strong>基于共享变量的并发</strong></a>
+<ul>
+<li><a href="/docs/ch9/ch9-01/">竞争条件</a></li>
+<li><a href="/docs/ch9/ch9-02/">sync.Mutex互斥锁</a></li>
+<li><a href="/docs/ch9/ch9-03/">sync.RWMutex读写锁</a></li>
+<li><a href="/docs/ch9/ch9-04/">内存同步</a>
+ - <a href="/docs/ch9/ch9-05/">sync.Once惰性初始化</a></li>
+<li><a href="/docs/ch9/ch9-06/">竞争条件检测</a></li>
+<li><a href="/docs/ch9/ch9-07/">示例: 并发的非阻塞缓存</a></li>
+<li><a href="/docs/ch9/ch9-08/">Goroutines和线程</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch10/ch10/"><strong>包和工具</strong></a>
+<ul>
+<li><a href="/docs/ch10/ch10-01/">包简介</a></li>
+<li><a href="/docs/ch10/ch10-02/">导入路径</a></li>
+<li><a href="/docs/ch10/ch10-03/">包声明</a></li>
+<li><a href="/docs/ch10/ch10-04/">导入声明</a></li>
+<li><a href="/docs/ch10/ch10-05/">包的匿名导入</a></li>
+<li><a href="/docs/ch10/ch10-06/">包和命名</a></li>
+<li><a href="/docs/ch10/ch10-07/">工具</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch11/ch11/"><strong>测试</strong></a>
+<ul>
+<li><a href="/docs/ch11/ch11-01/">go test</a></li>
+<li><a href="/docs/ch11/ch11-02/">测试函数</a></li>
+<li><a href="/docs/ch11/ch11-03/">测试覆盖率</a></li>
+<li><a href="/docs/ch11/ch11-04/">基准测试</a></li>
+<li><a href="/docs/ch11/ch11-05/">剖析</a></li>
+<li><a href="/docs/ch11/ch11-06/">示例函数</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch12/ch12/"><strong>反射</strong></a>
+<ul>
+<li><a href="/docs/ch12/ch12-01/">为何需要反射?</a></li>
+<li><a href="/docs/ch12/ch12-02/">reflect.Type和reflect.Value</a></li>
+<li><a href="/docs/ch12/ch12-03/">Display递归打印</a></li>
+<li><a href="/docs/ch12/ch12-04/">示例: 编码S表达式</a></li>
+<li><a href="/docs/ch12/ch12-05/">通过reflect.Value修改值</a></li>
+<li><a href="/docs/ch12/ch12-06/">示例: 解码S表达式</a>
+ - <a href="/docs/ch12/ch12-07/">获取结构体字段标签</a></li>
+<li><a href="/docs/ch12/ch12-08/">显示一个类型的方法集</a></li>
+<li><a href="/docs/ch12/ch12-09/">几点忠告</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch13/ch13/"><strong>底层编程</strong></a>
+<ul>
+<li><a href="/docs/ch13/ch13-01/">unsafe.Sizeof, Alignof 和 Offsetof</a></li>
+<li><a href="/docs/ch13/ch13-02/">unsafe.Pointer</a></li>
+<li><a href="/docs/ch13/ch13-03/">示例: 深度相等判断</a></li>
+<li><a href="/docs/ch13/ch13-04/">通过cgo调用C代码</a></li>
+<li><a href="/docs/ch13/ch13-05/">几点忠告</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/alex-shpak/hugo-book" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://themes.gohugo.io/hugo-book/" target="_blank" rel="noopener">
+        Hugo Themes
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch8 04 1</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#841-不带缓存的channels">8.4.1. 不带缓存的Channels</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h3 id="841-不带缓存的channels">
+  8.4.1. 不带缓存的Channels
+  <a class="anchor" href="#841-%e4%b8%8d%e5%b8%a6%e7%bc%93%e5%ad%98%e7%9a%84channels">#</a>
+</h3>
+<p>一个基于无缓存Channels的发送操作将导致发送者goroutine阻塞，直到另一个goroutine在相同的Channels上执行接收操作，当发送的值通过Channels成功传输之后，两个goroutine可以继续执行后面的语句。反之，如果接收操作先发生，那么接收者goroutine也将阻塞，直到有另一个goroutine在相同的Channels上执行发送操作。</p>
+<p>基于无缓存Channels的发送和接收操作将导致两个goroutine做一次同步操作。因为这个原因，无缓存Channels有时候也被称为同步Channels。当通过一个无缓存Channels发送数据时，接收者收到数据发生在再次唤醒唤醒发送者goroutine之前（译注：<em>happens before</em>，这是Go语言并发内存模型的一个关键术语！）。</p>
+<p>在讨论并发编程时，当我们说x事件在y事件之前发生（<em>happens before</em>），我们并不是说x事件在时间上比y时间更早；我们要表达的意思是要保证在此之前的事件都已经完成了，例如在此之前的更新某些变量的操作已经完成，你可以放心依赖这些已完成的事件了。</p>
+<p>当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。这并不是意味着x事件和y事件就一定是同时发生的，我们只是不能确定这两个事件发生的先后顺序。在下一章中我们将看到，当两个goroutine并发访问了相同的变量时，我们有必要保证某些事件的执行顺序，以避免出现某些并发问题。</p>
+<p>在8.3节的客户端程序，它在主goroutine中（译注：就是执行main函数的goroutine）将标准输入复制到server，因此当客户端程序关闭标准输入时，后台goroutine可能依然在工作。我们需要让主goroutine等待后台goroutine完成工作后再退出，我们使用了一个channel来同步两个goroutine：</p>
+<p><u><i>gopl.io/ch8/netcat3</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Dial</span>(<span style="color:#e6db74">&#34;tcp&#34;</span>, <span style="color:#e6db74">&#34;localhost:8000&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#a6e22e">done</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">struct</span>{})
+	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">conn</span>) <span style="color:#75715e">// NOTE: ignoring errors
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;done&#34;</span>)
+		<span style="color:#a6e22e">done</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">struct</span>{}{} <span style="color:#75715e">// signal the main goroutine
+</span><span style="color:#75715e"></span>	}()
+	<span style="color:#a6e22e">mustCopy</span>(<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdin</span>)
+	<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Close</span>()
+	<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span> <span style="color:#75715e">// wait for background goroutine to finish
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>当用户关闭了标准输入，主goroutine中的mustCopy函数调用将返回，然后调用conn.Close()关闭读和写方向的网络连接。关闭网络连接中的写方向的连接将导致server程序收到一个文件（end-of-file）结束的信号。关闭网络连接中读方向的连接将导致后台goroutine的io.Copy函数调用返回一个“read from closed connection”（“从关闭的连接读”）类似的错误，因此我们临时移除了错误日志语句；在练习8.3将会提供一个更好的解决方案。（需要注意的是go语句调用了一个函数字面量，这是Go语言中启动goroutine常用的形式。）</p>
+<p>在后台goroutine返回之前，它先打印一个日志信息，然后向done对应的channel发送一个值。主goroutine在退出前先等待从done对应的channel接收一个值。因此，总是可以在程序退出前正确输出“done”消息。</p>
+<p>基于channels发送消息有两个重要方面。首先每个消息都有一个值，但是有时候通讯的事实和发生的时刻也同样重要。当我们更希望强调通讯发生的时刻时，我们将它称为<strong>消息事件</strong>。有些消息事件并不携带额外的信息，它仅仅是用作两个goroutine之间的同步，这时候我们可以用<code>struct{}</code>空结构体作为channels元素的类型，虽然也可以使用bool或int类型实现同样的功能，<code>done &lt;- 1</code>语句也比<code>done &lt;- struct{}{}</code>更短。</p>
+<p><strong>练习 8.3：</strong> 在netcat3例子中，conn虽然是一个interface类型的值，但是其底层真实类型是<code>*net.TCPConn</code>，代表一个TCP连接。一个TCP连接有读和写两个部分，可以使用CloseRead和CloseWrite方法分别关闭它们。修改netcat3的主goroutine代码，只关闭网络连接中写的部分，这样的话后台goroutine可以在标准输入被关闭后继续打印从reverb1服务器传回的数据。（要在reverb2服务器也完成同样的功能是比较困难的；参考<strong>练习 8.4</strong>。）</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/edit/master//docs/ch8/ch8-04-1.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#841-不带缓存的channels">8.4.1. 不带缓存的Channels</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

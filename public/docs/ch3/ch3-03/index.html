@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
+var x complex128 = complex(1, 2) // 1&#43;2i var y complex128 = complex(3, 4) // 3&#43;4i fmt.Println(x*y) // &#34;(-5&#43;10i)&#34; fmt.Println(real(x*y)) // &#34;-5&#34; fmt.Println(imag(x*y)) // &#34;10&#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
+fmt.Println(1i * 1i) // &#34;(-1&#43;0i)&#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1&#43;2i或与之等价的写法2i&#43;1。上面x和y的声明语句还可以简化：
+x := 1 &#43; 2i y := 3 &#43; 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
+math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
+fmt.Println(cmplx.Sqrt(-1)) // &#34;(0&#43;1i)&#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
+gopl.io/ch3/mandelbrot
+// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &#34;image&#34; &#34;image/color&#34; &#34;image/png&#34; &#34;math/cmplx&#34; &#34;os&#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, &#43;2, &#43;2 width, height = 1024, 1024 ) img := image.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="3.3. 复数 #  Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：
+var x complex128 = complex(1, 2) // 1&#43;2i var y complex128 = complex(3, 4) // 3&#43;4i fmt.Println(x*y) // &#34;(-5&#43;10i)&#34; fmt.Println(real(x*y)) // &#34;-5&#34; fmt.Println(imag(x*y)) // &#34;10&#34; 如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：
+fmt.Println(1i * 1i) // &#34;(-1&#43;0i)&#34;, i^2 = -1 在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1&#43;2i或与之等价的写法2i&#43;1。上面x和y的声明语句还可以简化：
+x := 1 &#43; 2i y := 3 &#43; 4i 复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。
+math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。
+fmt.Println(cmplx.Sqrt(-1)) // &#34;(0&#43;1i)&#34; 下面的程序使用complex128复数算法来生成一个Mandelbrot图像。
+gopl.io/ch3/mandelbrot
+// Mandelbrot emits a PNG image of the Mandelbrot fractal. package main import ( &#34;image&#34; &#34;image/color&#34; &#34;image/png&#34; &#34;math/cmplx&#34; &#34;os&#34; ) func main() { const ( xmin, ymin, xmax, ymax = -2, -2, &#43;2, &#43;2 width, height = 1024, 1024 ) img := image." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/docs/ch3/ch3-03/" />
+
+<title>Ch3 03 | Hugo Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.7274e6413b1d4a32c98ed56250866993ea1b6e4e6df5b1983a42cd85991a6f9b.js" integrity="sha256-cnTmQTsdSjLJjtViUIZpk&#43;obbk5t9bGYOkLNhZkab5s="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Hugo Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/docs/ch0/"><strong>前言</strong></a>
+<ul>
+<li><a href="/docs/ch0/ch0-01/">Go语言起源</a></li>
+<li><a href="/docs/ch0/ch0-02/">Go语言项目</a></li>
+<li><a href="/docs/ch0/ch0-03/">本书的组织</a></li>
+<li><a href="/docs/ch0/ch0-04/">更多的信息</a></li>
+<li><a href="/docs/ch0/ch0-05/">致谢</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch1/ch1/"><strong>入门</strong></a>
+<ul>
+<li><a href="/docs/ch1/ch1-01/">Hello, World</a></li>
+<li><a href="/docs/ch1/ch1-02/">命令行参数</a></li>
+<li><a href="/docs/ch1/ch1-03/">查找重复的行</a></li>
+<li><a href="/docs/ch1/ch1-04/">GIF动画</a></li>
+<li><a href="/docs/ch1/ch1-05/">获取URL</a></li>
+<li><a href="/docs/ch1/ch1-06/">并发获取多个URL</a></li>
+<li><a href="/docs/ch1/ch1-07/">Web服务</a></li>
+<li><a href="/docs/ch1/ch1-08/">本章要点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch2/ch2/"><strong>程序结构</strong></a>
+<ul>
+<li><a href="/docs/ch2/ch2-01/">命名</a></li>
+<li><a href="/docs/ch2/ch2-02/">声明</a></li>
+<li><a href="/docs/ch2/ch2-03/">变量</a></li>
+<li><a href="/docs/ch2/ch2-04/">赋值</a></li>
+<li><a href="/docs/ch2/ch2-05/">类型</a></li>
+<li><a href="/docs/ch2/ch2-06/">包和文件</a></li>
+<li><a href="/docs/ch2/ch2-07/">作用域</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch3/ch3/"><strong>基础数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch3/ch3-01/">整型</a></li>
+<li><a href="/docs/ch3/ch3-02/">浮点数</a></li>
+<li><a href="/docs/ch3/ch3-03/"class=active>复数</a></li>
+<li><a href="/docs/ch3/ch3-04/">布尔型</a></li>
+<li><a href="/docs/ch3/ch3-05/">字符串</a></li>
+<li><a href="/docs/ch3/ch3-06/">常量</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch4/ch4/"><strong>复合数据类型</strong></a>
+<ul>
+<li><a href="/docs/ch4/ch4-01/">数组</a></li>
+<li><a href="/docs/ch4/ch4-02/">Slice</a></li>
+<li><a href="/docs/ch4/ch4-03/">Map</a></li>
+<li><a href="/docs/ch4/ch4-04/">结构体</a></li>
+<li><a href="/docs/ch4/ch4-05/">JSON</a></li>
+<li><a href="/docs/ch4/ch4-06/">文本和HTML模板</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch5/ch5/"><strong>函数</strong></a>
+<ul>
+<li><a href="/docs/ch5/ch5-01/">函数声明</a></li>
+<li><a href="/docs/ch5/ch5-02/">递归</a></li>
+<li><a href="/docs/ch5/ch5-03/">多返回值</a></li>
+<li><a href="/docs/ch5/ch5-04/">错误</a></li>
+<li><a href="/docs/ch5/ch5-05/">函数值</a></li>
+<li><a href="/docs/ch5/ch5-06/">匿名函数</a></li>
+<li><a href="/docs/ch5/ch5-07/">可变参数</a></li>
+<li><a href="/docs/ch5/ch5-08/">Deferred函数</a></li>
+<li><a href="/docs/ch5/ch5-09/">Panic异常</a></li>
+<li><a href="/docs/ch5/ch5-10/">Recover捕获异常</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch6/ch6/"><strong>方法</strong></a>
+<ul>
+<li><a href="/docs/ch6/ch6-01/">方法声明</a></li>
+<li><a href="/docs/ch6/ch6-02/">基于指针对象的方法</a></li>
+<li><a href="/docs/ch6/ch6-03/">通过嵌入结构体来扩展类型</a></li>
+<li><a href="/docs/ch6/ch6-04/">方法值和方法表达式</a></li>
+<li><a href="/docs/ch6/ch6-05/">示例: Bit数组</a></li>
+<li><a href="/docs/ch6/ch6-06/">封装</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch7/ch7/"><strong>接口</strong></a>
+<ul>
+<li><a href="/docs/ch7/ch7-01/">接口是合约</a></li>
+<li><a href="/docs/ch7/ch7-02/">接口类型</a></li>
+<li><a href="/docs/ch7/ch7-03/">实现接口的条件</a></li>
+<li><a href="/docs/ch7/ch7-04/">flag.Value接口</a></li>
+<li><a href="/docs/ch7/ch7-05/">接口值</a></li>
+<li><a href="/docs/ch7/ch7-06/">sort.Interface接口</a></li>
+<li><a href="/docs/ch7/ch7-07/">http.Handler接口</a></li>
+<li><a href="/docs/ch7/ch7-08/">error接口</a></li>
+<li><a href="/docs/ch7/ch7-09/">示例: 表达式求值</a></li>
+<li><a href="/docs/ch7/ch7-10/">类型断言</a></li>
+<li><a href="/docs/ch7/ch7-11/">基于类型断言识别错误类型</a></li>
+<li><a href="/docs/ch7/ch7-12/">通过类型断言查询接口</a></li>
+<li><a href="/docs/ch7/ch7-13/">类型分支</a></li>
+<li><a href="/docs/ch7/ch7-14/">示例: 基于标记的XML解码</a></li>
+<li><a href="/docs/ch7/ch7-15/">补充几点</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch8/ch8/"><strong>Goroutines和Channels</strong></a>
+<ul>
+<li><a href="/docs/ch8/ch8-01/">Goroutines</a></li>
+<li><a href="/docs/ch8/ch8-02/">示例: 并发的Clock服务</a></li>
+<li><a href="/docs/ch8/ch8-03/">示例: 并发的Echo服务</a></li>
+<li><a href="/docs/ch8/ch8-04/">Channels</a></li>
+<li><a href="/docs/ch8/ch8-05/">并发的循环</a></li>
+<li><a href="/docs/ch8/ch8-06/">示例: 并发的Web爬虫</a></li>
+<li><a href="/docs/ch8/ch8-07/">基于select的多路复用</a>
+ - <a href="/docs/ch8/ch8-08/">示例: 并发的目录遍历</a></li>
+<li><a href="/docs/ch8/ch8-09/">并发的退出</a></li>
+<li><a href="/docs/ch8/ch8-10/">示例: 聊天服务</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch9/ch9/"><strong>基于共享变量的并发</strong></a>
+<ul>
+<li><a href="/docs/ch9/ch9-01/">竞争条件</a></li>
+<li><a href="/docs/ch9/ch9-02/">sync.Mutex互斥锁</a></li>
+<li><a href="/docs/ch9/ch9-03/">sync.RWMutex读写锁</a></li>
+<li><a href="/docs/ch9/ch9-04/">内存同步</a>
+ - <a href="/docs/ch9/ch9-05/">sync.Once惰性初始化</a></li>
+<li><a href="/docs/ch9/ch9-06/">竞争条件检测</a></li>
+<li><a href="/docs/ch9/ch9-07/">示例: 并发的非阻塞缓存</a></li>
+<li><a href="/docs/ch9/ch9-08/">Goroutines和线程</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch10/ch10/"><strong>包和工具</strong></a>
+<ul>
+<li><a href="/docs/ch10/ch10-01/">包简介</a></li>
+<li><a href="/docs/ch10/ch10-02/">导入路径</a></li>
+<li><a href="/docs/ch10/ch10-03/">包声明</a></li>
+<li><a href="/docs/ch10/ch10-04/">导入声明</a></li>
+<li><a href="/docs/ch10/ch10-05/">包的匿名导入</a></li>
+<li><a href="/docs/ch10/ch10-06/">包和命名</a></li>
+<li><a href="/docs/ch10/ch10-07/">工具</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch11/ch11/"><strong>测试</strong></a>
+<ul>
+<li><a href="/docs/ch11/ch11-01/">go test</a></li>
+<li><a href="/docs/ch11/ch11-02/">测试函数</a></li>
+<li><a href="/docs/ch11/ch11-03/">测试覆盖率</a></li>
+<li><a href="/docs/ch11/ch11-04/">基准测试</a></li>
+<li><a href="/docs/ch11/ch11-05/">剖析</a></li>
+<li><a href="/docs/ch11/ch11-06/">示例函数</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch12/ch12/"><strong>反射</strong></a>
+<ul>
+<li><a href="/docs/ch12/ch12-01/">为何需要反射?</a></li>
+<li><a href="/docs/ch12/ch12-02/">reflect.Type和reflect.Value</a></li>
+<li><a href="/docs/ch12/ch12-03/">Display递归打印</a></li>
+<li><a href="/docs/ch12/ch12-04/">示例: 编码S表达式</a></li>
+<li><a href="/docs/ch12/ch12-05/">通过reflect.Value修改值</a></li>
+<li><a href="/docs/ch12/ch12-06/">示例: 解码S表达式</a>
+ - <a href="/docs/ch12/ch12-07/">获取结构体字段标签</a></li>
+<li><a href="/docs/ch12/ch12-08/">显示一个类型的方法集</a></li>
+<li><a href="/docs/ch12/ch12-09/">几点忠告</a></li>
+</ul>
+</li>
+<li><a href="/docs/ch13/ch13/"><strong>底层编程</strong></a>
+<ul>
+<li><a href="/docs/ch13/ch13-01/">unsafe.Sizeof, Alignof 和 Offsetof</a></li>
+<li><a href="/docs/ch13/ch13-02/">unsafe.Pointer</a></li>
+<li><a href="/docs/ch13/ch13-03/">示例: 深度相等判断</a></li>
+<li><a href="/docs/ch13/ch13-04/">通过cgo调用C代码</a></li>
+<li><a href="/docs/ch13/ch13-05/">几点忠告</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/alex-shpak/hugo-book" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://themes.gohugo.io/hugo-book/" target="_blank" rel="noopener">
+        Hugo Themes
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Ch3 03</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#33-复数">3.3. 复数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="33-复数">
+  3.3. 复数
+  <a class="anchor" href="#33-%e5%a4%8d%e6%95%b0">#</a>
+</h2>
+<p>Go语言提供了两种精度的复数类型：complex64和complex128，分别对应float32和float64两种浮点数精度。内置的complex函数用于构建复数，内建的real和imag函数分别返回复数的实部和虚部：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#66d9ef">complex128</span> = complex(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>) <span style="color:#75715e">// 1+2i
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">complex128</span> = complex(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>) <span style="color:#75715e">// 3+4i
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>)                 <span style="color:#75715e">// &#34;(-5+10i)&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(real(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>))           <span style="color:#75715e">// &#34;-5&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(imag(<span style="color:#a6e22e">x</span><span style="color:#f92672">*</span><span style="color:#a6e22e">y</span>))           <span style="color:#75715e">// &#34;10&#34;
+</span></code></pre></div><p>如果一个浮点数面值或一个十进制整数面值后面跟着一个i，例如3.141592i或2i，它将构成一个复数的虚部，复数的实部是0：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#ae81ff">1i</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1i</span>) <span style="color:#75715e">// &#34;(-1+0i)&#34;, i^2 = -1
+</span></code></pre></div><p>在常量算术规则下，一个复数常量可以加到另一个普通数值常量（整数或浮点数、实部或虚部），我们可以用自然的方式书写复数，就像1+2i或与之等价的写法2i+1。上面x和y的声明语句还可以简化：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2i</span>
+<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4i</span>
+</code></pre></div><p>复数也可以用==和!=进行相等比较。只有两个复数的实部和虚部都相等的时候它们才是相等的（译注：浮点数的相等比较是危险的，需要特别小心处理精度问题）。</p>
+<p>math/cmplx包提供了复数处理的许多函数，例如求复数的平方根函数和求幂函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">cmplx</span>.<span style="color:#a6e22e">Sqrt</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)) <span style="color:#75715e">// &#34;(0+1i)&#34;
+</span></code></pre></div><p>下面的程序使用complex128复数算法来生成一个Mandelbrot图像。</p>
+<p><u><i>gopl.io/ch3/mandelbrot</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Mandelbrot emits a PNG image of the Mandelbrot fractal.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;image&#34;</span>
+	<span style="color:#e6db74">&#34;image/color&#34;</span>
+	<span style="color:#e6db74">&#34;image/png&#34;</span>
+	<span style="color:#e6db74">&#34;math/cmplx&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+)
+
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#66d9ef">const</span> (
+		<span style="color:#a6e22e">xmin</span>, <span style="color:#a6e22e">ymin</span>, <span style="color:#a6e22e">xmax</span>, <span style="color:#a6e22e">ymax</span> = <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>
+		<span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">height</span>          = <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">1024</span>
+	)
+
+	<span style="color:#a6e22e">img</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">NewRGBA</span>(<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">Rect</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">height</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">py</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">py</span> &lt; <span style="color:#a6e22e">height</span>; <span style="color:#a6e22e">py</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">py</span>)<span style="color:#f92672">/</span><span style="color:#a6e22e">height</span><span style="color:#f92672">*</span>(<span style="color:#a6e22e">ymax</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ymin</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ymin</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">px</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">px</span> &lt; <span style="color:#a6e22e">width</span>; <span style="color:#a6e22e">px</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">px</span>)<span style="color:#f92672">/</span><span style="color:#a6e22e">width</span><span style="color:#f92672">*</span>(<span style="color:#a6e22e">xmax</span><span style="color:#f92672">-</span><span style="color:#a6e22e">xmin</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">xmin</span>
+			<span style="color:#a6e22e">z</span> <span style="color:#f92672">:=</span> complex(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>)
+			<span style="color:#75715e">// Image point (px, py) represents complex value z.
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">img</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">px</span>, <span style="color:#a6e22e">py</span>, <span style="color:#a6e22e">mandelbrot</span>(<span style="color:#a6e22e">z</span>))
+		}
+	}
+	<span style="color:#a6e22e">png</span>.<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">img</span>) <span style="color:#75715e">// NOTE: ignoring errors
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mandelbrot</span>(<span style="color:#a6e22e">z</span> <span style="color:#66d9ef">complex128</span>) <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Color</span> {
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">iterations</span> = <span style="color:#ae81ff">200</span>
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">contrast</span> = <span style="color:#ae81ff">15</span>
+
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">v</span> <span style="color:#66d9ef">complex128</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> uint8(<span style="color:#ae81ff">0</span>); <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">iterations</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">v</span> = <span style="color:#a6e22e">v</span><span style="color:#f92672">*</span><span style="color:#a6e22e">v</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">z</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cmplx</span>.<span style="color:#a6e22e">Abs</span>(<span style="color:#a6e22e">v</span>) &gt; <span style="color:#ae81ff">2</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Gray</span>{<span style="color:#ae81ff">255</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">contrast</span><span style="color:#f92672">*</span><span style="color:#a6e22e">n</span>}
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">Black</span>
+}
+</code></pre></div><p>用于遍历1024x1024图像每个点的两个嵌套的循环对应-2到+2区间的复数平面。程序反复测试每个点对应复数值平方值加一个增量值对应的点是否超出半径为2的圆。如果超过了，通过根据预设置的逃逸迭代次数对应的灰度颜色来代替。如果不是，那么该点属于Mandelbrot集合，使用黑色颜色标记。最终程序将生成的PNG格式分形图像输出到标准输出，如图3.3所示。</p>
+<p><img src="/images/ch3-03.png" alt="" /></p>
+<p><strong>练习 3.5：</strong> 实现一个彩色的Mandelbrot图像，使用image.NewRGBA创建图像，使用color.RGBA或color.YCbCr生成颜色。</p>
+<p><strong>练习 3.6：</strong> 升采样技术可以降低每个像素对计算颜色值和平均值的影响。简单的方法是将每个像素分成四个子像素，实现它。</p>
+<p><strong>练习 3.7：</strong> 另一个生成分形图像的方式是使用牛顿法来求解一个复数方程，例如$z^4-1=0$。每个起点到四个根的迭代次数对应阴影的灰度。方程根对应的点用颜色表示。</p>
+<p><strong>练习 3.8：</strong> 通过提高精度来生成更多级别的分形。使用四种不同精度类型的数字实现相同的分形：complex64、complex128、big.Float和big.Rat。（后面两种类型在math/big包声明。Float是有指定限精度的浮点数；Rat是无限精度的有理数。）它们间的性能和内存使用对比如何？当渲染图可见时缩放的级别是多少？</p>
+<p><strong>练习 3.9：</strong> 编写一个web服务器，用于给客户端生成分形的图像。运行客户端通过HTTP参数指定x、y和zoom参数。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/alex-shpak/hugo-book/edit/master//docs/ch3/ch3-03.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#33-复数">3.3. 复数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

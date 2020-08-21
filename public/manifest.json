@@ -1,6 +1,6 @@
 {
-  "name": "My New Hugo Site",
-  "short_name": "My New Hugo Site",
+  "name": "Hugo Book",
+  "short_name": "Hugo Book",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

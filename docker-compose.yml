@@ -11,6 +11,6 @@ services:
     image: klakegg/hugo:ext-alpine
     command: server
     volumes:
-      - "/home/nines/hugo/gopl-zh:/src"
+      - "/home/nines/git/gopl-zh-hugo:/src"
     ports:
         - 1313:1313

@@ -15,7 +15,7 @@ func Sprint(x interface{}) string { type stringer interface { String() string } 
 func Sprint(x interface{}) string { type stringer interface { String() string } switch x := x.(type) { case stringer: return x.String() case string: return x case int: return strconv.Itoa(x) // ...similar cases for int16, uint32, and so on... 	case bool: if x { return &#34;true&#34; } return &#34;false&#34; default: // array, chan, func, map, pointer, slice, struct 	return &#34;???&#34; } } 但是我们如何处理其它类似[]float64、map[string][]string等类型呢？我们当然可以添加更多的测试分支，但是这些组合类型的数目基本是无穷的。还有如何处理类似url." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.1.-Why-Reflection/" />
-
+<meta property="article:modified_time" content="2020-08-28T11:04:46+08:00" />
 <title>12.1. 为何需要反射? | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2407,6 +2407,12 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/dcda27d1e5bc143b0f39f084232feca678d9ff3a" title='最后修改者 nines | 2020年8月28日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月28日</span>
+    </a>
+  </div>
 
 
 

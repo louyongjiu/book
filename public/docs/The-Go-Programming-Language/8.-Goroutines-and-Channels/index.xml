@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>8. Goroutines和Channels on Book</title>
+    <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/</link>
+    <description>Recent content in 8. Goroutines和Channels on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>8.1. Goroutines</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.1.-Goroutines/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.1.-Goroutines/</guid>
+      <description>8.1. Goroutines #  在Go语言中，每一个并发的执行单元叫作一个goroutine。设想这里的一个程序有两个函数，一个函数做计算，另一个输出结果，假设两个函数没有相互之间的调用关系。一个线性的程序会先调用其中的一个函数，然后再调用另一个。如果程序中包含多个goroutine，对两个函数的调用则可能发生在同一时刻。马上就会看到这样的一个程序。
+如果你使用过操作系统或者其它语言提供的线程，那么你可以简单地把goroutine类比作一个线程，这样你就可以写出一些正确的程序了。goroutine和线程的本质区别会在9.8节中讲。
+当一个程序启动时，其主函数即在一个单独的goroutine中运行，我们叫它main goroutine。新的goroutine会用go语句来创建。在语法上，go语句是一个普通的函数或方法调用前加上关键字go。go语句会使其语句中的函数在一个新创建的goroutine中运行。而go语句本身会迅速地完成。
+f() // call f(); wait for it to return go f() // create a new goroutine that calls f(); don&amp;#39;t wait 下面的例子，main goroutine将计算菲波那契数列的第45个元素值。由于计算函数使用低效的递归，所以会运行相当长时间，在此期间我们想让用户看到一个可见的标识来表明程序依然在正常运行，所以来做一个动画的小图标：
+gopl.io/ch8/spinner
+func main() { go spinner(100 * time.Millisecond) const n = 45 fibN := fib(n) // slow 	fmt.Printf(&amp;#34;\rFibonacci(%d) = %d\n&amp;#34;, n, fibN) } func spinner(delay time.Duration) { for { for _, r := range `-\|/` { fmt.Printf(&amp;#34;\r%c&amp;#34;, r) time.</description>
+    </item>
+    
+    <item>
+      <title>8.2. 示例: 并发的Clock服务</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/</guid>
+      <description>8.2. 示例: 并发的Clock服务 #  网络编程是并发大显身手的一个领域，由于服务器是最典型的需要同时处理很多连接的程序，这些连接一般来自于彼此独立的客户端。在本小节中，我们会讲解go语言的net包，这个包提供编写一个网络客户端或者服务器程序的基本组件，无论两者间通信是使用TCP、UDP或者Unix domain sockets。在第一章中我们使用过的net/http包里的方法，也算是net包的一部分。
+我们的第一个例子是一个顺序执行的时钟服务器，它会每隔一秒钟将当前时间写到客户端：
+gopl.io/ch8/clock1
+// Clock1 is a TCP server that periodically writes the time. package main import ( &amp;#34;io&amp;#34; &amp;#34;log&amp;#34; &amp;#34;net&amp;#34; &amp;#34;time&amp;#34; ) func main() { listener, err := net.Listen(&amp;#34;tcp&amp;#34;, &amp;#34;localhost:8000&amp;#34;) if err != nil { log.Fatal(err) } for { conn, err := listener.Accept() if err != nil { log.Print(err) // e.g., connection aborted 	continue } handleConn(conn) // handle one connection at a time 	} } func handleConn(c net.</description>
+    </item>
+    
+    <item>
+      <title>8.3. 示例: 并发的Echo服务</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/</guid>
+      <description>8.3. 示例: 并发的Echo服务 #  clock服务器每一个连接都会起一个goroutine。在本节中我们会创建一个echo服务器，这个服务在每个连接中会有多个goroutine。大多数echo服务仅仅会返回他们读取到的内容，就像下面这个简单的handleConn函数所做的一样：
+func handleConn(c net.Conn) { io.Copy(c, c) // NOTE: ignoring errors 	c.Close() } 一个更有意思的echo服务应该模拟一个实际的echo的“回响”，并且一开始要用大写HELLO来表示“声音很大”，之后经过一小段延迟返回一个有所缓和的Hello，然后一个全小写字母的hello表示声音渐渐变小直至消失，像下面这个版本的handleConn(译注：笑看作者脑洞大开)：
+gopl.io/ch8/reverb1
+func echo(c net.Conn, shout string, delay time.Duration) { fmt.Fprintln(c, &amp;#34;\t&amp;#34;, strings.ToUpper(shout)) time.Sleep(delay) fmt.Fprintln(c, &amp;#34;\t&amp;#34;, shout) time.Sleep(delay) fmt.Fprintln(c, &amp;#34;\t&amp;#34;, strings.ToLower(shout)) } func handleConn(c net.Conn) { input := bufio.NewScanner(c) for input.Scan() { echo(c, input.Text(), 1*time.Second) } // NOTE: ignoring potential errors from input.Err() 	c.Close() } 我们需要升级我们的客户端程序，这样它就可以发送终端的输入到服务器，并把服务端的返回输出到终端上，这使我们有了使用并发的另一个好机会：
+gopl.io/ch8/netcat2
+func main() { conn, err := net.</description>
+    </item>
+    
+    <item>
+      <title>8.5. 并发的循环</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/</guid>
+      <description>8.5. 并发的循环 #  本节中，我们会探索一些用来在并行时循环迭代的常见并发模型。我们会探究从全尺寸图片生成一些缩略图的问题。gopl.io/ch8/thumbnail包提供了ImageFile函数来帮我们拉伸图片。我们不会说明这个函数的实现，只需要从gopl.io下载它。
+gopl.io/ch8/thumbnail
+package thumbnail // ImageFile reads an image from infile and writes // a thumbnail-size version of it in the same directory. // It returns the generated file name, e.g., &amp;#34;foo.thumb.jpg&amp;#34;. func ImageFile(infile string) (string, error) 下面的程序会循环迭代一些图片文件名，并为每一张图片生成一个缩略图：
+gopl.io/ch8/thumbnail
+// makeThumbnails makes thumbnails of the specified files. func makeThumbnails(filenames []string) { for _, f := range filenames { if _, err := thumbnail.ImageFile(f); err != nil { log.</description>
+    </item>
+    
+    <item>
+      <title>8.6. 示例: 并发的Web爬虫</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/</guid>
+      <description>8.6. 示例: 并发的Web爬虫 #  在5.6节中，我们做了一个简单的web爬虫，用bfs(广度优先)算法来抓取整个网站。在本节中，我们会让这个爬虫并行化，这样每一个彼此独立的抓取命令可以并行进行IO，最大化利用网络资源。crawl函数和gopl.io/ch5/findlinks3中的是一样的。
+gopl.io/ch8/crawl1
+func crawl(url string) []string { fmt.Println(url) list, err := links.Extract(url) if err != nil { log.Print(err) } return list } 主函数和5.6节中的breadthFirst(广度优先)类似。像之前一样，一个worklist是一个记录了需要处理的元素的队列，每一个元素都是一个需要抓取的URL列表，不过这一次我们用channel代替slice来做这个队列。每一个对crawl的调用都会在他们自己的goroutine中进行并且会把他们抓到的链接发送回worklist。
+func main() { worklist := make(chan []string) // Start with the command-line arguments. 	go func() { worklist &amp;lt;- os.Args[1:] }() // Crawl the web concurrently. 	seen := make(map[string]bool) for list := range worklist { for _, link := range list { if !</description>
+    </item>
+    
+    <item>
+      <title>8.7. 基于select的多路复用</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/</guid>
+      <description>8.7. 基于select的多路复用 #  下面的程序会进行火箭发射的倒计时。time.Tick函数返回一个channel，程序会周期性地像一个节拍器一样向这个channel发送事件。每一个事件的值是一个时间戳，不过更有意思的是其传送方式。
+gopl.io/ch8/countdown1
+func main() { fmt.Println(&amp;#34;Commencing countdown.&amp;#34;) tick := time.Tick(1 * time.Second) for countdown := 10; countdown &amp;gt; 0; countdown-- { fmt.Println(countdown) &amp;lt;-tick } launch() } 现在我们让这个程序支持在倒计时中，用户按下return键时直接中断发射流程。首先，我们启动一个goroutine，这个goroutine会尝试从标准输入中读入一个单独的byte并且，如果成功了，会向名为abort的channel发送一个值。
+gopl.io/ch8/countdown2
+abort := make(chan struct{}) go func() { os.Stdin.Read(make([]byte, 1)) // read a single byte 	abort &amp;lt;- struct{}{} }() 现在每一次计数循环的迭代都需要等待两个channel中的其中一个返回事件了：当一切正常时的ticker channel（就像NASA jorgon的&amp;quot;nominal&amp;rdquo;，译注：这梗估计我们是不懂了）或者异常时返回的abort事件。我们无法做到从每一个channel中接收信息，如果我们这么做的话，如果第一个channel中没有事件发过来那么程序就会立刻被阻塞，这样我们就无法收到第二个channel中发过来的事件。这时候我们需要多路复用（multiplex）这些操作了，为了能够多路复用，我们使用了select语句。
+select { case &amp;lt;-ch1: // ... case x := &amp;lt;-ch2: // ...use x... case ch3 &amp;lt;- y: // .</description>
+    </item>
+    
+    <item>
+      <title>8.8. 示例: 并发的目录遍历</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/</guid>
+      <description>8.8. 示例: 并发的目录遍历 #  在本小节中，我们会创建一个程序来生成指定目录的硬盘使用情况报告，这个程序和Unix里的du工具比较相似。大多数工作用下面这个walkDir函数来完成，这个函数使用dirents函数来枚举一个目录下的所有入口。
+gopl.io/ch8/du1
+// walkDir recursively walks the file tree rooted at dir // and sends the size of each found file on fileSizes. func walkDir(dir string, fileSizes chan&amp;lt;- int64) { for _, entry := range dirents(dir) { if entry.IsDir() { subdir := filepath.Join(dir, entry.Name()) walkDir(subdir, fileSizes) } else { fileSizes &amp;lt;- entry.Size() } } } // dirents returns the entries of directory dir. func dirents(dir string) []os.</description>
+    </item>
+    
+    <item>
+      <title>8.9. 并发的退出</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.9.-Cancellation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.9.-Cancellation/</guid>
+      <description>8.9. 并发的退出 #  有时候我们需要通知goroutine停止它正在干的事情，比如一个正在执行计算的web服务，然而它的客户端已经断开了和服务端的连接。
+Go语言并没有提供在一个goroutine中终止另一个goroutine的方法，由于这样会导致goroutine之间的共享变量落在未定义的状态上。在8.7节中的rocket launch程序中，我们往名字叫abort的channel里发送了一个简单的值，在countdown的goroutine中会把这个值理解为自己的退出信号。但是如果我们想要退出两个或者任意多个goroutine怎么办呢？
+一种可能的手段是向abort的channel里发送和goroutine数目一样多的事件来退出它们。如果这些goroutine中已经有一些自己退出了，那么会导致我们的channel里的事件数比goroutine还多，这样导致我们的发送直接被阻塞。另一方面，如果这些goroutine又生成了其它的goroutine，我们的channel里的数目又太少了，所以有些goroutine可能会无法接收到退出消息。一般情况下我们是很难知道在某一个时刻具体有多少个goroutine在运行着的。另外，当一个goroutine从abort channel中接收到一个值的时候，他会消费掉这个值，这样其它的goroutine就没法看到这条信息。为了能够达到我们退出goroutine的目的，我们需要更靠谱的策略，来通过一个channel把消息广播出去，这样goroutine们能够看到这条事件消息，并且在事件完成之后，可以知道这件事已经发生过了。
+回忆一下我们关闭了一个channel并且被消费掉了所有已发送的值，操作channel之后的代码可以立即被执行，并且会产生零值。我们可以将这个机制扩展一下，来作为我们的广播机制：不要向channel发送值，而是用关闭一个channel来进行广播。
+只要一些小修改，我们就可以把退出逻辑加入到前一节的du程序。首先，我们创建一个退出的channel，不需要向这个channel发送任何值，但其所在的闭包内要写明程序需要退出。我们同时还定义了一个工具函数，cancelled，这个函数在被调用的时候会轮询退出状态。
+gopl.io/ch8/du4
+var done = make(chan struct{}) func cancelled() bool { select { case &amp;lt;-done: return true default: return false } } 下面我们创建一个从标准输入流中读取内容的goroutine，这是一个比较典型的连接到终端的程序。每当有输入被读到（比如用户按了回车键），这个goroutine就会把取消消息通过关闭done的channel广播出去。
+// Cancel traversal when input is detected. go func() { os.Stdin.Read(make([]byte, 1)) // read a single byte 	close(done) }() 现在我们需要使我们的goroutine来对取消进行响应。在main goroutine中，我们添加了select的第三个case语句，尝试从done channel中接收内容。如果这个case被满足的话，在select到的时候即会返回，但在结束之前我们需要把fileSizes channel中的内容“排”空，在channel被关闭之前，舍弃掉所有值。这样可以保证对walkDir的调用不要被向fileSizes发送信息阻塞住，可以正确地完成。
+for { select { case &amp;lt;-done: // Drain fileSizes to allow existing goroutines to finish.</description>
+    </item>
+    
+    <item>
+      <title>8.10. 示例: 聊天服务</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/</guid>
+      <description>8.10. 示例: 聊天服务 #  我们用一个聊天服务器来终结本章节的内容，这个程序可以让一些用户通过服务器向其它所有用户广播文本消息。这个程序中有四种goroutine。main和broadcaster各自是一个goroutine实例，每一个客户端的连接都会有一个handleConn和clientWriter的goroutine。broadcaster是select用法的不错的样例，因为它需要处理三种不同类型的消息。
+下面演示的main goroutine的工作，是listen和accept(译注：网络编程里的概念)从客户端过来的连接。对每一个连接，程序都会建立一个新的handleConn的goroutine，就像我们在本章开头的并发的echo服务器里所做的那样。
+gopl.io/ch8/chat
+func main() { listener, err := net.Listen(&amp;#34;tcp&amp;#34;, &amp;#34;localhost:8000&amp;#34;) if err != nil { log.Fatal(err) } go broadcaster() for { conn, err := listener.Accept() if err != nil { log.Print(err) continue } go handleConn(conn) } } 然后是broadcaster的goroutine。他的内部变量clients会记录当前建立连接的客户端集合。其记录的内容是每一个客户端的消息发出channel的“资格”信息。
+type client chan&amp;lt;- string // an outgoing message channel  var ( entering = make(chan client) leaving = make(chan client) messages = make(chan string) // all incoming client messages ) func broadcaster() { clients := make(map[client]bool) // all connected clients 	for { select { case msg := &amp;lt;-messages: // Broadcast incoming message to all 	// clients&amp;#39; outgoing message channels.</description>
+    </item>
+    
+  </channel>
+</rss>

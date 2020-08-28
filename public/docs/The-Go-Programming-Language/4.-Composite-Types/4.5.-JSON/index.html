@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
+Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
+JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
+基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是\Uhhhh转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。
+这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：
+boolean true number -273.15 string &quot;She said \&quot;Hello, BF\&quot;&quot; array [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;] object {&quot;year&quot;: 1980, &quot;event&quot;: &quot;archery&quot;, &quot;medals&quot;: [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;]} 考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）
+gopl.io/ch4/movie
+type Movie struct { Title string Year int `json:&#34;released&#34;` Color bool `json:&#34;color,omitempty&#34;` Actors []string } var movies = []Movie{ {Title: &#34;Casablanca&#34;, Year: 1942, Color: false, Actors: []string{&#34;Humphrey Bogart&#34;, &#34;Ingrid Bergman&#34;}}, {Title: &#34;Cool Hand Luke&#34;, Year: 1967, Color: true, Actors: []string{&#34;Paul Newman&#34;}}, {Title: &#34;Bullitt&#34;, Year: 1968, Color: true, Actors: []string{&#34;Steve McQueen&#34;, &#34;Jacqueline Bisset&#34;}}, // .">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="4.5. JSON" />
+<meta property="og:description" content="4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
+Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
+JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
+基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是\Uhhhh转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。
+这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：
+boolean true number -273.15 string &quot;She said \&quot;Hello, BF\&quot;&quot; array [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;] object {&quot;year&quot;: 1980, &quot;event&quot;: &quot;archery&quot;, &quot;medals&quot;: [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;]} 考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）
+gopl.io/ch4/movie
+type Movie struct { Title string Year int `json:&#34;released&#34;` Color bool `json:&#34;color,omitempty&#34;` Actors []string } var movies = []Movie{ {Title: &#34;Casablanca&#34;, Year: 1942, Color: false, Actors: []string{&#34;Humphrey Bogart&#34;, &#34;Ingrid Bergman&#34;}}, {Title: &#34;Cool Hand Luke&#34;, Year: 1967, Color: true, Actors: []string{&#34;Paul Newman&#34;}}, {Title: &#34;Bullitt&#34;, Year: 1968, Color: true, Actors: []string{&#34;Steve McQueen&#34;, &#34;Jacqueline Bisset&#34;}}, // ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.5.-JSON/" />
+<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+<title>4.5. JSON | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.14f5bfd5df2a871d2717dd8ecbed7a56fc22885aeb4d808cac363bd38deca16d.js" integrity="sha256-FPW/1d8qhx0nF92Oy&#43;16VvwiiFrrTYCMrDY7043soW0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/" class="">2. 程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.1.-Names/" class="">2.1. 命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.2.-Declarations/" class="">2.2. 声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/" class="">2.3. 变量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/" class="">2.3.1. 简短变量声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/" class="">2.3.2. 指针</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/" class="">2.3.3. new函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/" class="">2.3.4. 变量的生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/" class="">2.4. 赋值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/" class="">2.4.1. 元组赋值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/" class="">2.4.2. 可赋值性</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.5.-Type-Declarations/" class="">2.5. 类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/" class="">2.6. 包和文件</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/" class="">2.6.1. 导入包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/" class="">2.6.2. 包的初始化</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.7.-Scope/" class="">2.7. 作用域</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/" class="">3. 基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.1.-Integers/" class="">3.1. 整型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/" class="">3.2. 浮点数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.3.-Complex-Numbers/" class="">3.3. 复数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.4.-Booleans/" class="">3.4. 布尔型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/" class="">3.5. 字符串</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/" class="">3.5.1. 字符串面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/" class="">3.5.2. Unicode</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/" class="">3.5.3. UTF-8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/" class="">3.5.4. 字符串和Byte切片</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/" class="">3.5.5. 字符串和数字的转换</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/" class="">3.6. 常量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/" class="">3.6.1. iota 常量生成器</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/" class="">3.6.2. 无类型常量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/" class="">4. 复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.1.-Arrays/" class="">4.1. 数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/" class="">4.2. Slice</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/" class="">4.2.1. append函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/" class="">4.2.2. Slice内存技巧</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.3.-Maps/" class="">4.3. Map</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/" class="">4.4. 结构体</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/" class="">4.4.1. 结构体字面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/" class="">4.4.2. 结构体比较</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/" class="">4.4.3. 结构体嵌入和匿名成员</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.5.-JSON/" class="active">4.5. JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" class="">4.6. 文本和HTML模板</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/" class="">5. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.1.-Function-Declarations/" class="">5.1. 函数声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.2.-Recursion/" class="">5.2. 递归</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.3.-Multiple-Return-Values/" class="">5.3. 多返回值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/" class="">5.4. 错误</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/" class="">5.4.1. 错误处理策略</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/" class="">5.4.2. 文件结尾错误（EOF）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.5.-Function-Values/" class="">5.5. 函数值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/" class="">5.6. 匿名函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/" class="">5.6.1. 警告：捕获迭代变量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.7.-Variadic-Functions/" class="">5.7. 可变参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.8.-Deferred-Function-Calls/" class="">5.8. Deferred函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.9.-Panic/" class="">5.9. Panic异常</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.10.-Recover/" class="">5.10. Recover捕获异常</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/" class="">6. 方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.1.-Method-Declarations/" class="">6.1. 方法声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/" class="">6.2. 基于指针对象的方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/" class="">6.2.1. Nil也是一个合法的接收器类型</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/" class="">6.3. 通过嵌入结构体来扩展类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.4.-Method-Values-and-Expressions/" class="">6.4. 方法值和方法表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.5.-Example-Bit-Vector-Type/" class="">6.5. 示例: Bit数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.6.-Encapsulation/" class="">6.6. 封装</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/" class="">7. 接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.1.-Interfaces-as-Contracts/" class="">7.1. 接口约定</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.2.-Interface-Types/" class="">7.2. 接口类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.3.-Interface-Satisfaction/" class="">7.3. 实现接口的条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.4.-Parsing-Flags-with-flag.Value/" class="">7.4. flag.Value接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/" class="">7.5. 接口值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/" class="">7.5.1. 警告：一个包含nil指针的接口不是nil接口</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.6.-Sorting-with-sort.Interface/" class="">7.6. sort.Interface接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.7.-The-http.Handler-Interface/" class="">7.7. http.Handler接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.8.-The-error-Interface/" class="">7.8. error接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.9.-Example-Expression-Evaluator/" class="">7.9. 示例: 表达式求值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.10.-Type-Assertions/" class="">7.10. 类型断言</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/" class="">7.11. 基于类型断言区别错误类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.12.-Querying-Behaviors-with-Interface-Type-Assertions/" class="">7.12. 通过类型断言询问行为</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.13.-Type-Switches/" class="">7.13. 类型分支</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/" class="">7.14. 示例: 基于标记的XML解码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/" class="">7.15. 一些建议</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/" class="">8. Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.1.-Goroutines/" class="">8.1. Goroutines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/" class="">8.2. 示例: 并发的Clock服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/" class="">8.3. 示例: 并发的Echo服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/" class="">8.4. Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/" class="">8.4.1. 不带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/" class="">8.4.2. 串联的Channels（Pipeline）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/" class="">8.4.3. 单方向的Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/" class="">8.4.4. 带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/" class="">8.5. 并发的循环</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/" class="">8.6. 示例: 并发的Web爬虫</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/" class="">8.7. 基于select的多路复用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/" class="">8.8. 示例: 并发的目录遍历</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.9.-Cancellation/" class="">8.9. 并发的退出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/" class="">8.10. 示例: 聊天服务</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/" class="">9. 基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/" class="">9.1. 竞争条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/" class="">9.2. sync.Mutex互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/" class="">9.3. sync.RWMutex读写锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/" class="">9.4. 内存同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/" class="">9.5. sync.Once惰性初始化</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/" class="">9.6. 竞争条件检测</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/" class="">9.7. 示例: 并发的非阻塞缓存</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/" class="">9.8. Goroutines和线程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/" class="">9.8.1. 动态栈
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/" class="">9.8.2. Goroutine调度</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/" class="">9.8.3. GOMAXPROCS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/" class="">9.8.4. Goroutine没有ID号</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/" class="">10. 包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.1.-Introduction/" class="">10.1. 包简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/" class="">10.2. 导入路径</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/" class="">10.3. 包声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/" class="">10.4. 导入声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.5.-Blank-Imports/" class="">10.5. 包的匿名导入</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/" class="">10.6. 包和命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/" class="">10.7. 工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/" class="">10.7.1. 工作区结构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/" class="">10.7.2. 下载包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/" class="">10.7.3. 构建包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/" class="">10.7.4. 包文档</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/" class="">10.7.5. 内部包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/" class="">10.7.6. 查询包</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/" class="">11. 测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.1.-The-go-test-Tool/" class="">go test</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/" class="">11.2. 测试函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/" class="">11.2.1. 随机测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/" class="">11.2.2. 测试一个命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/" class="">11.2.3. 白盒测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/" class="">11.2.4. 外部测试包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/" class="">11.2.5. 编写有效的测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/" class="">11.2.6. 避免脆弱的测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.3.-Coverage/" class="">11.3. 测试覆盖率</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.4.-Benchmark-Functions/" class="">11.4. 基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.5.-Profiling/" class="">11.5. 剖析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.6.-Example-Functions/" class="">11.6. 示例函数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/" class="">12. 反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.1.-Why-Reflection/" class="">12.1. 为何需要反射?</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.2.-reflect.Type-and-reflect.Value/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.3.-Display-a-Recursive-Value-Printer/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.4.-Example-Encoding-S-Expressions/" class="">12.4. 示例: 编码为S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.5.-Setting-Variables-with-reflect.Value/" class="">12.5. 通过reflect.Value修改值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.6.-Example-Decoding-S-Expressions/" class="">12.6. 示例: 解码S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.7.-Accessing-Struct-Field-Tags/" class="">12.7. 获取结构体字段标签</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.8.-Displaying-the-Methods-of-a-Type/" class="">12.8. 显示一个类型的方法集</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.9.-A-Word-of-Caution/" class="">12.9. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/" class="">13. 底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.1.-unsafe.Sizeof-Alignof-and-Offsetof/" class="">13.1. unsafe.Sizeof, Alignof 和 Offsetof</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.2.-unsafe.Pointer/" class="">13.2. unsafe.Pointer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/" class="">13.3. 示例: 深度相等判断</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.4.-Calling-C-Code-with-cgo/" class="">13.4. 通过cgo调用C代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.5.-Another-Word-of-Caution/" class="">13.5. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch1/" class="">Ch1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch2/" class="">Ch2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch3/" class="">Ch3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/README/" class="">R E a D M E</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>4.5. JSON</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#45-json">4.5. JSON</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="45-json">
+  4.5. JSON
+  <a class="anchor" href="#45-json">#</a>
+</h2>
+<p>JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。</p>
+<p>Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。</p>
+<p>JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。</p>
+<p>基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是<code>\Uhhhh</code>转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。</p>
+<p>这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：</p>
+<pre><code>boolean         true
+number          -273.15
+string          &quot;She said \&quot;Hello, BF\&quot;&quot;
+array           [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;]
+object          {&quot;year&quot;: 1980,
+                 &quot;event&quot;: &quot;archery&quot;,
+                 &quot;medals&quot;: [&quot;gold&quot;, &quot;silver&quot;, &quot;bronze&quot;]}
+</code></pre><p>考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）</p>
+<p><u><i>gopl.io/ch4/movie</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Movie</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Title</span>  <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Year</span>   <span style="color:#66d9ef">int</span>  <span style="color:#e6db74">`json:&#34;released&#34;`</span>
+	<span style="color:#a6e22e">Color</span>  <span style="color:#66d9ef">bool</span> <span style="color:#e6db74">`json:&#34;color,omitempty&#34;`</span>
+	<span style="color:#a6e22e">Actors</span> []<span style="color:#66d9ef">string</span>
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">movies</span> = []<span style="color:#a6e22e">Movie</span>{
+	{<span style="color:#a6e22e">Title</span>: <span style="color:#e6db74">&#34;Casablanca&#34;</span>, <span style="color:#a6e22e">Year</span>: <span style="color:#ae81ff">1942</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#66d9ef">false</span>,
+		<span style="color:#a6e22e">Actors</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;Humphrey Bogart&#34;</span>, <span style="color:#e6db74">&#34;Ingrid Bergman&#34;</span>}},
+	{<span style="color:#a6e22e">Title</span>: <span style="color:#e6db74">&#34;Cool Hand Luke&#34;</span>, <span style="color:#a6e22e">Year</span>: <span style="color:#ae81ff">1967</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#66d9ef">true</span>,
+		<span style="color:#a6e22e">Actors</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;Paul Newman&#34;</span>}},
+	{<span style="color:#a6e22e">Title</span>: <span style="color:#e6db74">&#34;Bullitt&#34;</span>, <span style="color:#a6e22e">Year</span>: <span style="color:#ae81ff">1968</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#66d9ef">true</span>,
+		<span style="color:#a6e22e">Actors</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;Steve McQueen&#34;</span>, <span style="color:#e6db74">&#34;Jacqueline Bisset&#34;</span>}},
+	<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>这样的数据结构特别适合JSON格式，并且在两者之间相互转换也很容易。将一个Go语言中类似movies的结构体slice转为JSON的过程叫编组（marshaling）。编组通过调用json.Marshal函数完成：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Marshal</span>(<span style="color:#a6e22e">movies</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;JSON marshaling failed: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+}
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s\n&#34;</span>, <span style="color:#a6e22e">data</span>)
+</code></pre></div><p>Marshal函数返回一个编码后的字节slice，包含很长的字符串，并且没有空白缩进；我们将它折行以便于显示：</p>
+<pre><code>[{&quot;Title&quot;:&quot;Casablanca&quot;,&quot;released&quot;:1942,&quot;Actors&quot;:[&quot;Humphrey Bogart&quot;,&quot;Ingr
+id Bergman&quot;]},{&quot;Title&quot;:&quot;Cool Hand Luke&quot;,&quot;released&quot;:1967,&quot;color&quot;:true,&quot;Ac
+tors&quot;:[&quot;Paul Newman&quot;]},{&quot;Title&quot;:&quot;Bullitt&quot;,&quot;released&quot;:1968,&quot;color&quot;:true,&quot;
+Actors&quot;:[&quot;Steve McQueen&quot;,&quot;Jacqueline Bisset&quot;]}]
+</code></pre><p>这种紧凑的表示形式虽然包含了全部的信息，但是很难阅读。为了生成便于阅读的格式，另一个json.MarshalIndent函数将产生整齐缩进的输出。该函数有两个额外的字符串参数用于表示每一行输出的前缀和每一个层级的缩进：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">MarshalIndent</span>(<span style="color:#a6e22e">movies</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;    &#34;</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;JSON marshaling failed: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+}
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s\n&#34;</span>, <span style="color:#a6e22e">data</span>)
+</code></pre></div><p>上面的代码将产生这样的输出（译注：在最后一个成员或元素后面并没有逗号分隔符）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Json" data-lang="Json">[
+	{
+		<span style="color:#f92672">&#34;Title&#34;</span>: <span style="color:#e6db74">&#34;Casablanca&#34;</span>,
+		<span style="color:#f92672">&#34;released&#34;</span>: <span style="color:#ae81ff">1942</span>,
+		<span style="color:#f92672">&#34;Actors&#34;</span>: [
+			<span style="color:#e6db74">&#34;Humphrey Bogart&#34;</span>,
+			<span style="color:#e6db74">&#34;Ingrid Bergman&#34;</span>
+		]
+	},
+	{
+		<span style="color:#f92672">&#34;Title&#34;</span>: <span style="color:#e6db74">&#34;Cool Hand Luke&#34;</span>,
+		<span style="color:#f92672">&#34;released&#34;</span>: <span style="color:#ae81ff">1967</span>,
+		<span style="color:#f92672">&#34;color&#34;</span>: <span style="color:#66d9ef">true</span>,
+		<span style="color:#f92672">&#34;Actors&#34;</span>: [
+			<span style="color:#e6db74">&#34;Paul Newman&#34;</span>
+		]
+	},
+	{
+		<span style="color:#f92672">&#34;Title&#34;</span>: <span style="color:#e6db74">&#34;Bullitt&#34;</span>,
+		<span style="color:#f92672">&#34;released&#34;</span>: <span style="color:#ae81ff">1968</span>,
+		<span style="color:#f92672">&#34;color&#34;</span>: <span style="color:#66d9ef">true</span>,
+		<span style="color:#f92672">&#34;Actors&#34;</span>: [
+			<span style="color:#e6db74">&#34;Steve McQueen&#34;</span>,
+			<span style="color:#e6db74">&#34;Jacqueline Bisset&#34;</span>
+		]
+	}
+]
+</code></pre></div><p>在编码时，默认使用Go语言结构体的成员名字作为JSON的对象（通过reflect反射技术，我们将在12.6节讨论）。只有导出的结构体成员才会被编码，这也就是我们为什么选择用大写字母开头的成员名称。</p>
+<p>细心的读者可能已经注意到，其中Year名字的成员在编码后变成了released，还有Color成员编码后变成了小写字母开头的color。这是因为结构体成员Tag所导致的。一个结构体成员Tag是和在编译阶段关联到该成员的元信息字符串：</p>
+<pre><code>Year  int  `json:&quot;released&quot;`
+Color bool `json:&quot;color,omitempty&quot;`
+</code></pre><p>结构体的成员Tag可以是任意的字符串面值，但是通常是一系列用空格分隔的key:&ldquo;value&quot;键值对序列；因为值中含有双引号字符，因此成员Tag一般用原生字符串面值的形式书写。json开头键名对应的值用于控制encoding/json包的编码和解码的行为，并且encoding/&hellip;下面其它的包也遵循这个约定。成员Tag中json对应值的第一部分用于指定JSON对象的名字，比如将Go语言中的TotalCount成员对应到JSON中的total_count对象。Color成员的Tag还带了一个额外的omitempty选项，表示当Go语言结构体成员为空或零值时不生成该JSON对象（这里false为零值）。果然，Casablanca是一个黑白电影，并没有输出Color成员。</p>
+<p>编码的逆操作是解码，对应将JSON数据解码为Go语言的数据结构，Go语言中一般叫unmarshaling，通过json.Unmarshal函数完成。下面的代码将JSON格式的电影数据解码为一个结构体slice，结构体中只有Title成员。通过定义合适的Go语言数据结构，我们可以选择性地解码JSON中感兴趣的成员。当Unmarshal函数调用返回，slice将被只含有Title信息的值填充，其它JSON成员将被忽略。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">titles</span> []<span style="color:#66d9ef">struct</span>{ <span style="color:#a6e22e">Title</span> <span style="color:#66d9ef">string</span> }
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">data</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">titles</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;JSON unmarshaling failed: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+}
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">titles</span>) <span style="color:#75715e">// &#34;[{Casablanca} {Cool Hand Luke} {Bullitt}]&#34;
+</span></code></pre></div><p>许多web服务都提供JSON接口，通过HTTP接口发送JSON格式请求并返回JSON格式的信息。为了说明这一点，我们通过Github的issue查询服务来演示类似的用法。首先，我们要定义合适的类型和常量：</p>
+<p><u><i>gopl.io/ch4/github</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Package github provides a Go API for the GitHub issue tracker.
+</span><span style="color:#75715e">// See https://developer.github.com/v3/search/#search-issues.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">github</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;time&#34;</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">IssuesURL</span> = <span style="color:#e6db74">&#34;https://api.github.com/search/issues&#34;</span>
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">IssuesSearchResult</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">TotalCount</span> <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`json:&#34;total_count&#34;`</span>
+	<span style="color:#a6e22e">Items</span>          []<span style="color:#f92672">*</span><span style="color:#a6e22e">Issue</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Issue</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Number</span>    <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">HTMLURL</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;html_url&#34;`</span>
+	<span style="color:#a6e22e">Title</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">State</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">User</span>      <span style="color:#f92672">*</span><span style="color:#a6e22e">User</span>
+	<span style="color:#a6e22e">CreatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`json:&#34;created_at&#34;`</span>
+	<span style="color:#a6e22e">Body</span>      <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// in Markdown format
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Login</span>   <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">HTMLURL</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;html_url&#34;`</span>
+}
+</code></pre></div><p>和前面一样，即使对应的JSON对象名是小写字母，每个结构体的成员名也是声明为大写字母开头的。因为有些JSON成员名字和Go结构体成员名字并不相同，因此需要Go语言结构体成员Tag来指定对应的JSON名字。同样，在解码的时候也需要做同样的处理，GitHub服务返回的信息比我们定义的要多很多。</p>
+<p>SearchIssues函数发出一个HTTP请求，然后解码返回的JSON格式的结果。因为用户提供的查询条件可能包含类似<code>?</code>和<code>&amp;</code>之类的特殊字符，为了避免对URL造成冲突，我们用url.QueryEscape来对查询中的特殊字符进行转义操作。</p>
+<p><u><i>gopl.io/ch4/github</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">github</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;encoding/json&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;net/url&#34;</span>
+	<span style="color:#e6db74">&#34;strings&#34;</span>
+)
+
+<span style="color:#75715e">// SearchIssues queries the GitHub issue tracker.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SearchIssues</span>(<span style="color:#a6e22e">terms</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">IssuesSearchResult</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">q</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">QueryEscape</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">terms</span>, <span style="color:#e6db74">&#34; &#34;</span>))
+	<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">IssuesURL</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;?q=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">q</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#75715e">// We must close resp.Body on all execution paths.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// (Chapter 5 presents &#39;defer&#39;, which makes this simpler.)
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">StatusCode</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span> {
+		<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;search query failed: %s&#34;</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Status</span>)
+	}
+
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> <span style="color:#a6e22e">IssuesSearchResult</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewDecoder</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>).<span style="color:#a6e22e">Decode</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">result</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">result</span>, <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>在早些的例子中，我们使用了json.Unmarshal函数来将JSON格式的字符串解码为字节slice。但是这个例子中，我们使用了基于流式的解码器json.Decoder，它可以从一个输入流解码JSON数据，尽管这不是必须的。如您所料，还有一个针对输出流的json.Encoder编码对象。</p>
+<p>我们调用Decode方法来填充变量。这里有多种方法可以格式化结构。下面是最简单的一种，以一个固定宽度打印每个issue，但是在下一节我们将看到如何利用模板来输出复杂的格式。</p>
+<p><u><i>gopl.io/ch4/issues</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Issues prints a table of GitHub issues matching the search terms.
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+
+	<span style="color:#e6db74">&#34;gopl.io/ch4/github&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">github</span>.<span style="color:#a6e22e">SearchIssues</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">1</span>:])
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d issues:\n&#34;</span>, <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">TotalCount</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">item</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">Items</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;#%-5d %9.9s %.55s\n&#34;</span>,
+			<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">Number</span>, <span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">User</span>.<span style="color:#a6e22e">Login</span>, <span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">Title</span>)
+	}
+}
+</code></pre></div><p>通过命令行参数指定检索条件。下面的命令是查询Go语言项目中和JSON解码相关的问题，还有查询返回的结果：</p>
+<pre><code>$ go build gopl.io/ch4/issues
+$ ./issues repo:golang/go is:open json decoder
+13 issues:
+#5680    eaigner encoding/json: set key converter on en/decoder
+#6050  gopherbot encoding/json: provide tokenizer
+#8658  gopherbot encoding/json: use bufio
+#8462  kortschak encoding/json: UnmarshalText confuses json.Unmarshal
+#5901        rsc encoding/json: allow override type marshaling
+#9812  klauspost encoding/json: string tag not symmetric
+#7872  extempora encoding/json: Encoder internally buffers full output
+#9650    cespare encoding/json: Decoding gives errPhase when unmarshalin
+#6716  gopherbot encoding/json: include field name in unmarshal error me
+#6901  lukescott encoding/json, encoding/xml: option to treat unknown fi
+#6384    joeshaw encoding/json: encode precise floating point integers u
+#6647    btracey x/tools/cmd/godoc: display type kind of each named type
+#4237  gjemiller encoding/base64: URLEncoding padding is optional
+</code></pre><p>GitHub的Web服务接口 <a href="https://developer.github.com/v3/">https://developer.github.com/v3/</a> 包含了更多的特性。</p>
+<p><strong>练习 4.10：</strong> 修改issues程序，根据问题的时间进行分类，比如不到一个月的、不到一年的、超过一年。</p>
+<p><strong>练习 4.11：</strong> 编写一个工具，允许用户在命令行创建、读取、更新和关闭GitHub上的issue，当必要的时候自动打开用户默认的编辑器用于输入文本信息。</p>
+<p><strong>练习 4.12：</strong> 流行的web漫画服务xkcd也提供了JSON接口。例如，一个 <a href="https://xkcd.com/571/info.0.json">https://xkcd.com/571/info.0.json</a> 请求将返回一个很多人喜爱的571编号的详细描述。下载每个链接（只下载一次）然后创建一个离线索引。编写一个xkcd工具，使用这些离线索引，打印和命令行输入的检索词相匹配的漫画的URL。</p>
+<p><strong>练习 4.13：</strong> 使用开放电影数据库的JSON服务接口，允许你检索和下载 <a href="https://omdbapi.com/">https://omdbapi.com/</a> 上电影的名字和对应的海报图像。编写一个poster工具，通过命令行输入的电影名字，下载对应的海报。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月27日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/4.%20Composite%20Types/4.5.%20JSON.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#45-json">4.5. JSON</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

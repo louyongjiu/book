@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2.4. 赋值 on Book</title>
+    <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/</link>
+    <description>Recent content in 2.4. 赋值 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2.4.1. 元组赋值</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</guid>
+      <description>2.4.1. 元组赋值 #  元组赋值是另一种形式的赋值语句，它允许同时更新多个变量的值。在赋值之前，赋值语句右边的所有表达式将会先进行求值，然后再统一更新左边对应变量的值。这对于处理有些同时出现在元组赋值语句左右两边的变量很有帮助，例如我们可以这样交换两个变量的值：
+x, y = y, x a[i], a[j] = a[j], a[i] 或者是计算两个整数值的的最大公约数（GCD）（译注：GCD不是那个敏感字，而是greatest common divisor的缩写，欧几里德的GCD是最早的非平凡算法）：
+func gcd(x, y int) int { for y != 0 { x, y = y, x%y } return x } 或者是计算斐波纳契数列（Fibonacci）的第N个数：
+func fib(n int) int { x, y := 0, 1 for i := 0; i &amp;lt; n; i++ { x, y = y, x+y } return x } 元组赋值也可以使一系列琐碎赋值更加紧凑（译注: 特别是在for循环的初始化部分），
+i, j, k = 2, 3, 5 但如果表达式太复杂的话，应该尽量避免过度使用元组赋值；因为每个变量单独赋值语句的写法可读性会更好。</description>
+    </item>
+    
+    <item>
+      <title>2.4.2. 可赋值性</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</guid>
+      <description>2.4.2. 可赋值性 #  赋值语句是显式的赋值形式，但是程序中还有很多地方会发生隐式的赋值行为：函数调用会隐式地将调用参数的值赋值给函数的参数变量，一个返回语句会隐式地将返回操作的值赋值给结果变量，一个复合类型的字面量（§4.2）也会产生赋值行为。例如下面的语句：
+medals := []string{&amp;#34;gold&amp;#34;, &amp;#34;silver&amp;#34;, &amp;#34;bronze&amp;#34;} 隐式地对slice的每个元素进行赋值操作，类似这样写的行为：
+medals[0] = &amp;#34;gold&amp;#34; medals[1] = &amp;#34;silver&amp;#34; medals[2] = &amp;#34;bronze&amp;#34; map和chan的元素，虽然不是普通的变量，但是也有类似的隐式赋值行为。
+不管是隐式还是显式地赋值，在赋值语句左边的变量和右边最终的求到的值必须有相同的数据类型。更直白地说，只有右边的值对于左边的变量是可赋值的，赋值语句才是允许的。
+可赋值性的规则对于不同类型有着不同要求，对每个新类型特殊的地方我们会专门解释。对于目前我们已经讨论过的类型，它的规则是简单的：类型必须完全匹配，nil可以赋值给任何指针或引用类型的变量。常量（§3.6）则有更灵活的赋值规则，因为这样可以避免不必要的显式的类型转换。
+对于两个值是否可以用==或!=进行相等比较的能力也和可赋值能力有关系：对于任何类型的值的相等比较，第二个值必须是对第一个值类型对应的变量是可赋值的，反之亦然。和前面一样，我们会对每个新类型比较特殊的地方做专门的解释。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
+一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
+{% raw %}
+gopl.io/ch4/issuesreport
+const templ = `{{.TotalCount}}issues: {{range .Items}}---------------------------------------- Number: {{.Number}}User: {{.User.Login}}Title: {{.Title | printf &#34;%.64s&#34;}}Age: {{.CreatedAt | daysAgo}}days {{end}}` {% endraw %}
+{% raw %}
+这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中{{.TotalCount}}对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中{{range .Items}}和{{end}}对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。
+{% endraw %}
+在一个action中，|操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：
+func daysAgo(t time.Time) int { return int(time.Since(t).Hours() / 24) } 需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。
+生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。
+report, err := template.New(&#34;report&#34;). Funcs(template.FuncMap{&#34;daysAgo&#34;: daysAgo}). Parse(templ) if err != nil { log.Fatal(err) } 因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。
+一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：
+var report = template.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="4.6. 文本和HTML模板" />
+<meta property="og:description" content="4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
+一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
+{% raw %}
+gopl.io/ch4/issuesreport
+const templ = `{{.TotalCount}}issues: {{range .Items}}---------------------------------------- Number: {{.Number}}User: {{.User.Login}}Title: {{.Title | printf &#34;%.64s&#34;}}Age: {{.CreatedAt | daysAgo}}days {{end}}` {% endraw %}
+{% raw %}
+这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中{{.TotalCount}}对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中{{range .Items}}和{{end}}对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。
+{% endraw %}
+在一个action中，|操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：
+func daysAgo(t time.Time) int { return int(time.Since(t).Hours() / 24) } 需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。
+生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。
+report, err := template.New(&#34;report&#34;). Funcs(template.FuncMap{&#34;daysAgo&#34;: daysAgo}). Parse(templ) if err != nil { log.Fatal(err) } 因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。
+一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：
+var report = template." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" />
+<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+<title>4.6. 文本和HTML模板 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.14f5bfd5df2a871d2717dd8ecbed7a56fc22885aeb4d808cac363bd38deca16d.js" integrity="sha256-FPW/1d8qhx0nF92Oy&#43;16VvwiiFrrTYCMrDY7043soW0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/" class="">前言</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/The-Origins-of-Go/" class="">Go语言起源</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/The-Go-Project/" class="">Go语言项目</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Organization-of-the-Book/" class="">本书的组织</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Where-to-Find-More-Information/" class="">更多的信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/Preface/Acknowledgments/" class="">致谢</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/" class="">1. 入门</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.1.-Hello-World/" class="">1.1. Hello, World</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.2.-Command-Line-Arguments/" class="">1.2. 命令行参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.3.-Finding-Duplicate-Lines/" class="">1.3. 查找重复的行</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.4.-Animated-GIFs/" class="">1.4. GIF动画</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.5.-Fetching-a-URL/" class="">1.5. 获取URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.6.-Fetching-URLs-Concurrently/" class="">1.6. 并发获取多个URL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.7.-A-Web-Server/" class="">1.7. Web服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/1.-Tutorial/1.8.-Loose-Ends/" class="">1.8. 本章要点</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/" class="">2. 程序结构</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.1.-Names/" class="">2.1. 命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.2.-Declarations/" class="">2.2. 声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/" class="">2.3. 变量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/" class="">2.3.1. 简短变量声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/" class="">2.3.2. 指针</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/" class="">2.3.3. new函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/" class="">2.3.4. 变量的生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/" class="">2.4. 赋值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/" class="">2.4.1. 元组赋值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/" class="">2.4.2. 可赋值性</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.5.-Type-Declarations/" class="">2.5. 类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/" class="">2.6. 包和文件</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/" class="">2.6.1. 导入包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/" class="">2.6.2. 包的初始化</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/2.-Program-Structure/2.7.-Scope/" class="">2.7. 作用域</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/" class="">3. 基础数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.1.-Integers/" class="">3.1. 整型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.2.-Floating-Point-Numbers/" class="">3.2. 浮点数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.3.-Complex-Numbers/" class="">3.3. 复数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.4.-Booleans/" class="">3.4. 布尔型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/" class="">3.5. 字符串</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/" class="">3.5.1. 字符串面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/" class="">3.5.2. Unicode</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/" class="">3.5.3. UTF-8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/" class="">3.5.4. 字符串和Byte切片</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/" class="">3.5.5. 字符串和数字的转换</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/" class="">3.6. 常量</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/" class="">3.6.1. iota 常量生成器</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/" class="">3.6.2. 无类型常量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/" class="">4. 复合数据类型</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.1.-Arrays/" class="">4.1. 数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/" class="">4.2. Slice</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/" class="">4.2.1. append函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/" class="">4.2.2. Slice内存技巧</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.3.-Maps/" class="">4.3. Map</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/" class="">4.4. 结构体</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/" class="">4.4.1. 结构体字面值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/" class="">4.4.2. 结构体比较</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/" class="">4.4.3. 结构体嵌入和匿名成员</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.5.-JSON/" class="">4.5. JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/4.-Composite-Types/4.6.-Text-and-HTML-Templates/" class="active">4.6. 文本和HTML模板</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/" class="">5. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.1.-Function-Declarations/" class="">5.1. 函数声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.2.-Recursion/" class="">5.2. 递归</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.3.-Multiple-Return-Values/" class="">5.3. 多返回值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/" class="">5.4. 错误</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/" class="">5.4.1. 错误处理策略</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/" class="">5.4.2. 文件结尾错误（EOF）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.5.-Function-Values/" class="">5.5. 函数值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/" class="">5.6. 匿名函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/" class="">5.6.1. 警告：捕获迭代变量</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.7.-Variadic-Functions/" class="">5.7. 可变参数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.8.-Deferred-Function-Calls/" class="">5.8. Deferred函数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.9.-Panic/" class="">5.9. Panic异常</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/5.-Functions/5.10.-Recover/" class="">5.10. Recover捕获异常</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/" class="">6. 方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.1.-Method-Declarations/" class="">6.1. 方法声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/" class="">6.2. 基于指针对象的方法</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/" class="">6.2.1. Nil也是一个合法的接收器类型</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.3.-Composing-Types-by-Struct-Embedding/" class="">6.3. 通过嵌入结构体来扩展类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.4.-Method-Values-and-Expressions/" class="">6.4. 方法值和方法表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.5.-Example-Bit-Vector-Type/" class="">6.5. 示例: Bit数组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/6.-Methods/6.6.-Encapsulation/" class="">6.6. 封装</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/" class="">7. 接口</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.1.-Interfaces-as-Contracts/" class="">7.1. 接口约定</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.2.-Interface-Types/" class="">7.2. 接口类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.3.-Interface-Satisfaction/" class="">7.3. 实现接口的条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.4.-Parsing-Flags-with-flag.Value/" class="">7.4. flag.Value接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/" class="">7.5. 接口值</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/" class="">7.5.1. 警告：一个包含nil指针的接口不是nil接口</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.6.-Sorting-with-sort.Interface/" class="">7.6. sort.Interface接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.7.-The-http.Handler-Interface/" class="">7.7. http.Handler接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.8.-The-error-Interface/" class="">7.8. error接口</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.9.-Example-Expression-Evaluator/" class="">7.9. 示例: 表达式求值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.10.-Type-Assertions/" class="">7.10. 类型断言</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/" class="">7.11. 基于类型断言区别错误类型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.12.-Querying-Behaviors-with-Interface-Type-Assertions/" class="">7.12. 通过类型断言询问行为</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.13.-Type-Switches/" class="">7.13. 类型分支</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/" class="">7.14. 示例: 基于标记的XML解码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/" class="">7.15. 一些建议</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/" class="">8. Goroutines和Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.1.-Goroutines/" class="">8.1. Goroutines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/" class="">8.2. 示例: 并发的Clock服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/" class="">8.3. 示例: 并发的Echo服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/" class="">8.4. Channels</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/" class="">8.4.1. 不带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/" class="">8.4.2. 串联的Channels（Pipeline）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/" class="">8.4.3. 单方向的Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/" class="">8.4.4. 带缓存的Channels</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.5.-Looping-in-Parallel/" class="">8.5. 并发的循环</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/" class="">8.6. 示例: 并发的Web爬虫</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.7.-Multiplexing-with-select/" class="">8.7. 基于select的多路复用</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/" class="">8.8. 示例: 并发的目录遍历</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.9.-Cancellation/" class="">8.9. 并发的退出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/" class="">8.10. 示例: 聊天服务</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/" class="">9. 基于共享变量的并发</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.1.-Race-Conditions/" class="">9.1. 竞争条件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/" class="">9.2. sync.Mutex互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/" class="">9.3. sync.RWMutex读写锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.4.-Memory-Synchronization/" class="">9.4. 内存同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/" class="">9.5. sync.Once惰性初始化</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.6.-The-Race-Detector/" class="">9.6. 竞争条件检测</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/" class="">9.7. 示例: 并发的非阻塞缓存</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/" class="">9.8. Goroutines和线程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/" class="">9.8.1. 动态栈
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/" class="">9.8.2. Goroutine调度</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/" class="">9.8.3. GOMAXPROCS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/" class="">9.8.4. Goroutine没有ID号</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/" class="">10. 包和工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.1.-Introduction/" class="">10.1. 包简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/" class="">10.2. 导入路径</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/" class="">10.3. 包声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/" class="">10.4. 导入声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.5.-Blank-Imports/" class="">10.5. 包的匿名导入</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/" class="">10.6. 包和命名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/" class="">10.7. 工具</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/" class="">10.7.1. 工作区结构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/" class="">10.7.2. 下载包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/" class="">10.7.3. 构建包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/" class="">10.7.4. 包文档</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/" class="">10.7.5. 内部包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/" class="">10.7.6. 查询包</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/" class="">11. 测试</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.1.-The-go-test-Tool/" class="">go test</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/" class="">11.2. 测试函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/" class="">11.2.1. 随机测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/" class="">11.2.2. 测试一个命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/" class="">11.2.3. 白盒测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/" class="">11.2.4. 外部测试包</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/" class="">11.2.5. 编写有效的测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/" class="">11.2.6. 避免脆弱的测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.3.-Coverage/" class="">11.3. 测试覆盖率</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.4.-Benchmark-Functions/" class="">11.4. 基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.5.-Profiling/" class="">11.5. 剖析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/11.-Testing/11.6.-Example-Functions/" class="">11.6. 示例函数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/" class="">12. 反射</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.1.-Why-Reflection/" class="">12.1. 为何需要反射?</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.2.-reflect.Type-and-reflect.Value/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.3.-Display-a-Recursive-Value-Printer/" class="">12.2. reflect.Type 和 reflect.Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.4.-Example-Encoding-S-Expressions/" class="">12.4. 示例: 编码为S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.5.-Setting-Variables-with-reflect.Value/" class="">12.5. 通过reflect.Value修改值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.6.-Example-Decoding-S-Expressions/" class="">12.6. 示例: 解码S表达式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.7.-Accessing-Struct-Field-Tags/" class="">12.7. 获取结构体字段标签</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.8.-Displaying-the-Methods-of-a-Type/" class="">12.8. 显示一个类型的方法集</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/12.-Reflection/12.9.-A-Word-of-Caution/" class="">12.9. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/" class="">13. 底层编程</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.1.-unsafe.Sizeof-Alignof-and-Offsetof/" class="">13.1. unsafe.Sizeof, Alignof 和 Offsetof</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.2.-unsafe.Pointer/" class="">13.2. unsafe.Pointer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/" class="">13.3. 示例: 深度相等判断</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.4.-Calling-C-Code-with-cgo/" class="">13.4. 通过cgo调用C代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.5.-Another-Word-of-Caution/" class="">13.5. 几点忠告</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch1/" class="">Ch1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch2/" class="">Ch2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch3/" class="">Ch3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/README/" class="">R E a D M E</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>4.6. 文本和HTML模板</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#46-文本和html模板">4.6. 文本和HTML模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="46-文本和html模板">
+  4.6. 文本和HTML模板
+  <a class="anchor" href="#46-%e6%96%87%e6%9c%ac%e5%92%8chtml%e6%a8%a1%e6%9d%bf">#</a>
+</h2>
+<p>前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。</p>
+<p>一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的<code>{{action}}</code>对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：</p>
+<p>{% raw %}</p>
+<p><u><i>gopl.io/ch4/issuesreport</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templ</span> = <span style="color:#e6db74">`</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.TotalCount</span><span style="color:#75715e">}}</span><span style="color:#e6db74"> issues:
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">range</span> <span style="color:#a6e22e">.Items</span><span style="color:#75715e">}}</span><span style="color:#e6db74">----------------------------------------
+</span><span style="color:#e6db74">Number: </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.Number</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">User:   </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.User.Login</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Title:  </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.Title</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">printf</span> <span style="color:#e6db74">&#34;%.64s&#34;</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Age:    </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.CreatedAt</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">daysAgo</span><span style="color:#75715e">}}</span><span style="color:#e6db74"> days
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">end</span><span style="color:#75715e">}}</span><span style="color:#e6db74">`</span>
+</code></pre></div><p>{% endraw %}</p>
+<p>{% raw %}</p>
+<p>这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中<code>{{.TotalCount}}</code>对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中<code>{{range .Items}}</code>和<code>{{end}}</code>对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。</p>
+<p>{% endraw %}</p>
+<p>在一个action中，<code>|</code>操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">daysAgo</span>(<span style="color:#a6e22e">t</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>) <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">return</span> int(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Since</span>(<span style="color:#a6e22e">t</span>).<span style="color:#a6e22e">Hours</span>() <span style="color:#f92672">/</span> <span style="color:#ae81ff">24</span>)
+}
+</code></pre></div><p>需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。</p>
+<p>生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">report</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;report&#34;</span>).
+	<span style="color:#a6e22e">Funcs</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">FuncMap</span>{<span style="color:#e6db74">&#34;daysAgo&#34;</span>: <span style="color:#a6e22e">daysAgo</span>}).
+	<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">templ</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+}
+</code></pre></div><p>因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。</p>
+<p>一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">report</span> = <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">Must</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;issuelist&#34;</span>).
+	<span style="color:#a6e22e">Funcs</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">FuncMap</span>{<span style="color:#e6db74">&#34;daysAgo&#34;</span>: <span style="color:#a6e22e">daysAgo</span>}).
+	<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">templ</span>))
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">github</span>.<span style="color:#a6e22e">SearchIssues</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">1</span>:])
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">report</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">result</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p>程序输出一个纯文本报告：</p>
+<pre><code>$ go build gopl.io/ch4/issuesreport
+$ ./issuesreport repo:golang/go is:open json decoder
+13 issues:
+----------------------------------------
+Number: 5680
+User:      eaigner
+Title:     encoding/json: set key converter on en/decoder
+Age:       750 days
+----------------------------------------
+Number: 6050
+User:      gopherbot
+Title:     encoding/json: provide tokenizer
+Age:       695 days
+----------------------------------------
+...
+</code></pre><p>现在让我们转到html/template模板包。它使用和text/template包相同的API和模板语言，但是增加了一个将字符串自动转义特性，这可以避免输入字符串和HTML、JavaScript、CSS或URL语法产生冲突的问题。这个特性还可以避免一些长期存在的安全问题，比如通过生成HTML注入攻击，通过构造一个含有恶意代码的问题标题，这些都可能让模板输出错误的输出，从而让他们控制页面。</p>
+<p>下面的模板以HTML格式输出issue列表。注意import语句的不同：</p>
+<p>{% raw %}</p>
+<p><u><i>gopl.io/ch4/issueshtml</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;html/template&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">issueList</span> = <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">Must</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;issuelist&#34;</span>).<span style="color:#a6e22e">Parse</span>(<span style="color:#e6db74">`
+</span><span style="color:#e6db74">&lt;h1&gt;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.TotalCount</span><span style="color:#75715e">}}</span><span style="color:#e6db74"> issues&lt;/h1&gt;
+</span><span style="color:#e6db74">&lt;table&gt;
+</span><span style="color:#e6db74">&lt;tr style=&#39;text-align: left&#39;&gt;
+</span><span style="color:#e6db74">  &lt;th&gt;#&lt;/th&gt;
+</span><span style="color:#e6db74">  &lt;th&gt;State&lt;/th&gt;
+</span><span style="color:#e6db74">  &lt;th&gt;User&lt;/th&gt;
+</span><span style="color:#e6db74">  &lt;th&gt;Title&lt;/th&gt;
+</span><span style="color:#e6db74">&lt;/tr&gt;
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">range</span> <span style="color:#a6e22e">.Items</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">&lt;tr&gt;
+</span><span style="color:#e6db74">  &lt;td&gt;&lt;a href=&#39;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.HTMLURL</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&#39;&gt;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.Number</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/a&gt;&lt;/td&gt;
+</span><span style="color:#e6db74">  &lt;td&gt;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.State</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/td&gt;
+</span><span style="color:#e6db74">  &lt;td&gt;&lt;a href=&#39;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.User.HTMLURL</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&#39;&gt;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.User.Login</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/a&gt;&lt;/td&gt;
+</span><span style="color:#e6db74">  &lt;td&gt;&lt;a href=&#39;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.HTMLURL</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&#39;&gt;</span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.Title</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/a&gt;&lt;/td&gt;
+</span><span style="color:#e6db74">&lt;/tr&gt;
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">end</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">&lt;/table&gt;
+</span><span style="color:#e6db74">`</span>))
+</code></pre></div><p>{% endraw %}</p>
+<p>下面的命令将在新的模板上执行一个稍微不同的查询：</p>
+<pre><code>$ go build gopl.io/ch4/issueshtml
+$ ./issueshtml repo:golang/go commenter:gopherbot json encoder &gt;issues.html
+</code></pre><p>图4.4显示了在web浏览器中的效果图。每个issue包含到Github对应页面的链接。</p>
+<p>
+  <img src="/gopl/images/ch4-04.png" alt="" /></p>
+<p>图4.4中issue没有包含会对HTML格式产生冲突的特殊字符，但是我们马上将看到标题中含有<code>&amp;</code>和<code>&lt;</code>字符的issue。下面的命令选择了两个这样的issue：</p>
+<pre><code>$ ./issueshtml repo:golang/go 3133 10535 &gt;issues2.html
+</code></pre><p>图4.5显示了该查询的结果。注意，html/template包已经自动将特殊字符转义，因此我们依然可以看到正确的字面值。如果我们使用text/template包的话，这2个issue将会产生错误，其中“&amp;lt;”四个字符将会被当作小于字符“&lt;”处理，同时“&lt;link&gt;”字符串将会被当作一个链接元素处理，它们都会导致HTML文档结构的改变，从而导致有未知的风险。</p>
+<p>我们也可以通过对信任的HTML字符串使用template.HTML类型来抑制这种自动转义的行为。还有很多采用类型命名的字符串类型分别对应信任的JavaScript、CSS和URL。下面的程序演示了两个使用不同类型的相同字符串产生的不同结果：A是一个普通字符串，B是一个信任的template.HTML字符串类型。</p>
+<p>
+  <img src="/gopl/images/ch4-05.png" alt="" /></p>
+<p>{% raw %}</p>
+<p><u><i>gopl.io/ch4/autoescape</i></u></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templ</span> = <span style="color:#e6db74">`&lt;p&gt;A: </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.A</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/p&gt;&lt;p&gt;B: </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.B</span><span style="color:#75715e">}}</span><span style="color:#e6db74">&lt;/p&gt;`</span>
+	<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">Must</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;escape&#34;</span>).<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">templ</span>))
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">struct</span> {
+		<span style="color:#a6e22e">A</span> <span style="color:#66d9ef">string</span>        <span style="color:#75715e">// untrusted plain text
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">B</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">HTML</span> <span style="color:#75715e">// trusted HTML
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">A</span> = <span style="color:#e6db74">&#34;&lt;b&gt;Hello!&lt;/b&gt;&#34;</span>
+	<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">B</span> = <span style="color:#e6db74">&#34;&lt;b&gt;Hello!&lt;/b&gt;&#34;</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">data</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p>{% endraw %}</p>
+<p>图4.6显示了出现在浏览器中的模板输出。我们看到A的黑体标记被转义失效了，但是B没有。</p>
+<p>
+  <img src="/gopl/images/ch4-06.png" alt="" /></p>
+<p>我们这里只讲述了模板系统中最基本的特性。一如既往，如果想了解更多的信息，请自己查看包文档：</p>
+<pre><code>$ go doc text/template
+$ go doc html/template
+</code></pre><p><strong>练习 4.14：</strong> 创建一个web服务器，查询一次GitHub，然后生成BUG报告、里程碑和对应的用户信息。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月27日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/4.%20Composite%20Types/4.6.%20Text%20and%20HTML%20Templates.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#46-文本和html模板">4.6. 文本和HTML模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

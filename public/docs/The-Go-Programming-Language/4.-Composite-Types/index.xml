@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>4. 复合数据类型 on Book</title>
+    <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/</link>
+    <description>Recent content in 4. 复合数据类型 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>4.1. 数组</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.1.-Arrays/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.1.-Arrays/</guid>
+      <description>4.1. 数组 #  数组是一个由固定长度的特定类型元素组成的序列，一个数组可以由零个或多个元素组成。因为数组的长度是固定的，因此在Go语言中很少直接使用数组。和数组对应的类型是Slice（切片），它是可以增长和收缩的动态序列，slice功能也更灵活，但是要理解slice工作原理的话需要先理解数组。
+数组的每个元素可以通过索引下标来访问，索引下标的范围是从0开始到数组长度减1的位置。内置的len函数将返回数组中元素的个数。
+var a [3]int // array of 3 integers fmt.Println(a[0]) // print the first element fmt.Println(a[len(a)-1]) // print the last element, a[2]  // Print the indices and elements. for i, v := range a { fmt.Printf(&amp;#34;%d %d\n&amp;#34;, i, v) } // Print the elements only. for _, v := range a { fmt.Printf(&amp;#34;%d\n&amp;#34;, v) } 默认情况下，数组的每个元素都被初始化为元素类型对应的零值，对于数字类型来说就是0。我们也可以使用数组字面值语法用一组值来初始化数组：
+var q [3]int = [3]int{1, 2, 3} var r [3]int = [3]int{1, 2} fmt.</description>
+    </item>
+    
+    <item>
+      <title>4.3. Map</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.3.-Maps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.3.-Maps/</guid>
+      <description>4.3. Map #  哈希表是一种巧妙并且实用的数据结构。它是一个无序的key/value对的集合，其中所有的key都是不同的，然后通过给定的key可以在常数时间复杂度内检索、更新或删除对应的value。
+在Go语言中，一个map就是一个哈希表的引用，map类型可以写为map[K]V，其中K和V分别对应key和value。map中所有的key都有相同的类型，所有的value也有着相同的类型，但是key和value之间可以是不同的数据类型。其中K对应的key必须是支持==比较运算符的数据类型，所以map可以通过测试key是否相等来判断是否已经存在。虽然浮点数类型也是支持相等运算符比较的，但是将浮点数用做key类型则是一个坏的想法，正如第三章提到的，最坏的情况是可能出现的NaN和任何浮点数都不相等。对于V对应的value数据类型则没有任何的限制。
+内置的make函数可以创建一个map：
+ages := make(map[string]int) // mapping from strings to ints 我们也可以用map字面值的语法创建map，同时还可以指定一些最初的key/value：
+ages := map[string]int{ &amp;#34;alice&amp;#34;: 31, &amp;#34;charlie&amp;#34;: 34, } 这相当于
+ages := make(map[string]int) ages[&amp;#34;alice&amp;#34;] = 31 ages[&amp;#34;charlie&amp;#34;] = 34 因此，另一种创建空的map的表达式是map[string]int{}。
+Map中的元素通过key对应的下标语法访问：
+ages[&amp;#34;alice&amp;#34;] = 32 fmt.Println(ages[&amp;#34;alice&amp;#34;]) // &amp;#34;32&amp;#34; 使用内置的delete函数可以删除元素：
+delete(ages, &amp;#34;alice&amp;#34;) // remove element ages[&amp;#34;alice&amp;#34;] 所有这些操作是安全的，即使这些元素不在map中也没有关系；如果一个查找失败将返回value类型对应的零值，例如，即使map中不存在“bob”下面的代码也可以正常工作，因为ages[&amp;ldquo;bob&amp;rdquo;]失败时将返回0。
+ages[&amp;#34;bob&amp;#34;] = ages[&amp;#34;bob&amp;#34;] + 1 // happy birthday! 而且x += y和x++等简短赋值语法也可以用在map上，所以上面的代码可以改写成
+ages[&amp;#34;bob&amp;#34;] += 1 更简单的写法
+ages[&amp;#34;bob&amp;#34;]++ 但是map中的元素并不是一个变量，因此我们不能对map的元素进行取址操作：
+_ = &amp;amp;ages[&amp;#34;bob&amp;#34;] // compile error: cannot take address of map element 禁止对map元素取址的原因是map可能随着元素数量的增长而重新分配更大的内存空间，从而可能导致之前的地址无效。</description>
+    </item>
+    
+    <item>
+      <title>4.5. JSON</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.5.-JSON/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.5.-JSON/</guid>
+      <description>4.5. JSON #  JavaScript对象表示法（JSON）是一种用于发送和接收结构化信息的标准协议。在类似的协议中，JSON并不是唯一的一个标准协议。 XML（§7.14）、ASN.1和Google的Protocol Buffers都是类似的协议，并且有各自的特色，但是由于简洁性、可读性和流行程度等原因，JSON是应用最广泛的一个。
+Go语言对于这些标准格式的编码和解码都有良好的支持，由标准库中的encoding/json、encoding/xml、encoding/asn1等包提供支持（译注：Protocol Buffers的支持由 github.com/golang/protobuf 包提供），并且这类包都有着相似的API接口。本节，我们将对重要的encoding/json包的用法做个概述。
+JSON是对JavaScript中各种类型的值——字符串、数字、布尔值和对象——Unicode本文编码。它可以用有效可读的方式表示第三章的基础数据类型和本章的数组、slice、结构体和map等聚合数据类型。
+基本的JSON类型有数字（十进制或科学记数法）、布尔值（true或false）、字符串，其中字符串是以双引号包含的Unicode字符序列，支持和Go语言类似的反斜杠转义特性，不过JSON使用的是\Uhhhh转义数字来表示一个UTF-16编码（译注：UTF-16和UTF-8一样是一种变长的编码，有些Unicode码点较大的字符需要用4个字节表示；而且UTF-16还有大端和小端的问题），而不是Go语言的rune类型。
+这些基础类型可以通过JSON的数组和对象类型进行递归组合。一个JSON数组是一个有序的值序列，写在一个方括号中并以逗号分隔；一个JSON数组可以用于编码Go语言的数组和slice。一个JSON对象是一个字符串到值的映射，写成一系列的name:value对形式，用花括号包含并以逗号分隔；JSON的对象类型可以用于编码Go语言的map类型（key类型是字符串）和结构体。例如：
+boolean true number -273.15 string &amp;quot;She said \&amp;quot;Hello, BF\&amp;quot;&amp;quot; array [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;] object {&amp;quot;year&amp;quot;: 1980, &amp;quot;event&amp;quot;: &amp;quot;archery&amp;quot;, &amp;quot;medals&amp;quot;: [&amp;quot;gold&amp;quot;, &amp;quot;silver&amp;quot;, &amp;quot;bronze&amp;quot;]} 考虑一个应用程序，该程序负责收集各种电影评论并提供反馈功能。它的Movie数据类型和一个典型的表示电影的值列表如下所示。（在结构体声明中，Year和Color成员后面的字符串面值是结构体成员Tag；我们稍后会解释它的作用。）
+gopl.io/ch4/movie
+type Movie struct { Title string Year int `json:&amp;#34;released&amp;#34;` Color bool `json:&amp;#34;color,omitempty&amp;#34;` Actors []string } var movies = []Movie{ {Title: &amp;#34;Casablanca&amp;#34;, Year: 1942, Color: false, Actors: []string{&amp;#34;Humphrey Bogart&amp;#34;, &amp;#34;Ingrid Bergman&amp;#34;}}, {Title: &amp;#34;Cool Hand Luke&amp;#34;, Year: 1967, Color: true, Actors: []string{&amp;#34;Paul Newman&amp;#34;}}, {Title: &amp;#34;Bullitt&amp;#34;, Year: 1968, Color: true, Actors: []string{&amp;#34;Steve McQueen&amp;#34;, &amp;#34;Jacqueline Bisset&amp;#34;}}, // .</description>
+    </item>
+    
+    <item>
+      <title>4.6. 文本和HTML模板</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.6.-Text-and-HTML-Templates/</guid>
+      <description>4.6. 文本和HTML模板 #  前面的例子，只是最简单的格式化，使用Printf是完全足够的。但是有时候会需要复杂的打印格式，这时候一般需要将格式化代码分离出来以便更安全地修改。这些功能是由text/template和html/template等模板包提供的，它们提供了一个将变量值填充到一个文本或HTML格式的模板的机制。
+一个模板是一个字符串或一个文件，里面包含了一个或多个由双花括号包含的{{action}}对象。大部分的字符串只是按字面值打印，但是对于actions部分将触发其它的行为。每个actions都包含了一个用模板语言书写的表达式，一个action虽然简短但是可以输出复杂的打印值，模板语言包含通过选择结构体的成员、调用函数或方法、表达式控制流if-else语句和range循环语句，还有其它实例化模板等诸多特性。下面是一个简单的模板字符串：
+{% raw %}
+gopl.io/ch4/issuesreport
+const templ = `{{.TotalCount}}issues: {{range .Items}}---------------------------------------- Number: {{.Number}}User: {{.User.Login}}Title: {{.Title | printf &amp;#34;%.64s&amp;#34;}}Age: {{.CreatedAt | daysAgo}}days {{end}}` {% endraw %}
+{% raw %}
+这个模板先打印匹配到的issue总数，然后打印每个issue的编号、创建用户、标题还有存在的时间。对于每一个action，都有一个当前值的概念，对应点操作符，写作“.”。当前值“.”最初被初始化为调用模板时的参数，在当前例子中对应github.IssuesSearchResult类型的变量。模板中{{.TotalCount}}对应action将展开为结构体中TotalCount成员以默认的方式打印的值。模板中{{range .Items}}和{{end}}对应一个循环action，因此它们之间的内容可能会被展开多次，循环每次迭代的当前值对应当前的Items元素的值。
+{% endraw %}
+在一个action中，|操作符表示将前一个表达式的结果作为后一个函数的输入，类似于UNIX中管道的概念。在Title这一行的action中，第二个操作是一个printf函数，是一个基于fmt.Sprintf实现的内置函数，所有模板都可以直接使用。对于Age部分，第二个动作是一个叫daysAgo的函数，通过time.Since函数将CreatedAt成员转换为过去的时间长度：
+func daysAgo(t time.Time) int { return int(time.Since(t).Hours() / 24) } 需要注意的是CreatedAt的参数类型是time.Time，并不是字符串。以同样的方式，我们可以通过定义一些方法来控制字符串的格式化（§2.5），一个类型同样可以定制自己的JSON编码和解码行为。time.Time类型对应的JSON值是一个标准时间格式的字符串。
+生成模板的输出需要两个处理步骤。第一步是要分析模板并转为内部表示，然后基于指定的输入执行模板。分析模板部分一般只需要执行一次。下面的代码创建并分析上面定义的模板templ。注意方法调用链的顺序：template.New先创建并返回一个模板；Funcs方法将daysAgo等自定义函数注册到模板中，并返回模板；最后调用Parse函数分析模板。
+report, err := template.New(&amp;#34;report&amp;#34;). Funcs(template.FuncMap{&amp;#34;daysAgo&amp;#34;: daysAgo}). Parse(templ) if err != nil { log.Fatal(err) } 因为模板通常在编译时就测试好了，如果模板解析失败将是一个致命的错误。template.Must辅助函数可以简化这个致命错误的处理：它接受一个模板和一个error类型的参数，检测error是否为nil（如果不是nil则发出panic异常），然后返回传入的模板。我们将在5.9节再讨论这个话题。
+一旦模板已经创建、注册了daysAgo函数、并通过分析和检测，我们就可以使用github.IssuesSearchResult作为输入源、os.Stdout作为输出源来执行模板：
+var report = template.</description>
+    </item>
+    
+  </channel>
+</rss>

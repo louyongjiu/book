@@ -17,7 +17,7 @@ func main() { listener, err := net.Listen(&#34;tcp&#34;, &#34;localhost:8000&#34
 type client chan&lt;- string // an outgoing message channel  var ( entering = make(chan client) leaving = make(chan client) messages = make(chan string) // all incoming client messages ) func broadcaster() { clients := make(map[client]bool) // all connected clients 	for { select { case msg := &lt;-messages: // Broadcast incoming message to all 	// clients&#39; outgoing message channels." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>8.10. 示例: 聊天服务 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2481,16 +2481,10 @@ You are 127.0.0.1:64216               127.0.0.1:64216 has arrived
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.10.%20Example:%20Chat%20Server.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.10.%20Example%20Chat%20Server.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

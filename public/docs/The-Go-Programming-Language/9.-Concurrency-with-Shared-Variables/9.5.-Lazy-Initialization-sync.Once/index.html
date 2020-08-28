@@ -17,7 +17,7 @@ func loadIcons() { icons = map[string]image.Image{ &#34;spades.png&#34;: loadIco
 func loadIcons() { icons = make(map[string]image.Image) icons[&#34;spades.png&#34;] = loadIcon(&#34;spades.png&#34;) icons[&#34;hearts.png&#34;] = loadIcon(&#34;hearts.png&#34;) icons[&#34;diamonds.png&#34;] = loadIcon(&#34;diamonds.png&#34;) icons[&#34;clubs.png&#34;] = loadIcon(&#34;clubs.png&#34;) } 因此，一个goroutine在检查icons是非空时，也并不能就假设这个变量的初始化流程已经走完了（译注：可能只是塞了个空map，里面的值还没填完，也就是说填值的语句都没执行完呢）。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>9.5. sync.Once惰性初始化 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2458,16 +2458,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/9.%20Concurrency%20with%20Shared%20Variables/9.5.%20Lazy%20Initialization:%20sync.Once.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/9.%20Concurrency%20with%20Shared%20Variables/9.5.%20Lazy%20Initialization%20sync.Once.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

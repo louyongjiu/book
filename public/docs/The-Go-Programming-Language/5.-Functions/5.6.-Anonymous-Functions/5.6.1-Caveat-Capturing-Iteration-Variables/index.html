@@ -15,7 +15,7 @@ var rmdirs []func() for _, d := range tempDirs() { dir := d // NOTE: necessary! 
 var rmdirs []func() for _, dir := range tempDirs() { os.MkdirAll(dir, 0755) rmdirs = append(rmdirs, func() { os." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>5.6.1. 警告：捕获迭代变量 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2423,16 +2423,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/5.%20Functions/5.6.%20Anonymous%20Functions/5.6.1%20Caveat:%20Capturing%20Iteration%20Variables.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/5.%20Functions/5.6.%20Anonymous%20Functions/5.6.1%20Caveat%20Capturing%20Iteration%20Variables.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

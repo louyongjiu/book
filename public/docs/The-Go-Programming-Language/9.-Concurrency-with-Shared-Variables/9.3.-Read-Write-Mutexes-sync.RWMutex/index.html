@@ -19,7 +19,7 @@ RLock只能在临界区共享变量没有任何写入操作时可用。一般来
 RWMutex只有当获得锁的大部分goroutine都是读操作，而锁在竞争条件下，也就是说，goroutine们必须等待才能获取到锁的时候，RWMutex才是最能带来好处的。RWMutex需要更复杂的内部记录，所以会让它比一般的无竞争锁的mutex慢一些。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>9.3. sync.RWMutex读写锁 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2398,16 +2398,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/9.%20Concurrency%20with%20Shared%20Variables/9.3.%20Read%20Write%20Mutexes:%20sync.RWMutex.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/9.%20Concurrency%20with%20Shared%20Variables/9.3.%20Read%20Write%20Mutexes%20sync.RWMutex.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

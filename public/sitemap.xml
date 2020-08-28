@@ -94,7 +94,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -114,7 +113,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -264,7 +262,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -274,7 +271,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -324,7 +320,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -379,7 +374,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -389,7 +383,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -429,6 +422,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.4.-Example-Encoding-S-Expressions/</loc>
+    <lastmod>2020-08-28T11:55:33+08:00</lastmod>
   </url>
   
   <url>
@@ -573,7 +567,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.5.-Example-Bit-Vector-Type/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -588,7 +581,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -623,7 +615,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.6.-Example-Decoding-S-Expressions/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -663,7 +654,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -713,7 +703,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -743,7 +732,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -763,7 +751,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.9.-Example-Expression-Evaluator/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -788,7 +775,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -833,7 +819,6 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
@@ -942,7 +927,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/</loc>
-    <lastmod>2020-08-28T11:04:46+08:00</lastmod>
+    <lastmod>2020-08-28T11:55:33+08:00</lastmod>
   </url>
   
   <url>

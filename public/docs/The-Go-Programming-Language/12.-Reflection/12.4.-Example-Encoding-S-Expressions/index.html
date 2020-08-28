@@ -25,7 +25,7 @@ gopl.io/ch12/sexpr
 func encode(buf *bytes.Buffer, v reflect.Value) error { switch v.Kind() { case reflect.Invalid: buf.WriteString(&#34;nil&#34;) case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64: fmt.Fprintf(buf, &#34;%d&#34;, v.Int()) case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr: fmt.Fprintf(buf, &#34;%d&#34;, v.Uint()) case reflect.String: fmt.Fprintf(buf, &#34;%q&#34;, v.String()) case reflect.Ptr: return encode(buf, v.Elem()) case reflect.Array, reflect." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.4.-Example-Encoding-S-Expressions/" />
-
+<meta property="article:modified_time" content="2020-08-28T11:55:33+08:00" />
 <title>12.4. 示例: 编码为S表达式 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2509,6 +2509,12 @@ omin.)&quot; &quot;Best Picture (Nomin.)&quot;)) (Sequel nil))
   <div class="flex flex-wrap justify-between">
 
 
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/a61a4203b65ade542fe4e23a615a80d226c2887d" title='最后修改者 nines | 2020年8月28日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月28日</span>
+    </a>
+  </div>
 
 
 

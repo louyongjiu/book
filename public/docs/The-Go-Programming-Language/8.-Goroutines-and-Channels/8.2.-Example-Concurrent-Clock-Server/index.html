@@ -15,7 +15,7 @@ gopl.io/ch8/clock1
 // Clock1 is a TCP server that periodically writes the time. package main import ( &#34;io&#34; &#34;log&#34; &#34;net&#34; &#34;time&#34; ) func main() { listener, err := net.Listen(&#34;tcp&#34;, &#34;localhost:8000&#34;) if err != nil { log.Fatal(err) } for { conn, err := listener.Accept() if err != nil { log.Print(err) // e.g., connection aborted 	continue } handleConn(conn) // handle one connection at a time 	} } func handleConn(c net." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>8.2. 示例: 并发的Clock服务 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2505,16 +2505,10 @@ $ clockwall NewYork=localhost:8010 Tokyo=localhost:8020 London=localhost:8030
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.2.%20Example:%20Concurrent%20Clock%20Server.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.2.%20Example%20Concurrent%20Clock%20Server.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

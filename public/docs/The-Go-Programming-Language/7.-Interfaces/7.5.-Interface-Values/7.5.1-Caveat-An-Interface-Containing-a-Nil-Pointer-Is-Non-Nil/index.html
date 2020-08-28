@@ -13,7 +13,7 @@ const debug = true func main() { var buf *bytes.Buffer if debug { buf = new(byte
 const debug = true func main() { var buf *bytes.Buffer if debug { buf = new(bytes.Buffer) // enable collection of output 	} f(buf) // NOTE: subtly incorrect! 	if debug { // ...use buf... 	} } // If out is non-nil, output will be written to it. func f(out io.Writer) { // ...do something... 	if out != nil { out.Write([]byte(&#34;done!\n&#34;)) } } 我们可能会预计当把变量debug设置为false时可以禁止对输出的收集，但是实际上在out." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>7.5.1. 警告：一个包含nil指针的接口不是nil接口 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2420,16 +2420,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/7.%20Interfaces/7.5.%20Interface%20Values/7.5.1%20Caveat:%20An%20Interface%20Containing%20a%20Nil%20Pointer%20Is%20Non-Nil.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/7.%20Interfaces/7.5.%20Interface%20Values/7.5.1%20Caveat%20An%20Interface%20Containing%20a%20Nil%20Pointer%20Is%20Non-Nil.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

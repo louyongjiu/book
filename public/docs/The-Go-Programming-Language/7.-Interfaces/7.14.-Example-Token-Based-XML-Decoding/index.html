@@ -15,7 +15,7 @@ encoding/xml
 package xml type Name struct { Local string // e.g., &#34;Title&#34; or &#34;id&#34; } type Attr struct { // e.g., name=&#34;value&#34; 	Name Name Value string } // A Token includes StartElement, EndElement, CharData, // and Comment, plus a few esoteric types (not shown). type Token interface{} type StartElement struct { // e.g., &lt;name&gt;  Name Name Attr []Attr } type EndElement struct { Name Name } // e." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>7.14. 示例: 基于标记的XML解码 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2490,16 +2490,10 @@ html body div div h2: B Definitions for Character Normalization
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/7.%20Interfaces/7.14.%20Example:%20Token-Based%20XML%20Decoding.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/7.%20Interfaces/7.14.%20Example%20Token-Based%20XML%20Decoding.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

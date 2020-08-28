@@ -13,7 +13,7 @@ gopl.io/ch8/du1
 // walkDir recursively walks the file tree rooted at dir // and sends the size of each found file on fileSizes. func walkDir(dir string, fileSizes chan&lt;- int64) { for _, entry := range dirents(dir) { if entry.IsDir() { subdir := filepath.Join(dir, entry.Name()) walkDir(subdir, fileSizes) } else { fileSizes &lt;- entry.Size() } } } // dirents returns the entries of directory dir. func dirents(dir string) []os." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/" />
-<meta property="article:modified_time" content="2020-08-27T15:36:41+08:00" />
+
 <title>8.8. 示例: 并发的目录遍历 | Book</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
@@ -2528,16 +2528,10 @@ $ ./du2 -v $HOME /usr /bin /etc
 
 
 
-  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/fbdd3ed5ec0a5a71e64d8ecb6e22a5f48ffcd3e5" title='最后修改者 nines | 2020年8月27日' target="_blank" rel="noopener">
-      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2020年8月27日</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.8.%20Example:%20Concurrent%20Directory%20Traversal.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/The%20Go%20Programming%20Language/8.%20Goroutines%20and%20Channels/8.8.%20Example%20Concurrent%20Directory%20Traversal.md" target="_blank" rel="noopener">
       <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>

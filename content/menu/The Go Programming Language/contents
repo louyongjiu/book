@@ -17,17 +17,17 @@ Acknowledgments
 2.1. Names
 2.2. Declarations
 2.3. Variables
-2.3.1 Short Variable Declarations
-2.3.2 Pointers
-2.3.3 The new Function
-2.3.4 Lifetime of Variables
+2.3.1. Short Variable Declarations
+2.3.2. Pointers
+2.3.3. The new Function
+2.3.4. Lifetime of Variables
 2.4. Assignments
-2.4.1 Tuple Assignment
-2.4.2 Assignability
+2.4.1. Tuple Assignment
+2.4.2. Assignability
 2.5. Type Declarations
 2.6. Packages and Files
-2.6.1 Imports
-2.6.2 Package Initialization
+2.6.1. Imports
+2.6.2. Package Initialization
 2.7. Scope
 3. Basic Data Types
 3.1. Integers
@@ -35,24 +35,24 @@ Acknowledgments
 3.3. Complex Numbers
 3.4. Booleans
 3.5. Strings
-3.5.1 String Literals
-3.5.2 Unicode
-3.5.3 UTF-8
-3.5.4 Strings and Byte Slices
-3.5.5 Conversions between Strings and Numbers
+3.5.1. String Literals
+3.5.2. Unicode
+3.5.3. UTF-8
+3.5.4. Strings and Byte Slices
+3.5.5. Conversions between Strings and Numbers
 3.6. Constants
-3.6.1 The Constant Generator iota
-3.6.2 Untyped Constants
+3.6.1. The Constant Generator iota
+3.6.2. Untyped Constants
 4. Composite Types
 4.1. Arrays
 4.2. Slices
-4.2.1 The append Function
-4.2.2 In-Place Slice Techniques
+4.2.1. The append Function
+4.2.2. In-Place Slice Techniques
 4.3. Maps
 4.4. Structs
-4.4.1 Struct Literals
-4.4.2 Comparing Structs
-4.4.3 Struct Embedding and Anonymous Fields
+4.4.1. Struct Literals
+4.4.2. Comparing Structs
+4.4.3. Struct Embedding and Anonymous Fields
 4.5. JSON
 4.6. Text and HTML Templates
 5. Functions
@@ -60,11 +60,11 @@ Acknowledgments
 5.2. Recursion
 5.3. Multiple Return Values
 5.4. Errors
-5.4.1 Error-Handling Strategies
-5.4.2 End of File (EOF)
+5.4.1. Error-Handling Strategies
+5.4.2. End of File (EOF)
 5.5. Function Values
 5.6. Anonymous Functions
-5.6.1 Caveat: Capturing Iteration Variables
+5.6.1. Caveat: Capturing Iteration Variables
 5.7. Variadic Functions
 5.8. Deferred Function Calls
 5.9. Panic
@@ -72,7 +72,7 @@ Acknowledgments
 6. Methods
 6.1. Method Declarations
 6.2. Methods with a Pointer Receiver
-6.2.1 Nil Is a Valid Receiver Value
+6.2.1. Nil Is a Valid Receiver Value
 6.3. Composing Types by Struct Embedding
 6.4. Method Values and Expressions
 6.5. Example: Bit Vector Type
@@ -83,7 +83,7 @@ Acknowledgments
 7.3. Interface Satisfaction
 7.4. Parsing Flags with flag.Value
 7.5. Interface Values
-7.5.1 Caveat: An Interface Containing a Nil Pointer Is Non-Nil
+7.5.1. Caveat: An Interface Containing a Nil Pointer Is Non-Nil
 7.6. Sorting with sort.Interface
 7.7. The http.Handler Interface
 7.8. The error Interface
@@ -99,10 +99,10 @@ Acknowledgments
 8.2. Example: Concurrent Clock Server
 8.3. Example: Concurrent Echo Server
 8.4. Channels
-8.4.1 Unbuffered Channels
-8.4.2 Pipelines
-8.4.3 Unidirectional Channel Types
-8.4.4 Buffered Channels
+8.4.1. Unbuffered Channels
+8.4.2. Pipelines
+8.4.3. Unidirectional Channel Types
+8.4.4. Buffered Channels
 8.5. Looping in Parallel
 8.6. Example: Concurrent Web Crawler
 8.7. Multiplexing with select
@@ -118,10 +118,10 @@ Acknowledgments
 9.6. The Race Detector
 9.7. Example: Concurrent Non-Blocking Cache
 9.8. Goroutines and Threads
-9.8.1 Growable Stacks
-9.8.2 Goroutine Scheduling
-9.8.3 GOMAXPROCS
-9.8.4 Goroutines Have No Identity
+9.8.1. Growable Stacks
+9.8.2. Goroutine Scheduling
+9.8.3. GOMAXPROCS
+9.8.4. Goroutines Have No Identity
 10. Packages and the Go Tool
 10.1. Introduction
 10.2. Import Paths
@@ -130,21 +130,21 @@ Acknowledgments
 10.5. Blank Imports
 10.6. Packages and Naming
 10.7. The Go Tool
-10.7.1 Workspace Organization
-10.7.2 Downloading Packages
-10.7.3 Building Packages
-10.7.4 Documenting Packages
-10.7.5 Internal Packages
-10.7.6 Querying Packages
+10.7.1. Workspace Organization
+10.7.2. Downloading Packages
+10.7.3. Building Packages
+10.7.4. Documenting Packages
+10.7.5. Internal Packages
+10.7.6. Querying Packages
 11. Testing
 11.1. The go test Tool
 11.2. Test Functions
-11.2.1 Randomized Testing
-11.2.2 Testing a Command
-11.2.3 White-Box Testing
-11.2.4 External Test Packages
-11.2.5 Writing Effective Tests
-11.2.6 Avoiding Brittle Tests
+11.2.1. Randomized Testing
+11.2.2. Testing a Command
+11.2.3. White-Box Testing
+11.2.4. External Test Packages
+11.2.5. Writing Effective Tests
+11.2.6. Avoiding Brittle Tests
 11.3. Coverage
 11.4. Benchmark Functions
 11.5. Profiling

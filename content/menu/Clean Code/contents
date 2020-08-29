@@ -65,7 +65,7 @@
 3.13. Conclusion
 3.14. SetupTeardownIncluder 
 3.15. Bibliography
-4. Comments 
+4. Comments
 4.1. Comments Do Not Make Up for Bad Code
 4.2. Explain Yourself in Code 
 4.3. Good Comments
@@ -98,7 +98,7 @@
 4.4.18. Javadocs in Nonpublic Code 
 4.4.19. Example
 4.5. Bibliography
-5. Formatting 
+5. Formatting
 5.1. The Purpose of Formatting 
 5.2. Vertical Formatting
 5.2.1. The Newspaper Metaphor 
@@ -124,7 +124,7 @@
 6.4.1. Active Record
 6.5. Conclusion
 6.6. Bibliography
-7. Error Handling 
+7. Error Handling
 7.1. Use Exceptions Rather Than Return Codes 
 7.2. Write Your Try-Catch-Finally Statement First
 7.3. Use Unchecked Exceptions
@@ -165,7 +165,7 @@
 10.3. Organizing for Change 
 10.3.1. Isolating from Change
 10.4. Bibliography
-11. Systems 
+11. Systems
 11.1. How Would You Build a City?
 11.2. Separate Constructing a System from Using It
 11.2.1. Separation of Main
@@ -182,7 +182,7 @@
 11.10. Systems Need Domain-Specific Languages
 11.11. Conclusion
 11.12. Bibliography
-12. Emergence 
+12. Emergence
 12.1. Getting Clean via Emergent Design 
 12.2. Simple Design Rule 1: Runs All the Tests
 12.3. Simple Design Rules 2–4: Refactoring 
@@ -191,7 +191,7 @@
 12.6. Minimal Classes and Methods
 12.7. Conclusion
 12.8. Bibliography
-13. Concurrency 
+13. Concurrency
 13.1. Why Concurrency? 
 13.1.1. Myths and Misconceptions
 13.2. Challenges
@@ -232,12 +232,12 @@
 15. JUnit Internals
 15.1. The JUnit Framework
 15.2. Conclusion
-16. Refactoring SerialDate 
+16. Refactoring SerialDate
 16.1. First, Make It Work
 16.2. Then Make It Right
 16.3. Conclusion
 16.4. Bibliography
-17. Smells and Heuristics 
+17. Smells and Heuristics
 17.1. Comments 
  C1: Inappropriate Information
  C2: Obsolete Comment

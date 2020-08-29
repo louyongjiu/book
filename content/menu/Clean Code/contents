@@ -1,70 +1,70 @@
 1. Clean Code
 1.1. There Will Be Code 
 1.2. Bad Code
-The Total Cost of Owning a Mess
- The Grand Redesign in the Sky
- Attitude
- The Primal Conundrum
- The Art of Clean Code?
- What Is Clean Code?
-Schools of Thought
-We Are Authors
-The Boy Scout Rule
-Prequel and Principles
-Conclusion
-Bibliography
+1.3. The Total Cost of Owning a Mess
+1.3.1 The Grand Redesign in the Sky
+1.3.2 Attitude
+1.3.3 The Primal Conundrum
+1.3.4 The Art of Clean Code?
+1.3.5 What Is Clean Code?
+1.4. Schools of Thought
+1.5. We Are Authors
+1.6. The Boy Scout Rule
+1.7. Prequel and Principles
+1.8. Conclusion
+1.9. Bibliography
 2. Meaningful Names
-Introduction
-Use Intention-Revealing Names
-Avoid Disinformation
-Make Meaningful Distinctions
-Use Pronounceable Names
-Use Searchable Names 
-Avoid Encodings
- Hungarian Notation
- Member Prefixes
- Interfaces and Implementations 
-Avoid Mental Mapping
-Class Names
-Method Names
-Don’t Be Cute 
-Pick One Word per Concept
-Don’t Pun
-Use Solution Domain Names
-Use Problem Domain Names
-Add Meaningful Context
-Don’t Add Gratuitous Context
-Final Words
+2.1. Introduction
+2.2. Use Intention-Revealing Names
+2.3. Avoid Disinformation
+2.4. Make Meaningful Distinctions
+2.5. Use Pronounceable Names
+2.6. Use Searchable Names 
+2.7. Avoid Encodings
+2.7.1 Hungarian Notation
+2.7.2  Member Prefixes
+2.7.3  Interfaces and Implementations 
+2.8. Avoid Mental Mapping
+2.9. Class Names
+2.10. Method Names
+2.11. Don’t Be Cute 
+2.12. Pick One Word per Concept
+2.13. Don’t Pun
+2.14. Use Solution Domain Names
+2.15. Use Problem Domain Names
+2.16. Add Meaningful Context
+2.17. Don’t Add Gratuitous Context
+2.18. Final Words
 3. Functions
-Small!
- Blocks and Indenting
-Do One Thing
- Sections within Functions 
-One Level of Abstraction per Function
- Reading Code from Top to Bottom: The Stepdown Rule
-Switch Statements 
-Use Descriptive Names
-Function Arguments
- Common Monadic Forms
- Flag Arguments 
- Dyadic Functions
- Triads
- Argument Objects
- Argument Lists
- Verbs and Keywords
-Have No Side Effects
- Output Arguments 
-Command Query Separation
-Prefer Exceptions to Returning Error Codes
- Extract Try/Catch Blocks 
- Error Handling Is One Thing
- The Error.java Dependency Magnet 
-Don’t Repeat Yourself 
-Structured Programming 
-How Do You Write Functions Like This?
-Conclusion
-SetupTeardownIncluder 
-Bibliography
+3.1. Small!
+3.1.1  Blocks and Indenting
+3.2. Do One Thing
+3.2.1 Sections within Functions 
+3.3. One Level of Abstraction per Function
+3.3.1 Reading Code from Top to Bottom: The Stepdown Rule
+3.4. Switch Statements 
+3.5. Use Descriptive Names
+3.6. Function Arguments
+3.6.1 Common Monadic Forms
+3.6.2 Flag Arguments 
+3.6.3 Dyadic Functions
+3.6.4 Triads
+3.6.5 Argument Objects
+3.6.6 Argument Lists
+3.6.7 Verbs and Keywords
+3.7. Have No Side Effects
+3.7.1 Output Arguments 
+3.8. Command Query Separation
+3.9. Prefer Exceptions to Returning Error Codes
+3.9.1 Extract Try/Catch Blocks 
+3.9.2 Error Handling Is One Thing
+3.9.3 The Error.java Dependency Magnet 
+3.10. Don’t Repeat Yourself 
+3.11. Structured Programming 
+3.12. How Do You Write Functions Like This?
+3.13. Conclusion
+3.14. SetupTeardownIncluder 
+3.15. Bibliography
 4. Comments 
 Comments Do Not Make Up for Bad Code
 Explain Yourself in Code 

@@ -1,1 +1,1 @@
-# gopl-zh-hugo
+# book-hugo

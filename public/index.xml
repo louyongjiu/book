@@ -37,6 +37,15 @@ Go语言在代码格式上采取了很强硬的态度。gofmt工具把代码格�
     </item>
     
     <item>
+      <title>1.1. 要有代码</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/</guid>
+      <description>1.1 要有代码 #  One might argue that a book about code is somehow behind the times—that code is no longer the issue; that we should be concerned about models and requirements instead. Indeed some have suggested that we are close to the end of code. That soon all code will be generated instead of written. That programmers simply won’t be needed because business people will generate programs from specifications.</description>
+    </item>
+    
+    <item>
       <title>10.1. 包简介</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.1.-Introduction/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -50,10 +59,10 @@ Go语言在代码格式上采取了很强硬的态度。gofmt工具把代码格�
     
     <item>
       <title>10.7.1. 工作区结构</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1.-Workspace-Organization/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1.-Workspace-Organization/</guid>
       <description>10.7.1. 工作区结构 #  对于大多数的Go语言用户，只需要配置一个名叫GOPATH的环境变量，用来指定当前工作目录即可。当需要切换到不同工作区的时候，只要更新GOPATH就可以了。例如，我们在编写本书时将GOPATH设置为$HOME/gobook：
 $ export GOPATH=$HOME/gobook $ go get gopl.io/... 当你用前面介绍的命令下载本书全部的例子源码之后，你的当前工作区的目录结构应该是这样的：
 GOPATH/ src/ gopl.io/ .git/ ch1/ helloworld/ main.go dup/ main.go ... golang.org/x/net/ .git/ html/ parse.go node.go ... bin/ helloworld dup pkg/ darwin_amd64/ ... GOPATH对应的工作区目录有三个子目录。其中src子目录用于存储源代码。每个包被保存在与$GOPATH/src的相对路径为包导入路径的子目录中，例如gopl.io/ch1/helloworld相对应的路径目录。我们看到，一个GOPATH工作区的src目录中可能有多个独立的版本控制系统，例如gopl.io和golang.org分别对应不同的Git仓库。其中pkg子目录用于保存编译后的包的目标文件，bin子目录用于保存编译后的可执行程序，例如helloworld可执行程序。
@@ -64,10 +73,10 @@ $ go env GOPATH=&amp;quot;/home/gopher/gobook&amp;quot; GOROOT=&amp;quot;/usr/lo
     
     <item>
       <title>11.2.1. 随机测试</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1.-Randomized-Testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1.-Randomized-Testing/</guid>
       <description>11.2.1. 随机测试 #  表格驱动的测试便于构造基于精心挑选的测试数据的测试用例。另一种测试思路是随机测试，也就是通过构造更广泛的随机输入来测试探索函数的行为。
 那么对于一个随机的输入，我们如何能知道希望的输出结果呢？这里有两种处理策略。第一个是编写另一个对照函数，使用简单和清晰的算法，虽然效率较低但是行为和要测试的函数是一致的，然后针对相同的随机输入检查两者的输出结果。第二种是生成的随机输入的数据遵循特定的模式，这样我们就可以知道期望的输出的模式。
 下面的例子使用的是第二种方法：randomPalindrome函数用于随机生成回文字符串。
@@ -100,6 +109,15 @@ import &amp;#34;unsafe&amp;#34; fmt.Println(unsafe.Sizeof(float64(0))) // &amp;#
     </item>
     
     <item>
+      <title>2.1. 介绍</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/</guid>
+      <description>2.1 介绍 #  Names are everywhere in software. We name our variables, our functions, our arguments, classes, and packages. We name our source files and the directories that contain them. We name our jar files and war files and ear files. We name and name and name. Because we do so much of it, we’d better do it well. What follows are some simple rules for creating good names.</description>
+    </item>
+    
+    <item>
       <title>2.1. 命名</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.1.-Names/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -113,10 +131,10 @@ break default func interface select case defer go map struct chan else goto pack
     
     <item>
       <title>2.3.1. 简短变量声明</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1.-Short-Variable-Declarations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1.-Short-Variable-Declarations/</guid>
       <description>2.3.1. 简短变量声明 #  在函数内部，有一种称为简短变量声明语句的形式可用于声明和初始化局部变量。它以“名字 := 表达式”形式声明变量，变量的类型根据表达式来自动推导。下面是lissajous函数中的三个简短变量声明语句（§1.4）：
 anim := gif.GIF{LoopCount: nframes} freq := rand.Float64() * 3.0 t := 0.0 因为简洁和灵活的特点，简短变量声明被广泛用于大部分的局部变量的声明和初始化。var形式的声明语句往往是用于需要显式指定变量类型的地方，或者因为变量稍后会被重新赋值而初始值无关紧要的地方。
 i := 100 // an int var boiling float64 = 100 // a float64 var names []string var err error var p Point 和var形式声明语句一样，简短变量声明语句也可以用来声明和初始化一组变量：
@@ -128,10 +146,10 @@ f, err := os.Open(name) if err != nil { return err } // .</description>
     
     <item>
       <title>2.4.1. 元组赋值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1.-Tuple-Assignment/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1.-Tuple-Assignment/</guid>
       <description>2.4.1. 元组赋值 #  元组赋值是另一种形式的赋值语句，它允许同时更新多个变量的值。在赋值之前，赋值语句右边的所有表达式将会先进行求值，然后再统一更新左边对应变量的值。这对于处理有些同时出现在元组赋值语句左右两边的变量很有帮助，例如我们可以这样交换两个变量的值：
 x, y = y, x a[i], a[j] = a[j], a[i] 或者是计算两个整数值的的最大公约数（GCD）（译注：GCD不是那个敏感字，而是greatest common divisor的缩写，欧几里德的GCD是最早的非平凡算法）：
 func gcd(x, y int) int { for y != 0 { x, y = y, x%y } return x } 或者是计算斐波纳契数列（Fibonacci）的第N个数：
@@ -141,10 +159,10 @@ i, j, k = 2, 3, 5 但如果表达式太复杂的话，应该尽量避免过度�
     
     <item>
       <title>2.6.1. 导入包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1.-Imports/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1.-Imports/</guid>
       <description>2.6.1. 导入包 #  在Go语言程序中，每个包都有一个全局唯一的导入路径。导入语句中类似&amp;quot;gopl.io/ch2/tempconv&amp;quot;的字符串对应包的导入路径。Go语言的规范并没有定义这些字符串的具体含义或包来自哪里，它们是由构建工具来解释的。当使用Go语言自带的go工具箱时（第十章），一个导入路径代表一个目录中的一个或多个Go源文件。
 除了包的导入路径，每个包还有一个包名，包名一般是短小的名字（并不要求包名是唯一的），包名在包的声明处指定。按照惯例，一个包的名字和包的导入路径的最后一个字段相同，例如gopl.io/ch2/tempconv包的名字一般是tempconv。
 要使用gopl.io/ch2/tempconv包，需要先导入：
@@ -176,10 +194,10 @@ var u uint8 = 255 fmt.Println(u, u+1, u*u) // &amp;#34;255 0 1&amp;#34;  var i i
     
     <item>
       <title>3.5.1. 字符串面值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1.-String-Literals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1.-String-Literals/</guid>
       <description>3.5.1. 字符串面值 #  字符串值也可以用字符串面值方式编写，只要将一系列字节序列包含在双引号内即可：
 &amp;quot;Hello, 世界&amp;quot;  因为Go语言源文件总是用UTF8编码，并且Go语言的文本字符串也以UTF8编码的方式处理，因此我们可以将Unicode码点也写到字符串面值中。
 在一个双引号包含的字符串面值中，可以用以反斜杠\开头的转义序列插入任意的数据。下面的换行、回车和制表符等是常见的ASCII控制代码的转义方式：
@@ -191,10 +209,10 @@ const GoUsage = `Go is a tool for managing Go source code. Usage: go command [ar
     
     <item>
       <title>3.6.1. iota 常量生成器</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1.-The-Constant-Generator-iota/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1.-The-Constant-Generator-iota/</guid>
       <description>3.6.1. iota 常量生成器 #  常量声明可以使用iota常量生成器初始化，它用于生成一组以相似规则初始化的常量，但是不用每行都写一遍初始化表达式。在一个const声明语句中，在第一个声明的常量所在的行，iota将会被置为0，然后在每一个有常量声明的行加一。
 下面是来自time包的例子，它首先定义了一个Weekday命名类型，然后为一周的每天定义了一个常量，从周日0开始。在其它编程语言中，这种类型一般被称为枚举类型。
 type Weekday int const ( Sunday Weekday = iota Monday Tuesday Wednesday Thursday Friday Saturday ) 周日将对应0，周一为1，如此等等。
@@ -216,10 +234,10 @@ var q [3]int = [3]int{1, 2, 3} var r [3]int = [3]int{1, 2} fmt.</description>
     
     <item>
       <title>4.2.1. append函数</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1.-The-append-Function/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1.-The-append-Function/</guid>
       <description>4.2.1. append函数 #  内置的append函数用于向slice追加元素：
 var runes []rune for _, r := range &amp;#34;Hello, 世界&amp;#34; { runes = append(runes, r) } fmt.Printf(&amp;#34;%q\n&amp;#34;, runes) // &amp;#34;[&amp;#39;H&amp;#39; &amp;#39;e&amp;#39; &amp;#39;l&amp;#39; &amp;#39;l&amp;#39; &amp;#39;o&amp;#39; &amp;#39;,&amp;#39; &amp;#39; &amp;#39; &amp;#39;世&amp;#39; &amp;#39;界&amp;#39;]&amp;#34; 在循环中使用append函数构建一个由九个rune字符构成的slice，当然对应这个特殊的问题我们可以通过Go语言内置的[]rune(&amp;ldquo;Hello, 世界&amp;rdquo;)转换操作完成。
 append函数对于理解slice底层是如何工作的非常重要，所以让我们仔细查看究竟是发生了什么。下面是第一个版本的appendInt函数，专门用于处理[]int类型的slice：
@@ -229,10 +247,10 @@ func appendInt(x []int, y int) []int { var z []int zlen := len(x) + 1 if zlen &a
     
     <item>
       <title>4.4.1. 结构体字面值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1.-Struct-Literals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1.-Struct-Literals/</guid>
       <description>4.4.1. 结构体字面值 #  结构体值也可以用结构体字面值表示，结构体字面值可以指定每个成员的值。
 type Point struct{ X, Y int } p := Point{1, 2} 这里有两种形式的结构体字面值语法，上面的是第一种写法，要求以结构体成员定义的顺序为每个结构体成员指定一个字面值。它要求写代码和读代码的人要记住结构体的每个成员的类型和顺序，不过结构体成员有细微的调整就可能导致上述代码不能编译。因此，上述的语法一般只在定义结构体的包内部使用，或者是在较小的结构体中使用，这些结构体的成员排列比较规则，比如image.Point{x, y}或color.RGBA{red, green, blue, alpha}。
 其实更常用的是第二种写法，以成员名字和相应的值来初始化，可以包含部分或全部的成员，如1.4节的Lissajous程序的写法：
@@ -257,10 +275,10 @@ func add(x int, y int) int {return x + y} func sub(x, y int) (z int) { z = x - y
     
     <item>
       <title>5.4.1. 错误处理策略</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1.-Error-Handling-Strategies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1.-Error-Handling-Strategies/</guid>
       <description>5.4.1. 错误处理策略 #  当一次函数调用返回错误时，调用者应该选择合适的方式处理错误。根据情况的不同，有很多处理方式，让我们来看看常用的五种方式。
 首先，也是最常用的方式是传播错误。这意味着函数中某个子程序的失败，会变成该函数的失败。下面，我们以5.3节的findLinks函数作为例子。如果findLinks对http.Get的调用失败，findLinks会直接将这个HTTP错误返回给调用者：
 resp, err := http.Get(url) if err != nil{ return nil, err } 当对html.Parse的调用失败时，findLinks不会直接返回html.Parse的错误，因为缺少两条重要信息：1、发生错误时的解析器（html parser）；2、发生错误的url。因此，findLinks构造了一个新的错误信息，既包含了这两项，也包括了底层的解析出错的信息。
@@ -276,10 +294,10 @@ gopl.io/ch5/wait
     
     <item>
       <title>5.6.1. 警告：捕获迭代变量</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1.-Caveat-Capturing-Iteration-Variables/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1.-Caveat-Capturing-Iteration-Variables/</guid>
       <description>5.6.1. 警告：捕获迭代变量 #  本节，将介绍Go词法作用域的一个陷阱。请务必仔细的阅读，弄清楚发生问题的原因。即使是经验丰富的程序员也会在这个问题上犯错误。
 考虑这样一个问题：你被要求首先创建一些目录，再将目录删除。在下面的例子中我们用函数值来完成删除操作。下面的示例代码需要引入os包。为了使代码简单，我们忽略了所有的异常处理。
 var rmdirs []func() for _, d := range tempDirs() { dir := d // NOTE: necessary! 	os.MkdirAll(dir, 0755) // creates parent directories too 	rmdirs = append(rmdirs, func() { os.RemoveAll(dir) }) } // ...do some work… for _, rmdir := range rmdirs { rmdir() // clean up } 你可能会感到困惑，为什么要在循环体中用循环变量d赋值一个新的局部变量，而不是像下面的代码一样直接使用循环变量dir。需要注意，下面的代码是错误的。
@@ -303,10 +321,10 @@ p := Point{1, 2} q := Point{4, 6} fmt.Println(Distance(p, q)) // &amp;#34;5&amp;
     
     <item>
       <title>6.2.1. Nil也是一个合法的接收器类型</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1.-Nil-Is-a-Valid-Receiver-Value/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1.-Nil-Is-a-Valid-Receiver-Value/</guid>
       <description>6.2.1. Nil也是一个合法的接收器类型 #  就像一些函数允许nil指针作为参数一样，方法理论上也可以用nil指针作为其接收器，尤其当nil对于对象来说是合法的零值时，比如map或者slice。在下面的简单int链表的例子里，nil代表的是空链表：
 // An IntList is a linked list of integers. // A nil *IntList represents the empty list. type IntList struct { Value int Tail *IntList } // Sum returns the sum of the list elements. func (list *IntList) Sum() int { if list == nil { return 0 } return list.Value + list.Tail.Sum() } 当你定义一个允许nil作为接收器值的方法的类型时，在类型前面的注释中指出nil变量代表的意义是很有必要的，就像我们上面例子里做的这样。
 下面是net/url包里Values类型定义的一部分。
@@ -330,10 +348,10 @@ package io // Writer is the interface that wraps the basic Write method. type Wr
     
     <item>
       <title>7.5.1. 警告：一个包含nil指针的接口不是nil接口</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1.-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1.-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</guid>
       <description>7.5.1. 警告：一个包含nil指针的接口不是nil接口 #  一个不包含任何值的nil接口值和一个刚好包含nil指针的接口值是不同的。这个细微区别产生了一个容易绊倒每个Go程序员的陷阱。
 思考下面的程序。当debug变量设置为true时，main函数会将f函数的输出收集到一个bytes.Buffer类型中。
 const debug = true func main() { var buf *bytes.Buffer if debug { buf = new(bytes.Buffer) // enable collection of output 	} f(buf) // NOTE: subtly incorrect! 	if debug { // ...use buf... 	} } // If out is non-nil, output will be written to it. func f(out io.Writer) { // ...do something... 	if out != nil { out.Write([]byte(&amp;#34;done!\n&amp;#34;)) } } 我们可能会预计当把变量debug设置为false时可以禁止对输出的收集，但是实际上在out.</description>
@@ -355,10 +373,10 @@ func main() { go spinner(100 * time.Millisecond) const n = 45 fibN := fib(n) // 
     
     <item>
       <title>8.4.1. 不带缓存的Channels</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1.-Unbuffered-Channels/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1.-Unbuffered-Channels/</guid>
       <description>8.4.1. 不带缓存的Channels #  一个基于无缓存Channels的发送操作将导致发送者goroutine阻塞，直到另一个goroutine在相同的Channels上执行接收操作，当发送的值通过Channels成功传输之后，两个goroutine可以继续执行后面的语句。反之，如果接收操作先发生，那么接收者goroutine也将阻塞，直到有另一个goroutine在相同的Channels上执行发送操作。
 基于无缓存Channels的发送和接收操作将导致两个goroutine做一次同步操作。因为这个原因，无缓存Channels有时候也被称为同步Channels。当通过一个无缓存Channels发送数据时，接收者收到数据发生在再次唤醒唤醒发送者goroutine之前（译注：happens before，这是Go语言并发内存模型的一个关键术语！）。
 在讨论并发编程时，当我们说x事件在y事件之前发生（happens before），我们并不是说x事件在时间上比y时间更早；我们要表达的意思是要保证在此之前的事件都已经完成了，例如在此之前的更新某些变量的操作已经完成，你可以放心依赖这些已完成的事件了。
@@ -407,10 +425,10 @@ Alice first Bob first Alice/Bob/Alice 0 0 0 A1 200 B 100 A1 200 A2 &amp;quot;= 2
 
 
 </title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1.-Growable-Stacks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1.-Growable-Stacks/</guid>
       <description>9.8.1. 动态栈 #  每一个OS线程都有一个固定大小的内存块（一般会是2MB）来做栈，这个栈会用来存储当前正在被调用或挂起（指在调用其它函数时）的函数的内部变量。这个固定大小的栈同时很大又很小。因为2MB的栈对于一个小小的goroutine来说是很大的内存浪费，比如对于我们用到的，一个只是用来WaitGroup之后关闭channel的goroutine来说。而对于go程序来说，同时创建成百上千个goroutine是非常普遍的，如果每一个goroutine都需要这么大的栈的话，那这么多的goroutine就不太可能了。除去大小的问题之外，固定大小的栈对于更复杂或者更深层次的递归函数调用来说显然是不够的。修改固定的大小可以提升空间的利用率，允许创建更多的线程，并且可以允许更深的递归调用，不过这两者是没法同时兼备的。
 相反，一个goroutine会以一个很小的栈开始其生命周期，一般只需要2KB。一个goroutine的栈，和操作系统线程一样，会保存其活跃或挂起的函数调用的本地变量，但是和OS线程不太一样的是，一个goroutine的栈大小并不是固定的；栈的大小会根据需要动态地伸缩。而goroutine的栈的最大值有1GB，比传统的固定大小的线程栈要大得多，尽管一般情况下，大多goroutine都不需要这么大的栈。
 ** 练习 9.4:** 创建一个流水线程序，支持用channel连接任意数量的goroutine，在跑爆内存之前，可以创建多少流水线阶段？一个变量通过整个流水线需要用多久？（这个练习题翻译不是很确定）</description>
@@ -459,6 +477,15 @@ gopl.io/ch1/echo1
     </item>
     
     <item>
+      <title>1.2. 糟糕的代码</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/</guid>
+      <description>1.2 糟糕的代码 #  I was recently reading the preface to Kent Beck’s book Implementation Patterns.1 He says, “… this book is based on a rather fragile premise: that good code matters….” A fragile premise? I disagree! I think that premise is one of the most robust, supported, and overloaded of all the premises in our craft (and I think Kent knows it). We know good code matters because we’ve had to deal for so long with its lack.</description>
+    </item>
+    
+    <item>
       <title>10.2. 导入路径</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -471,10 +498,10 @@ import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;encoding/jso
     
     <item>
       <title>10.7.2. 下载包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2.-Downloading-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2.-Downloading-Packages/</guid>
       <description>10.7.2. 下载包 #  使用Go语言工具箱的go命令，不仅可以根据包导入路径找到本地工作区的包，甚至可以从互联网上找到和更新包。
 使用命令go get可以下载一个单一的包或者用...下载整个子目录里面的每个包。Go语言工具箱的go命令同时计算并下载所依赖的每个包，这也是前一个例子中golang.org/x/net/html自动出现在本地工作区目录的原因。
 一旦go get命令下载了包，然后就是安装包或包对应的可执行的程序。我们将在下一节再关注它的细节，现在只是展示整个下载过程是如何的简单。第一个命令是获取golint工具，它用于检测Go源代码的编程风格是否有问题。第二个命令是用golint命令对2.6.2节的gopl.io/ch2/popcount包代码进行编码风格检查。它友好地报告了忘记了包的文档：
@@ -487,10 +514,10 @@ go get -u命令只是简单地保证每个包是最新版本，如果是第一�
     
     <item>
       <title>11.2.2. 测试一个命令</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2.-Testing-a-Command/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2.-Testing-a-Command/</guid>
       <description>11.2.2. 测试一个命令 #  对于测试包go test是一个有用的工具，但是稍加努力我们也可以用它来测试可执行程序。如果一个包的名字是 main，那么在构建时会生成一个可执行程序，不过main包可以作为一个包被测试器代码导入。
 让我们为2.3.2节的echo程序编写一个测试。我们先将程序拆分为两个函数：echo函数完成真正的工作，main函数用于处理命令行输入参数和echo可能返回的错误。
 gopl.io/ch11/echo
@@ -527,6 +554,17 @@ var x struct { a bool b int16 c []int } // 和 pb := &amp;amp;x.b 等价 pb := (
     </item>
     
     <item>
+      <title>2.2. 名副其实</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/</guid>
+      <description>2.2 名副其实 #  It is easy to say that names should reveal intent. What we want to impress upon you is that we are serious about this. Choosing good names takes time but saves more than it takes. So take care with your names and change them when you find better ones. Everyone who reads your code (including you) will be happier if you do.
+ 名副其实说起来简单。我们想要强调，这事很严肃。选个好名字要花时间，但省下来的时间比花掉的多。注意命名，而且一旦发现有更好的名称，就换掉旧的。这么做，读你代码的人（包括你自己）都会更开心。
+ The name of a variable, function, or class, should answer all the big questions.</description>
+    </item>
+    
+    <item>
       <title>2.2. 声明</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.2.-Declarations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -544,10 +582,10 @@ gopl.io/ch2/ftoc
     
     <item>
       <title>2.3.2. 指针</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2.-Pointers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2.-Pointers/</guid>
       <description>2.3.2. 指针 #  一个变量对应一个保存了变量对应类型值的内存空间。普通变量在声明语句创建时被绑定到一个变量名，比如叫x的变量，但是还有很多变量始终以表达式方式引入，例如x[i]或x.f变量。所有这些表达式一般都是读取一个变量的值，除非它们是出现在赋值语句的左边，这种时候是给对应变量赋予一个新的值。
 一个指针的值是另一个变量的地址。一个指针对应变量在内存中的存储位置。并不是每一个值都会有一个内存地址，但是对于每一个变量必然有对应的内存地址。通过指针，我们可以直接读或更新对应变量的值，而不需要知道该变量的名字（如果变量有名字的话）。
 如果用“var x int”声明语句声明一个x变量，那么&amp;amp;x表达式（取x变量的内存地址）将产生一个指向该整数变量的指针，指针对应的数据类型是*int，指针被称之为“指向int类型的指针”。如果指针名字为p，那么可以说“p指针指向变量x”，或者说“p指针保存了x变量的内存地址”。同时*p表达式对应p指针指向的变量的值。一般*p表达式读取指针指向的变量的值，这里为int类型的值，同时因为*p对应一个变量，所以该表达式也可以出现在赋值语句的左边，表示更新指针所指向的变量的值。
@@ -560,10 +598,10 @@ var p = f() func f() *int { v := 1 return &amp;amp;v } 每次调用f函数都将
     
     <item>
       <title>2.4.2. 可赋值性</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2.-Assignability/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2.-Assignability/</guid>
       <description>2.4.2. 可赋值性 #  赋值语句是显式的赋值形式，但是程序中还有很多地方会发生隐式的赋值行为：函数调用会隐式地将调用参数的值赋值给函数的参数变量，一个返回语句会隐式地将返回操作的值赋值给结果变量，一个复合类型的字面量（§4.2）也会产生赋值行为。例如下面的语句：
 medals := []string{&amp;#34;gold&amp;#34;, &amp;#34;silver&amp;#34;, &amp;#34;bronze&amp;#34;} 隐式地对slice的每个元素进行赋值操作，类似这样写的行为：
 medals[0] = &amp;#34;gold&amp;#34; medals[1] = &amp;#34;silver&amp;#34; medals[2] = &amp;#34;bronze&amp;#34; map和chan的元素，虽然不是普通的变量，但是也有类似的隐式赋值行为。
@@ -574,10 +612,10 @@ medals[0] = &amp;#34;gold&amp;#34; medals[1] = &amp;#34;silver&amp;#34; medals[2
     
     <item>
       <title>2.6.2. 包的初始化</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2.-Package-Initialization/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2.-Package-Initialization/</guid>
       <description>2.6.2. 包的初始化 #  包的初始化首先是解决包级变量的依赖顺序，然后按照包级变量声明出现的顺序依次初始化：
 var a = b + c // a 第三个初始化, 为 3 var b = f() // b 第二个初始化, 为 2, 通过调用 f (依赖c) var c = 1 // c 第一个初始化, 为 1  func f() int { return c + 1 } 如果包中含有多个.go源文件，它们将按照发给编译器的顺序进行初始化，Go语言的构建工具首先会将.go文件根据文件名排序，然后依次调用编译器编译。
 对于在包级别声明的变量，如果有初始化表达式则用表达式初始化，还有一些没有初始化表达式的，例如某些表格数据初始化并不是一个简单的赋值过程。在这种情况下，我们可以用一个特殊的init初始化函数来简化初始化工作。每个文件都可以包含多个init初始化函数
@@ -606,10 +644,10 @@ x = 0 e^x = 1.000 x = 1 e^x = 2.</description>
     
     <item>
       <title>3.5.2. Unicode</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2.-Unicode/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2.-Unicode/</guid>
       <description>3.5.2. Unicode #  在很久以前，世界还是比较简单的，起码计算机世界就只有一个ASCII字符集：美国信息交换标准代码。ASCII，更准确地说是美国的ASCII，使用7bit来表示128个字符：包含英文字母的大小写、数字、各种标点符号和设备控制符。对于早期的计算机程序来说，这些就足够了，但是这也导致了世界上很多其他地区的用户无法直接使用自己的符号系统。随着互联网的发展，混合多种语言的数据变得很常见（译注：比如本身的英文原文或中文翻译都包含了ASCII、中文、日文等多种语言字符）。如何有效处理这些包含了各种语言的丰富多样的文本数据呢？
 答案就是使用Unicode（ http://unicode.org ），它收集了这个世界上所有的符号系统，包括重音符号和其它变音符号，制表符和回车符，还有很多神秘的符号，每个符号都分配一个唯一的Unicode码点，Unicode码点对应Go语言中的rune整数类型（译注：rune是int32等价类型）。
 在第八版本的Unicode标准里收集了超过120,000个字符，涵盖超过100多种语言。这些在计算机程序和数据中是如何体现的呢？通用的表示一个Unicode码点的数据类型是int32，也就是Go语言中rune对应的类型；它的同义词rune符文正是这个意思。
@@ -618,10 +656,10 @@ x = 0 e^x = 1.000 x = 1 e^x = 2.</description>
     
     <item>
       <title>3.6.2. 无类型常量</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2.-Untyped-Constants/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2.-Untyped-Constants/</guid>
       <description>3.6.2. 无类型常量 #  Go语言的常量有个不同寻常之处。虽然一个常量可以有任意一个确定的基础类型，例如int或float64，或者是类似time.Duration这样命名的基础类型，但是许多常量并没有一个明确的基础类型。编译器为这些没有明确基础类型的数字常量提供比基础类型更高精度的算术运算；你可以认为至少有256bit的运算精度。这里有六种未明确类型的常量类型，分别是无类型的布尔型、无类型的整数、无类型的字符、无类型的浮点数、无类型的复数、无类型的字符串。
 通过延迟明确常量的具体类型，无类型的常量不仅可以提供更高的运算精度，而且可以直接用于更多的表达式而不需要显式的类型转换。例如，例子中的ZiB和YiB的值已经超出任何Go语言中整数类型能表达的范围，但是它们依然是合法的常量，而且像下面的常量表达式依然有效（译注：YiB/ZiB是在编译期计算出来的，并且结果常量是1024，是Go语言int变量能有效表示的）：
 fmt.Println(YiB/ZiB) // &amp;#34;1024&amp;#34; 另一个例子，math.Pi无类型的浮点数常量，可以直接用于任意需要浮点数或复数的地方：
@@ -633,10 +671,10 @@ var f float64 = 212 fmt.Println((f - 32) * 5 / 9) // &amp;#34;100&amp;#34;; (f -
     
     <item>
       <title>4.2.2. Slice内存技巧</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2.-In-Place-Slice-Techniques/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2.-In-Place-Slice-Techniques/</guid>
       <description>4.2.2. Slice内存技巧 #  让我们看看更多的例子，比如旋转slice、反转slice或在slice原有内存空间修改元素。给定一个字符串列表，下面的nonempty函数将在原有slice内存空间之上返回不包含空字符串的列表：
 gopl.io/ch4/nonempty
 // Nonempty is an example of an in-place slice algorithm. package main import &amp;#34;fmt&amp;#34; // nonempty returns a slice holding only the non-empty strings. // The underlying array is modified during the call. func nonempty(strings []string) []string { i := 0 for _, s := range strings { if s != &amp;#34;&amp;#34; { strings[i] = s i++ } } return strings[:i] } 比较微妙的地方是，输入的slice和输出的slice共享一个底层数组。这可以避免分配另一个数组，不过原来的数据将可能会被覆盖，正如下面两个打印语句看到的那样：
@@ -645,10 +683,10 @@ data := []string{&amp;#34;one&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;three&amp;#
     
     <item>
       <title>4.4.2. 结构体比较</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2.-Comparing-Structs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2.-Comparing-Structs/</guid>
       <description>4.4.2. 结构体比较 #  如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：
 type Point struct{ X, Y int } p := Point{1, 2} q := Point{2, 1} fmt.Println(p.X == q.X &amp;amp;&amp;amp; p.Y == q.Y) // &amp;#34;false&amp;#34; fmt.Println(p == q) // &amp;#34;false&amp;#34; 可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。
 type address struct { hostname string port int } hits := make(map[address]int) hits[address{&amp;#34;golang.org&amp;#34;, 443}]++ </description>
@@ -671,10 +709,10 @@ gopl.io/ch5/findlinks1
     
     <item>
       <title>5.4.2. 文件结尾错误（EOF）</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2.-End-of-File-EOF/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2.-End-of-File-EOF/</guid>
       <description>5.4.2. 文件结尾错误（EOF） #  函数经常会返回多种错误，这对终端用户来说可能会很有趣，但对程序而言，这使得情况变得复杂。很多时候，程序必须根据错误类型，作出不同的响应。让我们考虑这样一个例子：从文件中读取n个字节。如果n等于文件的长度，读取过程的任何错误都表示失败。如果n小于文件的长度，调用者会重复的读取固定大小的数据直到文件结束。这会导致调用者必须分别处理由文件结束引起的各种错误。基于这样的原因，io包保证任何由文件结束引起的读取失败都返回同一个错误——io.EOF，该错误在io包中定义：
 package io import &amp;#34;errors&amp;#34; // EOF is the error returned by Read when no more input is available. var EOF = errors.New(&amp;#34;EOF&amp;#34;) 调用者只需通过简单的比较，就可以检测出这个错误。下面的例子展示了如何从标准输入中读取字符，以及判断文件结束。（4.3的chartcount程序展示了更加复杂的代码）
 in := bufio.NewReader(os.Stdin) for { r, _, err := in.ReadRune() if err == io.EOF { break // finished reading 	} if err != nil { return fmt.Errorf(&amp;#34;read failed:%v&amp;#34;, err) } // ...use r… } 因为文件结束这种错误不需要更多的描述，所以io.EOF有固定的错误信息——“EOF”。对于其他错误，我们可能需要在错误信息中描述错误的类型和数量，这使得我们不能像io.EOF一样采用固定的错误信息。在7.11节中，我们会提出更系统的方法区分某些固定的错误值。</description>
@@ -708,10 +746,10 @@ gopl.io/ch8/clock1
     
     <item>
       <title>8.4.2. 串联的Channels（Pipeline）</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2.-Pipelines/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2.-Pipelines/</guid>
       <description>8.4.2. 串联的Channels（Pipeline） #  Channels也可以用于将多个goroutine连接在一起，一个Channel的输出作为下一个Channel的输入。这种串联的Channels就是所谓的管道（pipeline）。下面的程序用两个channels将三个goroutine串联起来，如图8.1所示。
  第一个goroutine是一个计数器，用于生成0、1、2、……形式的整数序列，然后通过channel将该整数序列发送给第二个goroutine；第二个goroutine是一个求平方的程序，对收到的每个整数求平方，然后将平方后的结果通过第二个channel发送给第三个goroutine；第三个goroutine是一个打印程序，打印收到的每个整数。为了保持例子清晰，我们有意选择了非常简单的函数，当然三个goroutine的计算很简单，在现实中确实没有必要为如此简单的运算构建三个goroutine。
 gopl.io/ch8/pipeline1
@@ -734,10 +772,10 @@ gopl.io/ch9/bank3</description>
     
     <item>
       <title>9.8.2. Goroutine调度</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2.-Goroutine-Scheduling/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2.-Goroutine-Scheduling/</guid>
       <description>9.8.2. Goroutine调度 #  OS线程会被操作系统内核调度。每几毫秒，一个硬件计时器会中断处理器，这会调用一个叫作scheduler的内核函数。这个函数会挂起当前执行的线程并将它的寄存器内容保存到内存中，检查线程列表并决定下一次哪个线程可以被运行，并从内存中恢复该线程的寄存器信息，然后恢复执行该线程的现场并开始执行线程。因为操作系统线程是被内核所调度，所以从一个线程向另一个“移动”需要完整的上下文切换，也就是说，保存一个用户线程的状态到内存，恢复另一个线程的到寄存器，然后更新调度器的数据结构。这几步操作很慢，因为其局部性很差需要几次内存访问，并且会增加运行的cpu周期。
 Go的运行时包含了其自己的调度器，这个调度器使用了一些技术手段，比如m:n调度，因为其会在n个操作系统线程上多工（调度）m个goroutine。Go调度器的工作和内核的调度是相似的，但是这个调度器只关注单独的Go程序中的goroutine（译注：按程序独立）。
 和操作系统的线程调度不同的是，Go调度器并不是用一个硬件定时器，而是被Go语言“建筑”本身进行调度的。例如当一个goroutine调用了time.Sleep，或者被channel调用或者mutex操作阻塞时，调度器会使其进入休眠并开始执行另一个goroutine，直到时机到了再去唤醒第一个goroutine。因为这种调度方式不需要进入内核的上下文，所以重新调度一个goroutine比调度一个线程代价要低得多。
@@ -772,6 +810,15 @@ gopl.io/ch1/dup1
     </item>
     
     <item>
+      <title>1.3. 混乱的代价</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/</guid>
+      <description>1.3 混乱的代价 #  If you have been a programmer for more than two or three years, you have probably been significantly slowed down by someone else’s messy code. If you have been a programmer for longer than two or three years, you have probably been slowed down by messy code. The degree of the slowdown can be significant. Over the span of a year or two, teams that were moving very fast at the beginning of a project can find themselves moving at a snail’s pace.</description>
+    </item>
+    
+    <item>
       <title>10.3. 包声明</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -787,10 +834,10 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; ) func m
     
     <item>
       <title>10.7.3. 构建包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3.-Building-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3.-Building-Packages/</guid>
       <description>10.7.3. 构建包 #  go build命令编译命令行参数指定的每个包。如果包是一个库，则忽略输出结果；这可以用于检测包是可以正确编译的。如果包的名字是main，go build将调用链接器在当前目录创建一个可执行程序；以导入路径的最后一段作为可执行程序的名字。
 由于每个目录只包含一个包，因此每个对应可执行程序或者叫Unix术语中的命令的包，会要求放到一个独立的目录中。这些目录有时候会放在名叫cmd目录的子目录下面，例如用于提供Go文档服务的golang.org/x/tools/cmd/godoc命令就是放在cmd子目录（§10.7.4）。
 每个包可以由它们的导入路径指定，就像前面看到的那样，或者用一个相对目录的路径名指定，相对路径必须以.或..开头。如果没有指定参数，那么默认指定为当前目录对应的包。下面的命令用于构建同一个包，虽然它们的写法各不相同：
@@ -803,10 +850,10 @@ $ cat quoteargs.go package main import ( &amp;quot;fmt&amp;quot; &amp;quot;os&am
     
     <item>
       <title>11.2.3. 白盒测试</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3.-White-Box-Testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3.-White-Box-Testing/</guid>
       <description>11.2.3. 白盒测试 #  一种测试分类的方法是基于测试者是否需要了解被测试对象的内部工作原理。黑盒测试只需要测试包公开的文档和API行为，内部实现对测试代码是透明的。相反，白盒测试有访问包内部函数和数据结构的权限，因此可以做到一些普通客户端无法实现的测试。例如，一个白盒测试可以在每个操作之后检测不变量的数据类型。（白盒测试只是一个传统的名称，其实称为clear box测试会更准确。）
 黑盒和白盒这两种测试方法是互补的。黑盒测试一般更健壮，随着软件实现的完善测试代码很少需要更新。它们可以帮助测试者了解真实客户的需求，也可以帮助发现API设计的一些不足之处。相反，白盒测试则可以对内部一些棘手的实现提供更多的测试覆盖。
 我们已经看到两种测试的例子。TestIsPalindrome测试仅仅使用导出的IsPalindrome函数，因此这是一个黑盒测试。TestEcho测试则调用了内部的echo函数，并且更新了内部的out包级变量，这两个都是未导出的，因此这是白盒测试。
@@ -859,11 +906,21 @@ func equal(x, y reflect.Value, seen map[comparison]bool) bool { if !x.IsValid() 
     </item>
     
     <item>
-      <title>2.3.3. new函数</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/</link>
+      <title>2.3. 避免误导</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/</guid>
+      <description>2.3 避免误导 #  Programmers must avoid leaving false clues that obscure the meaning of code. We should avoid words whose entrenched meanings vary from our intended meaning. For example, hp, aix, and sco would be poor variable names because they are the names of Unix platforms or variants. Even if you are coding a hypotenuse and hp looks like a good abbreviation, it could be disinformative.
+ 程序员必须避免留下掩藏代码本意的错误线索。应当避免使用与本意相悖的词。例如，hp、aix 和 sco 都不该用做变量名，因为它们都是 UNIX 平台或类 UNIX 平台的专有名称。即便你是在编写三角计算程序， hp 看起来是个不错的缩写，但那也可能会提供错误信息。</description>
+    </item>
+    
+    <item>
+      <title>2.3.3. new函数</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3.-The-new-Function/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3.-The-new-Function/</guid>
       <description>2.3.3. new函数 #  另一个创建变量的方法是调用内建的new函数。表达式new(T)将创建一个T类型的匿名变量，初始化为T类型的零值，然后返回变量地址，返回的指针类型为*T。
 p := new(int) // p, *int 类型, 指向匿名的 int 变量 fmt.Println(*p) // &amp;#34;0&amp;#34; *p = 2 // 设置 int 匿名变量的值为 2 fmt.Println(*p) // &amp;#34;2&amp;#34; 用new创建变量和普通变量声明语句方式创建变量没有什么区别，除了不需要声明一个临时变量的名字外，我们还可以在表达式中使用new(T)。换言之，new函数类似是一种语法糖，而不是一个新的基础概念。
 下面的两个newInt函数有着相同的行为：
@@ -892,10 +949,10 @@ gopl.io/ch3/mandelbrot
     
     <item>
       <title>3.5.3. UTF-8</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3.-UTF-8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3.-UTF-8/</guid>
       <description>3.5.3. UTF-8 #  UTF8是一个将Unicode码点编码为字节序列的变长编码。UTF8编码是由Go语言之父Ken Thompson和Rob Pike共同发明的，现在已经是Unicode的标准。UTF8编码使用1到4个字节来表示每个Unicode码点，ASCII部分字符只使用1个字节，常用字符部分使用2或3个字节表示。每个符号编码后第一个字节的高端bit位用于表示编码总共有多少个字节。如果第一个字节的高端bit为0，则表示对应7bit的ASCII字符，ASCII字符每个字符依然是一个字节，和传统的ASCII编码兼容。如果第一个字节的高端bit是110，则说明需要2个字节；后续的每个高端bit都以10开头。更大的Unicode码点也是采用类似的策略处理。
 0xxxxxxx runes 0-127 (ASCII) 110xxxxx 10xxxxxx 128-2047 (values &amp;lt;128 unused) 1110xxxx 10xxxxxx 10xxxxxx 2048-65535 (values &amp;lt;2048 unused) 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx 65536-0x10ffff (other values unused) 变长的编码无法直接通过索引来访问第n个字符，但是UTF8编码获得了很多额外的优点。首先UTF8编码比较紧凑，完全兼容ASCII码，并且可以自动同步：它可以通过向前回朔最多3个字节就能确定当前字符编码的开始字节的位置。它也是一个前缀编码，所以当从左向右解码时不会有任何歧义也并不需要向前查看（译注：像GBK之类的编码，如果不知道起点位置则可能会出现歧义）。没有任何字符的编码是其它字符编码的子串，或是其它编码序列的字串，因此搜索一个字符时只要搜索它的字节编码序列即可，不用担心前后的上下文会对搜索结果产生干扰。同时UTF8编码的顺序和Unicode码点的顺序一致，因此可以直接排序UTF8编码序列。同时因为没有嵌入的NUL(0)字节，可以很好地兼容那些使用NUL作为字符串结尾的编程语言。
 Go语言的源文件采用UTF8编码，并且Go语言处理UTF8编码的文本也很出色。unicode包提供了诸多处理rune字符相关功能的函数（比如区分字母和数字，或者是字母的大写和小写转换等），unicode/utf8包则提供了用于rune字符序列的UTF8编码和解码的功能。
@@ -931,10 +988,10 @@ _ = &amp;amp;ages[&amp;#34;bob&amp;#34;] // compile error: cannot take address o
     
     <item>
       <title>4.4.3. 结构体嵌入和匿名成员</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3.-Struct-Embedding-and-Anonymous-Fields/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3.-Struct-Embedding-and-Anonymous-Fields/</guid>
       <description>4.4.3. 结构体嵌入和匿名成员 #  在本节中，我们将看到如何使用Go语言提供的不同寻常的结构体嵌入机制让一个命名的结构体包含另一个结构体类型的匿名成员，这样就可以通过简单的点运算符x.f来访问匿名成员链中嵌套的x.d.e.f成员。
 考虑一个二维的绘图程序，提供了一个各种图形的库，例如矩形、椭圆形、星形和轮形等几何形状。这里是其中两个的定义：
 type Circle struct { X, Y, Radius int } type Wheel struct { X, Y, Radius, Spokes int } 一个Circle代表的圆形类型包含了标准圆心的X和Y坐标信息，和一个Radius表示的半径信息。一个Wheel轮形除了包含Circle类型所有的全部成员外，还增加了Spokes表示径向辐条的数量。我们可以这样创建一个wheel变量：
@@ -996,10 +1053,10 @@ func main() { conn, err := net.</description>
     
     <item>
       <title>8.4.3. 单方向的Channel</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3.-Unidirectional-Channel-Types/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3.-Unidirectional-Channel-Types/</guid>
       <description>8.4.3. 单方向的Channel #  随着程序的增长，人们习惯于将大的函数拆分为小的函数。我们前面的例子中使用了三个goroutine，然后用两个channels来连接它们，它们都是main函数的局部变量。将三个goroutine拆分为以下三个函数是自然的想法：
 func counter(out chan int) func squarer(out, in chan int) func printer(in chan int) 其中计算平方的squarer函数在两个串联Channels的中间，因此拥有两个channel类型的参数，一个用于输入一个用于输出。两个channel都拥有相同的类型，但是它们的使用方式相反：一个只用于接收，另一个只用于发送。参数的名字in和out已经明确表示了这个意图，但是并无法保证squarer函数向一个in参数对应的channel发送数据或者从一个out参数对应的channel接收数据。
 这种场景是典型的。当一个channel作为一个函数参数时，它一般总是被专门用于只发送或者只接收。
@@ -1026,10 +1083,10 @@ RWMutex只有当获得锁的大部分goroutine都是读操作，而锁在竞争�
     
     <item>
       <title>9.8.3. GOMAXPROCS</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3.-GOMAXPROCS/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3.-GOMAXPROCS/</guid>
       <description>9.8.3. GOMAXPROCS #  Go的调度器使用了一个叫做GOMAXPROCS的变量来决定会有多少个操作系统的线程同时执行Go的代码。其默认的值是运行机器上的CPU的核心数，所以在一个有8个核心的机器上时，调度器一次会在8个OS线程上去调度GO代码。（GOMAXPROCS是前面说的m:n调度中的n）。在休眠中的或者在通信中被阻塞的goroutine是不需要一个对应的线程来做调度的。在I/O中或系统调用中或调用非Go语言函数时，是需要一个对应的操作系统线程的，但是GOMAXPROCS并不需要将这几种情况计算在内。
 你可以用GOMAXPROCS的环境变量来显式地控制这个参数，或者也可以在运行时用runtime.GOMAXPROCS函数来修改它。我们在下面的小程序中会看到GOMAXPROCS的效果，这个程序会无限打印0和1。
 for { go fmt.Print(0) fmt.Print(1) } $ GOMAXPROCS=1 go run hacker-cliché.go 111111111111111111110000000000000000000011111... $ GOMAXPROCS=2 go run hacker-cliché.go 010101010101010101011001100101011010010100110... 在第一次执行时，最多同时只能有一个goroutine被执行。初始情况下只有main goroutine被执行，所以会打印很多1。过了一段时间后，GO调度器会将其置为休眠，并唤醒另一个goroutine，这时候就开始打印很多0了，在打印的时候，goroutine是被调度到操作系统线程上的。在第二次执行时，我们使用了两个操作系统线程，所以两个goroutine可以一起被执行，以同样的频率交替打印0和1。我们必须强调的是goroutine的调度是受很多因子影响的，而runtime也是在不断地发展演进的，所以这里的你实际得到的结果可能会因为版本的不同而与我们运行的结果有所不同。
@@ -1072,6 +1129,15 @@ gopl.io/ch1/lissajous
     </item>
     
     <item>
+      <title>1.4. 思想流派</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/</guid>
+      <description>1.4 思想流派 #  What about me (Uncle Bob)? What do I think clean code is? This book will tell you, in hideous detail, what I and my compatriots think about clean code. We will tell you what we think makes a clean variable name, a clean function, a clean class, etc. We will present these opinions as absolutes, and we will not apologize for our stridence. To us, at this point in our careers, they are absolutes.</description>
+    </item>
+    
+    <item>
       <title>10.4. 导入声明</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1087,10 +1153,10 @@ import ( &amp;#34;crypto/rand&amp;#34; mrand &amp;#34;math/rand&amp;#34; // alte
     
     <item>
       <title>10.7.4. 包文档</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4.-Documenting-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4.-Documenting-Packages/</guid>
       <description>10.7.4. 包文档 #  Go语言的编码风格鼓励为每个包提供良好的文档。包中每个导出的成员和包声明前都应该包含目的和用法说明的注释。
 Go语言中的文档注释一般是完整的句子，第一行通常是摘要说明，以被注释者的名字开头。注释中函数的参数或其它的标识符并不需要额外的引号或其它标记注明。例如，下面是fmt.Fprintf的文档注释。
 // Fprintf formats according to a format specifier and writes to w. // It returns the number of bytes written and any write error encountered. func Fprintf(w io.Writer, format string, a ...interface{}) (int, error) Fprintf函数格式化的细节在fmt包文档中描述。如果注释后紧跟着包声明语句，那注释对应整个包的文档。包文档对应的注释只能有一个（译注：其实可以有多个，它们会组合成一个包文档注释），包注释可以出现在任何一个源文件中。如果包的注释内容比较长，一般会放到一个独立的源文件中；fmt包注释就有300行之多。这个专门用于保存包文档的源文件通常叫doc.go。
@@ -1102,10 +1168,10 @@ $ go doc time package time // import &amp;quot;time&amp;quot; Package time provi
     
     <item>
       <title>11.2.4. 外部测试包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4.-External-Test-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4.-External-Test-Packages/</guid>
       <description>11.2.4. 外部测试包 #  考虑下这两个包：net/url包，提供了URL解析的功能；net/http包，提供了web服务和HTTP客户端的功能。如我们所料，上层的net/http包依赖下层的net/url包。然后，net/url包中的一个测试是演示不同URL和HTTP客户端的交互行为。也就是说，一个下层包的测试代码导入了上层的包。
  这样的行为在net/url包的测试代码中会导致包的循环依赖，正如图11.1中向上箭头所示，同时正如我们在10.1节所讲的，Go语言规范是禁止包的循环依赖的。
 不过我们可以通过外部测试包的方式解决循环依赖的问题，也就是在net/url包所在的目录声明一个独立的url_test测试包。其中包名的_test后缀告诉go test工具它应该建立一个额外的包来运行测试。我们将这个外部测试包的导入路径视作是net/url_test会更容易理解，但实际上它并不能被其他任何包导入。
@@ -1177,10 +1243,10 @@ package gzip // compress/gzip func NewWriter(w io.Writer) io.WriteCloser func Ne
     
     <item>
       <title>2.3.4. 变量的生命周期</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4.-Lifetime-of-Variables/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4.-Lifetime-of-Variables/</guid>
       <description>2.3.4. 变量的生命周期 #  变量的生命周期指的是在程序运行期间变量有效存在的时间段。对于在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的。而相比之下，局部变量的生命周期则是动态的：每次从创建一个新变量的声明语句开始，直到该变量不再被引用为止，然后变量的存储空间可能被回收。函数的参数变量和返回值变量都是局部变量。它们在函数每次被调用的时候创建。
 例如，下面是从1.4节的Lissajous程序摘录的代码片段：
 for t := 0.0; t &amp;lt; cycles*2*math.Pi; t += res { x := math.Sin(t) y := math.Sin(t*freq + phase) img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), blackIndex) } 译注：函数的右小括弧也可以另起一行缩进，同时为了防止编译器在行尾自动插入分号而导致的编译错误，可以在末尾的参数变量后面显式插入逗号。像下面这样：
@@ -1189,6 +1255,15 @@ for t := 0.0; t &amp;lt; cycles*2*math.Pi; t += res { x := math.Sin(t) y := math
 因为一个变量的有效周期只取决于是否可达，因此一个循环迭代内部的局部变量的生命周期可能超出其局部作用域。同时，局部变量可能在函数返回之后依然存在。
 编译器会自动选择在栈上还是在堆上分配局部变量的存储空间，但可能令人惊讶的是，这个选择并不是由用var还是new声明变量的方式决定的。
 var global *int func f() { var x int x = 1 global = &amp;amp;x } func g() { y := new(int) *y = 1 } f函数里的x变量必须在堆上分配，因为它在函数退出后依然可以通过包一级的global变量找到，虽然它是在函数内部定义的；用Go语言的术语说，这个x局部变量从函数f中逃逸了。相反，当g函数返回时，变量*y将是不可达的，也就是说可以马上被回收的。因此，*y并没有从函数g中逃逸，编译器可以选择在栈上分配*y的存储空间（译注：也可以选择在堆上分配，然后由Go语言的GC回收这个变量的内存空间），虽然这里用的是new方式。其实在任何时候，你并不需为了编写正确的代码而要考虑变量的逃逸行为，要记住的是，逃逸的变量需要额外分配内存，同时对性能的优化可能会产生细微的影响。</description>
+    </item>
+    
+    <item>
+      <title>2.4. 做有意义的区分</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/</guid>
+      <description>2.4 做有意义的区分 #   Programmers create problems for themselves when they write code solely to satisfy a compiler or interpreter. For example, because you can’t use the same name to refer to two different things in the same scope, you might be tempted to change one name in an arbitrary way. Sometimes this is done by misspelling one, leading to the surprising situation where correcting spelling errors leads to an inability to compile.</description>
     </item>
     
     <item>
@@ -1208,10 +1283,10 @@ i := 0 if b { i = 1 } 如果需要经常做类似的转换，包装成一个函�
     
     <item>
       <title>3.5.4. 字符串和Byte切片</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4.-Strings-and-Byte-Slices/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4.-Strings-and-Byte-Slices/</guid>
       <description>3.5.4. 字符串和Byte切片 #  标准库中有四个包对字符串处理尤为重要：bytes、strings、strconv和unicode包。strings包提供了许多如字符串的查询、替换、比较、截断、拆分和合并等功能。
 bytes包也提供了很多类似功能的函数，但是针对和字符串有着相同结构的[]byte类型。因为字符串是只读的，因此逐步构建字符串会导致很多分配和复制。在这种情况下，使用bytes.Buffer类型将会更有效，稍后我们将展示。
 strconv包提供了布尔型、整型数、浮点数和对应字符串的相互转换，还提供了双引号转义相关的转换。
@@ -1248,10 +1323,10 @@ $ ./sleep -period 50ms Sleeping for 50ms... $ ./sleep -period 2m30s Sleeping for
     
     <item>
       <title>8.4.4. 带缓存的Channels</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4.-Buffered-Channels/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4.-Buffered-Channels/</guid>
       <description>8.4.4. 带缓存的Channels #  带缓存的Channel内部持有一个元素队列。队列的最大容量是在调用make函数创建channel时通过第二个参数指定的。下面的语句创建了一个可以持有三个字符串元素的带缓存Channel。图8.2是ch变量对应的channel的图形表示形式。
 ch = make(chan string, 3)  向缓存Channel的发送操作就是向内部缓存队列的尾部插入元素，接收操作则是从队列的头部删除元素。如果内部缓存队列是满的，那么发送操作将阻塞直到因另一个goroutine执行接收操作而释放了新的队列空间。相反，如果channel是空的，接收操作将阻塞直到有另一个goroutine执行发送操作而向队列插入元素。
 我们可以在无阻塞的情况下连续向新创建的channel发送三个值：
@@ -1285,10 +1360,10 @@ x:0 y:0 y:0 x:0 根据所使用的编译器，CPU，或者其它很多影响因�
     
     <item>
       <title>9.8.4. Goroutine没有ID号</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4.-Goroutines-Have-No-Identity/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4.-Goroutines-Have-No-Identity/</guid>
       <description>9.8.4. Goroutine没有ID号 #  在大多数支持多线程的操作系统和程序语言中，当前的线程都有一个独特的身份（id），并且这个身份信息可以以一个普通值的形式被很容易地获取到，典型的可以是一个integer或者指针值。这种情况下我们做一个抽象化的thread-local storage（线程本地存储，多线程编程中不希望其它线程访问的内容）就很容易，只需要以线程的id作为key的一个map就可以解决问题，每一个线程以其id就能从中获取到值，且和其它线程互不冲突。
 goroutine没有可以被程序员获取到的身份（id）的概念。这一点是设计上故意而为之，由于thread-local storage总是会被滥用。比如说，一个web server是用一种支持tls的语言实现的，而非常普遍的是很多函数会去寻找HTTP请求的信息，这代表它们就是去其存储层（这个存储层有可能是tls）查找的。这就像是那些过分依赖全局变量的程序一样，会导致一种非健康的“距离外行为”，在这种行为下，一个函数的行为可能并不仅由自己的参数所决定，而是由其所运行在的线程所决定。因此，如果线程本身的身份会改变——比如一些worker线程之类的——那么函数的行为就会变得神秘莫测。
 Go鼓励更为简单的模式，这种模式下参数（译注：外部显式参数和内部显式参数。tls 中的内容算是&amp;quot;外部&amp;quot;隐式参数）对函数的影响都是显式的。这样不仅使程序变得更易读，而且会让我们自由地向一些给定的函数分配子任务时不用担心其身份信息影响行为。
@@ -1307,6 +1382,17 @@ Playground可以简单的通过执行一个小程序来测试对语法、语义�
 基于 Playground 构建的 Go Tour，https://tour.golang.org ，是一个系列的Go语言入门教程，它包含了诸多基本概念和结构相关的并可在线运行的互动小程序。
 当然，Playground 和 Tour 也有一些限制，它们只能导入标准库，而且因为安全的原因对一些网络库做了限制。如果要在编译和运行时需要访问互联网，对于一些更复杂的实验，你可能需要在自己的电脑上构建并运行程序。幸运的是下载Go语言的过程很简单，从 https://golang.org 下载安装包应该不超过几分钟（译注：感谢伟大的长城，让大陆的Gopher们都学会了自己打洞的基本生活技能，下载时间可能会因为洞的大小等因素从几分钟到几天或更久），然后就可以在自己电脑上编写和运行Go程序了。
 Go语言是一个开源项目，你可以在 https://golang.org/pkg 阅读标准库中任意函数和类型的实现代码，和下载安装包的代码完全一致。这样，你可以知道很多函数是如何工作的， 通过挖掘找出一些答案的细节，或者仅仅是出于欣赏专业级Go代码。</description>
+    </item>
+    
+    <item>
+      <title>1.5. 我们是作者</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/</guid>
+      <description>1.5 我们是作者 #  The @author field of a Javadoc tells us who we are. We are authors. And one thing about authors is that they have readers. Indeed, authors are responsible for communicating well with their readers. The next time you write a line of code, remember you are an author, writing for readers who will judge your effort.
+ Javadoc 中的@author 字段告诉我们自己是什么人。我们是作者。作者都有读者。实际上，作者有责任与读者做良好沟通。下次你写代码的时候，记得自己是作者，要为评判你工作的读者写代码。
+ You might ask: How much is code really read?</description>
     </item>
     
     <item>
@@ -1336,10 +1422,10 @@ gopl.io/ch10/jpeg
     
     <item>
       <title>10.7.5. 内部包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5.-Internal-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5.-Internal-Packages/</guid>
       <description>10.7.5. 内部包 #  在Go语言程序中，包是最重要的封装机制。没有导出的标识符只在同一个包内部可以访问，而导出的标识符则是面向全宇宙都是可见的。
 有时候，一个中间的状态可能也是有用的，标识符对于一小部分信任的包是可见的，但并不是对所有调用者都可见。例如，当我们计划将一个大的包拆分为很多小的更容易维护的子包，但是我们并不想将内部的子包结构也完全暴露出去。同时，我们可能还希望在内部子包之间共享一些通用的处理包，或者我们只是想实验一个新包的还并不稳定的接口，暂时只暴露给一些受限制的用户使用。
 为了满足这些需求，Go语言的构建工具对包含internal名字的路径段的包导入路径做了特殊处理。这种包叫internal包，一个internal包只能被和internal目录有同一个父目录的包所导入。例如，net/http/internal/chunked内部包只能被net/http/httputil或net/http包导入，但是不能被net/url包导入。不过net/url包却可以导入net/http/httputil包。
@@ -1348,10 +1434,10 @@ net/http net/http/internal/chunked net/http/httputil net/url </description>
     
     <item>
       <title>11.2.5. 编写有效的测试</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5.-Writing-Effective-Tests/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5.-Writing-Effective-Tests/</guid>
       <description>11.2.5. 编写有效的测试 #  许多Go语言新人会惊异于Go语言极简的测试框架。很多其它语言的测试框架都提供了识别测试函数的机制（通常使用反射或元数据），通过设置一些“setup”和“teardown”的钩子函数来执行测试用例运行的初始化和之后的清理操作，同时测试工具箱还提供了很多类似assert断言、值比较函数、格式化输出错误信息和停止一个失败的测试等辅助函数（通常使用异常机制）。虽然这些机制可以使得测试非常简洁，但是测试输出的日志却会像火星文一般难以理解。此外，虽然测试最终也会输出PASS或FAIL的报告，但是它们提供的信息格式却非常不利于代码维护者快速定位问题，因为失败信息的具体含义非常隐晦，比如“assert: 0 == 1”或成页的海量跟踪日志。
 Go语言的测试风格则形成鲜明对比。它期望测试者自己完成大部分的工作，定义函数避免重复，就像普通编程那样。编写测试并不是一个机械的填空过程；一个测试也有自己的接口，尽管它的维护者也是测试仅有的一个用户。一个好的测试不应该引发其他无关的错误信息，它只要清晰简洁地描述问题的症状即可，有时候可能还需要一些上下文信息。在理想情况下，维护者可以在不看代码的情况下就能根据错误信息定位错误产生的原因。一个好的测试不应该在遇到一点小错误时就立刻退出测试，它应该尝试报告更多的相关的错误信息，因为我们可能从多个失败测试的模式中发现错误产生的规律。
 下面的断言函数比较两个值，然后生成一个通用的错误信息，并停止程序。它很好用也确实有效，但是当测试失败的时候，打印的错误信息却几乎是没有价值的。它并没有为快速解决问题提供一个很好的入口。
@@ -1411,6 +1497,17 @@ x := 2 d := reflect.ValueOf(&amp;amp;x).Elem() // d refers to the variable x px 
     </item>
     
     <item>
+      <title>2.5. 使用读得出来的名称</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/</guid>
+      <description>2.5 使用读得出来的名称 #  Humans are good at words. A significant part of our brains is dedicated to the concept of words. And words are, by definition, pronounceable. It would be a shame not to take advantage of that huge portion of our brains that has evolved to deal with spoken language. So make your names pronounceable.
+ 人类长于记忆和使用单词。大脑的相当一部分就是用来容纳和处理单词的。单词能读得出来。人类进化到大脑中有那么大的一块地方用来处理言语，若不善加利用，实在是种耻辱。
+ If you can’t pronounce it, you can’t discuss it without sounding like an idiot.</description>
+    </item>
+    
+    <item>
       <title>2.5. 类型</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.5.-Type-Declarations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1427,10 +1524,10 @@ For Go 2 (can&amp;rsquo;t do it before then): Change the definition to “lower 
     
     <item>
       <title>3.5.5. 字符串和数字的转换</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5.-Conversions-between-Strings-and-Numbers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5.-Conversions-between-Strings-and-Numbers/</guid>
       <description>3.5.5. 字符串和数字的转换 #  除了字符串、字符、字节之间的转换，字符串和数值之间的转换也比较常见。由strconv包提供这类转换功能。
 将一个整数转为字符串，一种方法是用fmt.Sprintf返回一个格式化的字符串；另一个方法是用strconv.Itoa(“整数到ASCII”)：
 x := 123 y := fmt.Sprintf(&amp;#34;%d&amp;#34;, x) fmt.Println(y, strconv.Itoa(x)) // &amp;#34;123 123&amp;#34; FormatInt和FormatUint函数可以用不同的进制来格式化数字：
@@ -1531,6 +1628,19 @@ gopl.io/ch1/fetchall
     </item>
     
     <item>
+      <title>1.6. 童子军军规</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/</guid>
+      <description>1.6 童子军军规 #  It’s not enough to write the code well. The code has to be kept clean over time. We’ve all seen code rot and degrade as time passes. So we must take an active role in preventing this degradation.
+ 光把代码写好可不够。必须时时保持代码整洁。我们都见过代码随时间流逝而腐坏。我们应当更积极地阻止腐坏的发生。
+ The Boy Scouts of America have a simple rule that we can apply to our profession.
+ 借用美国童子军一条简单的军规，应用到我们的专业领域：
+ Leave the campground cleaner than you found it.</description>
+    </item>
+    
+    <item>
       <title>10.6. 包和命名</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1551,10 +1661,10 @@ package rand // &amp;#34;math/rand&amp;#34;  type Rand struct{ /* ... */ } func 
     
     <item>
       <title>10.7.6. 查询包</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6.-Querying-Packages/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6.-Querying-Packages/</guid>
       <description>10.7.6. 查询包 #  go list命令可以查询可用包的信息。其最简单的形式，可以测试包是否在工作区并打印它的导入路径：
 $ go list github.com/go-sql-driver/mysql github.com/go-sql-driver/mysql go list命令的参数还可以用&amp;quot;...&amp;quot;表示匹配任意的包的导入路径。我们可以用它来列出工作区中的所有包：
 $ go list ... archive/tar archive/zip bufio bytes cmd/addr2line cmd/api ...many more... 或者是特定子目录下的所有包：
@@ -1565,10 +1675,10 @@ $ go list -json hash { &amp;quot;Dir&amp;quot;: &amp;quot;/home/gopher/go/src/ha
     
     <item>
       <title>11.2.6. 避免脆弱的测试</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6.-Avoiding-Brittle-Tests/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6.-Avoiding-Brittle-Tests/</guid>
       <description>11.2.6. 避免脆弱的测试 #  如果一个应用程序对于新出现的但有效的输入经常失败说明程序容易出bug（不够稳健）；同样，如果一个测试仅仅对程序做了微小变化就失败则称为脆弱。就像一个不够稳健的程序会挫败它的用户一样，一个脆弱的测试同样会激怒它的维护者。最脆弱的测试代码会在程序没有任何变化的时候产生不同的结果，时好时坏，处理它们会耗费大量的时间但是并不会得到任何好处。
 当一个测试函数会产生一个复杂的输出如一个很长的字符串、一个精心设计的数据结构或一个文件时，人们很容易想预先写下一系列固定的用于对比的标杆数据。但是随着项目的发展，有些输出可能会发生变化，尽管很可能是一个改进的实现导致的。而且不仅仅是输出部分，函数复杂的输入部分可能也跟着变化了，因此测试使用的输入也就不再有效了。
 避免脆弱测试代码的方法是只检测你真正关心的属性。保持测试代码的简洁和内部结构的稳定。特别是对断言部分要有所选择。不要对字符串进行全字匹配，而是针对那些在项目的发展中是比较稳定不变的子串。很多时候值得花力气来编写一个从复杂输出中提取用于断言的必要信息的函数，虽然这可能会带来很多前期的工作，但是它可以帮助迅速及时修复因为项目演化而导致的不合逻辑的失败测试。</description>
@@ -1601,6 +1711,17 @@ data := []byte{/* ... */} var movie Movie err := json.Unmarshal(data, &amp;amp;m
 因为每个解析器可能需要多次使用当前的记号，但是Scan会一直向前扫描，所以我们包装了一个lexer扫描器辅助类型，用于跟踪最近由Scan方法返回的记号。
 gopl.io/ch12/sexpr
 type lexer struct { scan scanner.Scanner token rune // the current token } func (lex *lexer) next() { lex.token = lex.scan.Scan() } func (lex *lexer) text() string { return lex.scan.TokenText() } func (lex *lexer) consume(want rune) { if lex.token != want { // NOTE: Not an example of good error handling.</description>
+    </item>
+    
+    <item>
+      <title>2.6. 使用可搜索的名称</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/</guid>
+      <description>2.6 使用可搜索的名称 #  Single-letter names and numeric constants have a particular problem in that they are not easy to locate across a body of text.
+ 单字母名称和数字常量有个问题，就是很难在一大篇文字中找出来。
+ One might easily grep for MAX_CLASSES_PER_STUDENT, but the number 7 could be more troublesome. Searches may turn up the digit as part of file names, other constant definitions, and in various expressions where the value is used with different intent. It is even worse when a constant is a long number and someone might have transposed digits, thereby creating a bug while simultaneously evading the programmer’s search.</description>
     </item>
     
     <item>
@@ -1695,6 +1816,15 @@ $ go run src/gopl.io/ch1/server1/main.go &amp;amp; 现在可以通过命令行�
     </item>
     
     <item>
+      <title>1.7. 前传与原则</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/</guid>
+      <description>1.7 前传与原则 #  In many ways this book is a “prequel” to a book I wrote in 2002 entitled Agile Software Development: Principles, Patterns, and Practices (PPP). The PPP book concerns itself with the principles of object-oriented design, and many of the practices used by professional developers. If you have not read PPP, then you may find that it continues the story told by this book. If you have already read it, then you’ll find many of the sentiments of that book echoed in this one at the level of code.</description>
+    </item>
+    
+    <item>
       <title>12.7. 获取结构体字段标签</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.7.-Accessing-Struct-Field-Tags/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1722,6 +1852,15 @@ import &amp;#34;gopl.io/ch12/params&amp;#34; // search implements the /search UR
 当编译器遇到一个名字引用时，它会对其定义进行查找，查找过程从最内层的词法域向全局的作用域进行。如果查找失败，则报告“未声明的名字”这样的错误。如果该名字在内部和外部的块分别声明过，则内部块的声明首先被找到。在这种情况下，内部声明屏蔽了外部同名的声明，让外部的声明的名字无法被访问：
 func f() {} var g = &amp;#34;g&amp;#34; func main() { f := &amp;#34;f&amp;#34; fmt.Println(f) // &amp;#34;f&amp;#34;; local var f shadows package-level func f 	fmt.Println(g) // &amp;#34;g&amp;#34;; package-level var 	fmt.Println(h) // compile error: undefined: h } 在函数中词法域可以深度嵌套，因此内部的一个声明可能屏蔽外部的声明。还有许多语法块是if或for等控制流语句构造的。下面的代码有三个不同的变量x，因为它们是定义在不同的词法域（这个例子只是为了演示作用域规则，但不是好的编程风格）。
 func main() { x := &amp;#34;hello!&amp;#34; for i := 0; i &amp;lt; len(x); i++ { x := x[i] if x != &amp;#39;!</description>
+    </item>
+    
+    <item>
+      <title>2.7. 避免使用编码</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/</guid>
+      <description>2.7 避免使用编码 #  We have enough encodings to deal with without adding more to our burden. Encoding type or scope information into names simply adds an extra burden of deciphering. It hardly seems reasonable to require each new employee to learn yet another encoding “language” in addition to learning the (usually considerable) body of code that they’ll be working in. It is an unnecessary mental burden when trying to solve a problem.</description>
     </item>
     
     <item>
@@ -1782,6 +1921,15 @@ gopl.io/ch9/memo1
     </item>
     
     <item>
+      <title>1.8. 小结</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/</guid>
+      <description>1.8 小结 #  Books on art don’t promise to make you an artist. All they can do is give you some of the tools, techniques, and thought processes that other artists have used. So too this book cannot promise to make you a good programmer. It cannot promise to give you “code-sense.” All it can do is show you the thought processes of good programmers and the tricks, techniques, and tools that they use.</description>
+    </item>
+    
+    <item>
       <title>1.8. 本章要点</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/1.-Tutorial/1.8.-Loose-Ends/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1810,6 +1958,17 @@ gopl.io/ch12/methods
 // Print prints the method set of the value x. func Print(x interface{}) { v := reflect.ValueOf(x) t := v.Type() fmt.Printf(&amp;#34;type %s\n&amp;#34;, t) for i := 0; i &amp;lt; v.NumMethod(); i++ { methType := v.Method(i).Type() fmt.Printf(&amp;#34;func (%s) %s%s\n&amp;#34;, t, t.Method(i).Name, strings.TrimPrefix(methType.String(), &amp;#34;func&amp;#34;)) } } reflect.Type和reflect.Value都提供了一个Method方法。每次t.Method(i)调用将一个reflect.Method的实例，对应一个用于描述一个方法的名称和类型的结构体。每次v.Method(i)方法调用都返回一个reflect.Value以表示对应的值（§6.4），也就是一个方法是帮到它的接收者的。使用reflect.Value.Call方法（我们这里没有演示），将可以调用一个Func类型的Value，但是这个例子中只用到了它的类型。
 这是属于time.Duration和*strings.Replacer两个类型的方法：
 methods.Print(time.Hour) // Output: // type time.Duration // func (time.Duration) Hours() float64 // func (time.Duration) Minutes() float64 // func (time.</description>
+    </item>
+    
+    <item>
+      <title>2.8. 避免思维映射</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/</guid>
+      <description>2.8 避免思维映射 #  Readers shouldn’t have to mentally translate your names into other names they already know. This problem generally arises from a choice to use neither problem domain terms nor solution domain terms.
+ 不应当让读者在脑中把你的名称翻译为他们熟知的名称。这种问题经常出现在选择是使用问题领域术语还是解决方案领域术语时。
+ This is a problem with single-letter variable names. Certainly a loop counter may be named i or j or k (though never l!) if its scope is very small and no other names can conflict with it.</description>
     </item>
     
     <item>
@@ -1850,6 +2009,16 @@ gopl.io/ch8/du1
     </item>
     
     <item>
+      <title>1.9. 参考文献</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/</guid>
+      <description>1.9 参考文献 #  [Beck07]: Implementation Patterns, Kent Beck, Addison-Wesley, 2007.
+[Knuth92]: Literate Programming, Donald E. Knuth, Center for the Study of Languageand Information, Leland Stanford Junior University, 1992.</description>
+    </item>
+    
+    <item>
       <title>12.9. 几点忠告</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.9.-A-Word-of-Caution/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1862,6 +2031,17 @@ gopl.io/ch8/du1
 fmt.Printf(&amp;#34;%d %s\n&amp;#34;, &amp;#34;hello&amp;#34;, 42) // &amp;#34;%!d(string=hello) %!s(int=42)&amp;#34; 反射同样降低了程序的安全性，还影响了自动化重构和分析工具的准确性，因为它们无法识别运行时才能确认的类型信息。
 避免使用反射的第二个原因是，即使对应类型提供了相同文档，但是反射的操作不能做静态类型检查，而且大量反射的代码通常难以理解。总是需要小心翼翼地为每个导出的类型和其它接受interface{}或reflect.Value类型参数的函数维护说明文档。
 第三个原因，基于反射的代码通常比正常的代码运行速度慢一到两个数量级。对于一个典型的项目，大部分函数的性能和程序的整体性能关系不大，所以当反射能使程序更加清晰的时候可以考虑使用。测试是一个特别适合使用反射的场景，因为每个测试的数据集都很小。但是对于性能关键路径的函数，最好避免使用反射。</description>
+    </item>
+    
+    <item>
+      <title>2.9. 类名</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/</guid>
+      <description>2.9 类名 #  Classes and objects should have noun or noun phrase names like Customer, WikiPage, Account, and AddressParser. Avoid words like Manager, Processor, Data, or Info in the name of a class. A class name should not be a verb.
+ 类名和对象名应该是名词或名词短语，如 Customer、WikiPage、Account 和 AddressParser。避免使用 Manager、Processor、Data 或 Info 这样的类名。类名不应当是动词。
+ </description>
     </item>
     
     <item>
@@ -1911,6 +2091,17 @@ for { select { case &amp;lt;-done: // Drain fileSizes to allow existing goroutin
     </item>
     
     <item>
+      <title>2.10. 方法名</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/</guid>
+      <description>2.10 方法名 #  Methods should have verb or verb phrase names like postPayment, deletePage, or save. Accessors, mutators, and predicates should be named for their value and prefixed with get, set, and is according to the javabean standard.4
+ 方法名应当是动词或动词短语，如 postPayment、deletePage 或 save。属性访问器、修改器和断言应该根据其值命名，并依 Javabean 标准加上 get、set 和 is 前缀。
+ string name = employee.getName(); customer.setName(&amp;#34;mike&amp;#34;); if (paycheck.isPosted())… When constructors are overloaded, use static factory methods with names that describe the arguments.</description>
+    </item>
+    
+    <item>
       <title>5.10. Recover捕获异常</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.10.-Recover/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1956,6 +2147,16 @@ type client chan&amp;lt;- string // an outgoing message channel  var ( entering 
     </item>
     
     <item>
+      <title>2.11. 别扮可爱</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/</guid>
+      <description>2.11 别扮可爱 #  If names are too clever, they will be memorable only to people who share the author’s sense of humor, and only as long as these people remember the joke. Will they know what the function named HolyHandGrenade is supposed to do? Sure, it’s cute, but maybe in this case DeleteItems might be a better name. Choose clarity over entertainment value.
+ 如果名称太耍宝，那就只有同作者一般有幽默感的人才能记得住，而且还是在他们记得那个笑话的时候才行。谁会知道名为 HolyHandGrenade 的函数是用来做什么的呢？没错，这名字挺伶俐，不过 DeleteItems 或许是更好的名称。宁可明确，毋为好玩。</description>
+    </item>
+    
+    <item>
       <title>7.11. 基于类型断言区别错误类型</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1969,6 +2170,15 @@ package os // PathError records an error and the operation and file path that ca
     </item>
     
     <item>
+      <title>2.12. 每个概念对应一个词</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/</guid>
+      <description>2.12 每个概念对应一个词 #  Pick one word for one abstract concept and stick with it. For instance, it’s confusing to have fetch, retrieve, and get as equivalent methods of different classes. How do you remember which method name goes with which class? Sadly, you often have to remember which company, group, or individual wrote the library or class in order to remember which term was used. Otherwise, you spend an awful lot of time browsing through headers and previous code samples.</description>
+    </item>
+    
+    <item>
       <title>7.12. 通过类型断言询问行为</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.12.-Querying-Behaviors-with-Interface-Type-Assertions/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1979,6 +2189,17 @@ func writeHeader(w io.Writer, contentType string) error { if _, err := w.Write([
 这个io.Writer接口告诉我们关于w持有的具体类型的唯一东西：就是可以向它写入字节切片。如果我们回顾net/http包中的内幕，我们知道在这个程序中的w变量持有的动态类型也有一个允许字符串高效写入的WriteString方法；这个方法会避免去分配一个临时的拷贝。（这可能像在黑夜中射击一样，但是许多满足io.Writer接口的重要类型同时也有WriteString方法，包括*bytes.Buffer，*os.File和*bufio.Writer。）
 我们不能对任意io.Writer类型的变量w，假设它也拥有WriteString方法。但是我们可以定义一个只有这个方法的新接口并且使用类型断言来检测是否w的动态类型满足这个新接口。
 // writeString writes s to w. // If w has a WriteString method, it is invoked instead of w.Write. func writeString(w io.Writer, s string) (n int, err error) { type stringWriter interface { WriteString(string) (n int, err error) } if sw, ok := w.</description>
+    </item>
+    
+    <item>
+      <title>2.13. 别用双关语</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/</guid>
+      <description>2.13 别用双关语 #  Avoid using the same word for two purposes. Using the same term for two different ideas is essentially a pun.
+ 避免将同一单词用于不同目的。同一术语用于不同概念，基本上就是双关语了。
+ If you follow the “one word per concept” rule, you could end up with many classes that have, for example, an add method. As long as the parameter lists and return values of the various add methods are semantically equivalent, all is well.</description>
     </item>
     
     <item>
@@ -1996,6 +2217,15 @@ func sqlQuote(x interface{}) string { if x == nil { return &amp;#34;NULL&amp;#34
     </item>
     
     <item>
+      <title>2.14. 使用解决方案领域名称</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/</guid>
+      <description>2.14 使用解决方案领域名称 #  Remember that the people who read your code will be programmers. So go ahead and use computer science (CS) terms, algorithm names, pattern names, math terms, and so forth. It is not wise to draw every name from the problem domain because we don’t want our coworkers to have to run back and forth to the customer asking what every name means when they already know the concept by a different name.</description>
+    </item>
+    
+    <item>
       <title>7.14. 示例: 基于标记的XML解码</title>
       <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -2008,11 +2238,22 @@ package xml type Name struct { Local string // e.g., &amp;#34;Title&amp;#34; or 
     </item>
     
     <item>
-      <title>7.15. 一些建议</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/</link>
+      <title>2.15. 使用源自所涉问题领域的名称</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/</guid>
+      <description>2.15 使用源自所涉问题领域的名称 #  When there is no “programmer-eese” for what you’re doing, use the name from the problem domain. At least the programmer who maintains your code can ask a domain expert what it means.
+ 如果不能用程序员熟悉的术语来给手头的工作命名，就采用从所涉问题领域而来的名称吧。至少，负责维护代码的程序员就能去请教领域专家了。
+ Separating solution and problem domain concepts is part of the job of a good programmer and designer. The code that has more to do with problem domain concepts should have names drawn from the problem domain.</description>
+    </item>
+    
+    <item>
+      <title>7.15. 一些建议</title>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advice/</guid>
       <description>7.15. 一些建议 #  当设计一个新的包时，新手Go程序员总是先创建一套接口，然后再定义一些满足它们的具体类型。这种方式的结果就是有很多的接口，它们中的每一个仅只有一个实现。不要再这么做了。这种接口是不必要的抽象；它们也有一个运行时损耗。你可以使用导出机制（§6.6）来限制一个类型的方法或一个结构体的字段是否在包外可见。接口只有当有两个或两个以上的具体类型必须以相同的方式进行处理时才需要。
 当一个接口只被一个单一的具体类型实现时有一个例外，就是由于它的依赖，这个具体类型不能和这个接口存在在一个相同的包中。这种情况下，一个接口是解耦这两个包的一个好方式。
 因为在Go语言中只有当两个或更多的类型实现一个接口时才使用接口，它们必定会从任意特定的实现细节中抽象出来。结果就是有更少和更简单方法的更小的接口（经常和io.Writer或 fmt.Stringer一样只有一个）。当新的类型出现时，小的接口更容易满足。对于接口设计的一个好的标准就是 ask only for what you need（只考虑你需要的东西）
@@ -2020,44 +2261,53 @@ package xml type Name struct { Local string // e.g., &amp;#34;Title&amp;#34; or 
     </item>
     
     <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/apA/</link>
+      <title>2.16. 添加有意义的语境</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/apA/</guid>
-      <description>附录 A 并发编程 II #  by Brett L. Schuchert
-This appendix supports and amplifies the Concurrency chapter on page 177. It is written as a series of independent topics and you can generally read them in any order. There is some duplication between sections to allow for such reading.
- 本附录扩充了“并发编程”一章的内容，由一组相互独立的主题组成，你可以按随意顺序阅读。为了实现这样的阅读方式，节与节之间存在一些重复内容。
- A.1 CLIENT/SERVER EXAMPLE 客户端/服务器的例子 #  Imagine a simple client/server application. A server sits and waits listening on a socket for a client to connect.</description>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/</guid>
+      <description>2.16 添加有意义的语境 #  There are a few names which are meaningful in and of themselves—most are not. Instead, you need to place names in context for your reader by enclosing them in well-named classes, functions, or namespaces. When all else fails, then prefixing the name may be necessary as a last resort.
+ 很少有名称是能自我说明的——多数都不能。反之，你需要用有良好命名的类、函数或名称空间来放置名称，给读者提供语境。如果没这么做，给名称添加前缀就是最后一招了。
+ Imagine that you have variables named firstName, lastName, street, houseNumber, city, state, and zipcode. Taken together it’s pretty clear that they form an address.</description>
+    </item>
+    
+    <item>
+      <title>2.17. 不要添加没用的语境</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/</guid>
+      <description>2.17 不要添加没用的语境 #  In an imaginary application called “Gas Station Deluxe,” it is a bad idea to prefix every class with GSD. Frankly, you are working against your tools. You type G and press the completion key and are rewarded with a mile-long list of every class in the system. Is that wise? Why make it hard for the IDE to help you?
+ 设若有一个名为“加油站豪华版”（Gas Station Deluxe）的应用，在其中给每个类添加 GSD 前缀就不是什么好点子。说白了，你是在和自己在用的工具过不去。输入 G，按下自动完成键，结果会得到系统中全部类的列表，列表恨不得有一英里那么长。这样做聪明吗？为什么要搞得 IDE 没法帮助你？</description>
+    </item>
+    
+    <item>
+      <title>2.18. 最后的话</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/</guid>
+      <description>2.18 最后的话 #  The hardest thing about choosing good names is that it requires good descriptive skills and a shared cultural background. This is a teaching issue rather than a technical, business, or management issue. As a result many people in this field don’t learn to do it very well.
+ 取好名字最难的地方在于需要良好的描述技巧和共有文化背景。与其说这是一种技术、商业或管理问题，还不如说是一种教学问题。其结果是，这个领域内的许多人都没能学会做得很好。
+ People are also afraid of renaming things for fear that some other developers will object. We do not share that fear and find that we are actually grateful when names change (for the better).</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch1/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/10.-Classes/ch10/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch1/</guid>
-      <description>第 1 章 Clean Code 整洁代码 #   You are reading this book for two reasons. First, you are a programmer. Second, you want to be a better programmer. Good. We need better programmers.
- 阅读本书有两种原因：第一，你是个程序员；第二，你想成为更好的程序员。很好。我们需要更好的程序员。
- This is a book about good programming. It is filled with code. We are going to look at code from every different direction. We’ll look down at it from the top, up at it from the bottom, and through it from the inside out.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch10/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch10/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/10.-Classes/ch10/</guid>
       <description>第 10 章 Classes 类 #  with Jeff Langr
  So far in this book we have focused on how to write lines and blocks of code well. We have delved into proper composition of functions and how they interrelate. But for all the attention to the expressiveness of code statements and the functions they comprise, we still don’t have clean code until we’ve paid attention to higher levels of code organization.</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch11/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/11.-Systems/ch11/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch11/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/11.-Systems/ch11/</guid>
       <description>第 11 章 Systems 系统 #  by Dr. Kevin Dean Wampler
  “Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.”
 —Ray Ozzie, CTO, Microsoft Corporation
@@ -2068,20 +2318,20 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch12/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/12.-Emergence/ch12/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch12/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/12.-Emergence/ch12/</guid>
       <description>第 12 章 Emergence 迭进 #  by Jeff Langr
  12.1 GETTING CLEAN VIA EMERGENT DESIGN 通过迭进设计达到整洁目的 #  What if there were four simple rules that you could follow that would help you create good designs as you worked? What if by following these rules you gained insights into the structure and design of your code, making it easier to apply principles such as SRP and DIP? What if these four rules facilitated the emergence of good designs?</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch13/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/13.-Concurrency/ch13/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch13/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/13.-Concurrency/ch13/</guid>
       <description>第 13 章 Concurrency 并发编程 #  by Brett L. Schuchert
  “Objects are abstractions of processing. Threads are abstractions of schedule.”
 —James O. Coplien1
@@ -2092,10 +2342,10 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch14/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/14.-Successive-Refinement/ch14/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch14/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/14.-Successive-Refinement/ch14/</guid>
       <description>第 14 章 Successive Refinement 逐步改进 #  Case Study of a Command-Line Argument Parser
  This chapter is a case study in successive refinement. You will see a module that started well but did not scale. Then you will see how the module was refactored and cleaned.
  本章研究一个逐步改进的案例。你将看到一个开始还不错，规模扩大后即出问题的模块。你还将看到这个模块是如何被重构得整洁起来的。
@@ -2104,10 +2354,10 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch15/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/15.-JUnit-Internals/ch15/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch15/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/15.-JUnit-Internals/ch15/</guid>
       <description>第 15 章 JUnit Internals JUnit 内幕 #   JUnit is one of the most famous of all Java frameworks. As frameworks go, it is simple in conception, precise in definition, and elegant in implementation. But what does the code look like? In this chapter we’ll critique an example drawn from the JUnit framework.
  JUnit 是最有名的 Java 框架之一。就像别的框架一样，它概念简单，定义精确，实现优雅。但它的代码是怎样的呢？本章将研判来自 JUnit 框架的一个代码例子。
  15.1THE JUNIT FRAMEWORK JUnit 框架 #  JUnit has had many authors, but it began with Kent Beck and Eric Gamma together on a plane to Atlanta.</description>
@@ -2115,10 +2365,10 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch16/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch16/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/</guid>
       <description>第 16 章 Refactoring SerialDate 重构 SerialDate #   If you go to http://www.jfree.org/jcommon/index.php, you will find the JCommon library. Deep within that library there is a package named org.jfree.date. Within that package there is a class named SerialDate. We are going to explore that class.
  如果你访问 http://www.jfree.org/jcommon/index.php，就能找到 JCommon 类库。深入该类库，其中有个名为 org.jfree.date 的程序包。在该程序包中，有个名为 SerialDate 的类。我们即将剖析这个类。
  The author of SerialDate is David Gilbert. David is clearly an experienced and competent programmer.</description>
@@ -2126,10 +2376,10 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch17/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch17/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/</guid>
       <description>第 17 章 Smells and Heuristics 味道与启发 #   In his wonderful book Refactoring,1 Martin Fowler identified many different “Code Smells.” The list that follows includes many of Martin’s smells and adds many more of my own. It also includes other pearls and heuristics that I use to practice my trade.
  Martin Fowler 在其妙书 Refectoring:Improving the Design of Existing Code[1]中指出了许多不同的“代码味道”。下面的清单包括很多 Martin 提出的味道，还添加了更多我自己提出的，也包括我借以历练本业的其他珍宝与启发。
  I compiled this list by walking through several different programs and refactoring them.</description>
@@ -2137,30 +2387,20 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch2/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch2/</guid>
-      <description>第 2 章 Meaningful Names 有意义的命名 #   by Tim Ottinger
-2.1 INTRODUCTION 介绍 #  Names are everywhere in software. We name our variables, our functions, our arguments, classes, and packages. We name our source files and the directories that contain them. We name our jar files and war files and ear files. We name and name and name. Because we do so much of it, we’d better do it well.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch3/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</guid>
       <description>第 3 章 Functions 函数 #   In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.
  在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch4/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch4/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</guid>
       <description>第 4 章 Comments 注释 #   “Don’t comment bad code—rewrite it.”—Brian W. Kernighan and P. J. Plaugher1
  “别给糟糕的代码加注释——重新写吧。”——Brian W. Kernighan 与 P. J.
  Nothing can be quite so helpful as a well-placed comment. Nothing can clutter up a module more than frivolous dogmatic comments. Nothing can be quite so damaging as an old crufty comment that propagates lies and misinformation.
@@ -2170,58 +2410,61 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch5/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/5.-Formatting/ch5/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch5/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/5.-Formatting/ch5/</guid>
       <description>第 5 章 Formatting 格式 #   When people look under the hood, we want them to be impressed with the neatness, consistency, and attention to detail that they perceive. We want them to be struck by the orderliness. We want their eyebrows to rise as they scroll through the modules. We want them to perceive that professionals have been at work. If instead they see a scrambled mass of code that looks like it was written by a bevy of drunken sailors, then they are likely to conclude that the same inattention to detail pervades every other aspect of the project.</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch6/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch6/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/</guid>
       <description>第 6 章 Objects and Data Structures 对象和数据结构 #   There is a reason that we keep our variables private. We don’t want anyone else to depend on them. We want to keep the freedom to change their type or implementation on a whim or an impulse. Why, then, do so many programmers automatically add getters and setters to their objects, exposing their private variables as if they were public?</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch7/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/7.-Error-Handling/ch7/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch7/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/7.-Error-Handling/ch7/</guid>
       <description>第 7 章 Error Handling 错误处理 #  by Michael Feathers
  It might seem odd to have a section about error handling in a book about clean code. Error handling is just one of those things that we all have to do when we program. Input can be abnormal and devices can fail. In short, things can go wrong, and when they do, we as programmers are responsible for making sure that our code does what it needs to do.</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch8/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/8.-Boundaries/ch8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch8/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/8.-Boundaries/ch8/</guid>
       <description>第 8 章 Boundaries 边界 #  by James Grenning
  We seldom control all the software in our systems. Sometimes we buy third-party packages or use open source. Other times we depend on teams in our own company to produce components or subsystems for us. Somehow we must cleanly integrate this foreign code with our own. In this chapter we look at practices and techniques to keep the boundaries of our software clean.</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/ch9/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/9.-Unit-Tests/ch9/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/ch9/</guid>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/9.-Unit-Tests/ch9/</guid>
       <description>第 9 章 Unit Tests 单元测试 #   Our profession has come a long way in the last ten years. In 1997 no one had heard of Test Driven Development. For the vast majority of us, unit tests were short bits of throw-away code that we wrote to make sure our programs “worked.” We would painstakingly write our classes and methods, and then we would concoct some ad hoc code to test them.</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/README/</link>
+      <link>https://book.ninescloud.com/docs/Clean-Code/Appendix-A-Concurrency-II/apA/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/Clean-Code/README/</guid>
-      <description>目录 #    第 1 章 整洁代码  第 2 章 有意义的命名  第 3 章 函数  第 4 章 注释  第 5 章 格式  第 6 章 对象和数据结构  第 7 章 错误处理  第 8 章 边界  第 9 章 单元测试  第 10 章 类  第 11 章 系统  第 12 章 迭进  第 13 章 并发编程  第 14 章 逐步改进  第 15 章 JUnit 内幕  第 16 章 重构 SerialDate  第 17 章 味道与启发  附录 A 并发编程 II  </description>
+      <guid>https://book.ninescloud.com/docs/Clean-Code/Appendix-A-Concurrency-II/apA/</guid>
+      <description>附录 A 并发编程 II #  by Brett L. Schuchert
+This appendix supports and amplifies the Concurrency chapter on page 177. It is written as a series of independent topics and you can generally read them in any order. There is some duplication between sections to allow for such reading.
+ 本附录扩充了“并发编程”一章的内容，由一组相互独立的主题组成，你可以按随意顺序阅读。为了实现这样的阅读方式，节与节之间存在一些重复内容。
+ A.1 CLIENT/SERVER EXAMPLE 客户端/服务器的例子 #  Imagine a simple client/server application. A server sits and waits listening on a socket for a client to connect.</description>
     </item>
     
   </channel>

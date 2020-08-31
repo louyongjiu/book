@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go语言圣经 on Book</title>
+    <link>https://book.ninescloud.com/docs/Clean-Code/</link>
+    <description>Recent content in Go语言圣经 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/Clean-Code/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/10.-Classes/ch10/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/10.-Classes/ch10/</guid>
+      <description>第 10 章 Classes 类 #  with Jeff Langr
+ So far in this book we have focused on how to write lines and blocks of code well. We have delved into proper composition of functions and how they interrelate. But for all the attention to the expressiveness of code statements and the functions they comprise, we still don’t have clean code until we’ve paid attention to higher levels of code organization.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/11.-Systems/ch11/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/11.-Systems/ch11/</guid>
+      <description>第 11 章 Systems 系统 #  by Dr. Kevin Dean Wampler
+ “Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.”
+—Ray Ozzie, CTO, Microsoft Corporation
+ “复杂要人命。它消磨开发者的生命，让产品难以规划、构建和测试。”
+——Ray Ozzie，微软公司首席技术官
+ 11.1 HOW WOULD YOU BUILD A CITY? 如何建造一个城市 #  Could you manage all the details yourself? Probably not. Even managing an existing city is too much for one person.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/12.-Emergence/ch12/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/12.-Emergence/ch12/</guid>
+      <description>第 12 章 Emergence 迭进 #  by Jeff Langr
+ 12.1 GETTING CLEAN VIA EMERGENT DESIGN 通过迭进设计达到整洁目的 #  What if there were four simple rules that you could follow that would help you create good designs as you worked? What if by following these rules you gained insights into the structure and design of your code, making it easier to apply principles such as SRP and DIP? What if these four rules facilitated the emergence of good designs?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/13.-Concurrency/ch13/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/13.-Concurrency/ch13/</guid>
+      <description>第 13 章 Concurrency 并发编程 #  by Brett L. Schuchert
+ “Objects are abstractions of processing. Threads are abstractions of schedule.”
+—James O. Coplien1
+ “对象是过程的抽象。线程是调度的抽象。”
+——James O
+ Writing clean concurrent programs is hard—very hard. It is much easier to write code that executes in a single thread. It is also easy to write multithreaded code that looks fine on the surface but is broken at a deeper level.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/14.-Successive-Refinement/ch14/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/14.-Successive-Refinement/ch14/</guid>
+      <description>第 14 章 Successive Refinement 逐步改进 #  Case Study of a Command-Line Argument Parser
+ This chapter is a case study in successive refinement. You will see a module that started well but did not scale. Then you will see how the module was refactored and cleaned.
+ 本章研究一个逐步改进的案例。你将看到一个开始还不错，规模扩大后即出问题的模块。你还将看到这个模块是如何被重构得整洁起来的。
+ Most of us have had to parse command-line arguments from time to time. If we don’t have a convenient utility, then we simply walk the array of strings that is passed into the main function.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/15.-JUnit-Internals/ch15/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/15.-JUnit-Internals/ch15/</guid>
+      <description>第 15 章 JUnit Internals JUnit 内幕 #   JUnit is one of the most famous of all Java frameworks. As frameworks go, it is simple in conception, precise in definition, and elegant in implementation. But what does the code look like? In this chapter we’ll critique an example drawn from the JUnit framework.
+ JUnit 是最有名的 Java 框架之一。就像别的框架一样，它概念简单，定义精确，实现优雅。但它的代码是怎样的呢？本章将研判来自 JUnit 框架的一个代码例子。
+ 15.1THE JUNIT FRAMEWORK JUnit 框架 #  JUnit has had many authors, but it began with Kent Beck and Eric Gamma together on a plane to Atlanta.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/</guid>
+      <description>第 16 章 Refactoring SerialDate 重构 SerialDate #   If you go to http://www.jfree.org/jcommon/index.php, you will find the JCommon library. Deep within that library there is a package named org.jfree.date. Within that package there is a class named SerialDate. We are going to explore that class.
+ 如果你访问 http://www.jfree.org/jcommon/index.php，就能找到 JCommon 类库。深入该类库，其中有个名为 org.jfree.date 的程序包。在该程序包中，有个名为 SerialDate 的类。我们即将剖析这个类。
+ The author of SerialDate is David Gilbert. David is clearly an experienced and competent programmer.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/</guid>
+      <description>第 17 章 Smells and Heuristics 味道与启发 #   In his wonderful book Refactoring,1 Martin Fowler identified many different “Code Smells.” The list that follows includes many of Martin’s smells and adds many more of my own. It also includes other pearls and heuristics that I use to practice my trade.
+ Martin Fowler 在其妙书 Refectoring:Improving the Design of Existing Code[1]中指出了许多不同的“代码味道”。下面的清单包括很多 Martin 提出的味道，还添加了更多我自己提出的，也包括我借以历练本业的其他珍宝与启发。
+ I compiled this list by walking through several different programs and refactoring them.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</guid>
+      <description>第 3 章 Functions 函数 #   In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.
+ 在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</guid>
+      <description>第 4 章 Comments 注释 #   “Don’t comment bad code—rewrite it.”—Brian W. Kernighan and P. J. Plaugher1
+ “别给糟糕的代码加注释——重新写吧。”——Brian W. Kernighan 与 P. J.
+ Nothing can be quite so helpful as a well-placed comment. Nothing can clutter up a module more than frivolous dogmatic comments. Nothing can be quite so damaging as an old crufty comment that propagates lies and misinformation.
+ 什么也比不上放置良好的注释来得有用。什么也不会比乱七八糟的注释更有本事搞乱一个模块。什么也不会比陈旧、提供错误信息的注释更有破坏性。
+ Comments are not like Schindler’s List.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/5.-Formatting/ch5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/5.-Formatting/ch5/</guid>
+      <description>第 5 章 Formatting 格式 #   When people look under the hood, we want them to be impressed with the neatness, consistency, and attention to detail that they perceive. We want them to be struck by the orderliness. We want their eyebrows to rise as they scroll through the modules. We want them to perceive that professionals have been at work. If instead they see a scrambled mass of code that looks like it was written by a bevy of drunken sailors, then they are likely to conclude that the same inattention to detail pervades every other aspect of the project.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/</guid>
+      <description>第 6 章 Objects and Data Structures 对象和数据结构 #   There is a reason that we keep our variables private. We don’t want anyone else to depend on them. We want to keep the freedom to change their type or implementation on a whim or an impulse. Why, then, do so many programmers automatically add getters and setters to their objects, exposing their private variables as if they were public?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/7.-Error-Handling/ch7/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/7.-Error-Handling/ch7/</guid>
+      <description>第 7 章 Error Handling 错误处理 #  by Michael Feathers
+ It might seem odd to have a section about error handling in a book about clean code. Error handling is just one of those things that we all have to do when we program. Input can be abnormal and devices can fail. In short, things can go wrong, and when they do, we as programmers are responsible for making sure that our code does what it needs to do.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/8.-Boundaries/ch8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/8.-Boundaries/ch8/</guid>
+      <description>第 8 章 Boundaries 边界 #  by James Grenning
+ We seldom control all the software in our systems. Sometimes we buy third-party packages or use open source. Other times we depend on teams in our own company to produce components or subsystems for us. Somehow we must cleanly integrate this foreign code with our own. In this chapter we look at practices and techniques to keep the boundaries of our software clean.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/9.-Unit-Tests/ch9/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/9.-Unit-Tests/ch9/</guid>
+      <description>第 9 章 Unit Tests 单元测试 #   Our profession has come a long way in the last ten years. In 1997 no one had heard of Test Driven Development. For the vast majority of us, unit tests were short bits of throw-away code that we wrote to make sure our programs “worked.” We would painstakingly write our classes and methods, and then we would concoct some ad hoc code to test them.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/Appendix-A-Concurrency-II/apA/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/Appendix-A-Concurrency-II/apA/</guid>
+      <description>附录 A 并发编程 II #  by Brett L. Schuchert
+This appendix supports and amplifies the Concurrency chapter on page 177. It is written as a series of independent topics and you can generally read them in any order. There is some duplication between sections to allow for such reading.
+ 本附录扩充了“并发编程”一章的内容，由一组相互独立的主题组成，你可以按随意顺序阅读。为了实现这样的阅读方式，节与节之间存在一些重复内容。
+ A.1 CLIENT/SERVER EXAMPLE 客户端/服务器的例子 #  Imagine a simple client/server application. A server sits and waits listening on a socket for a client to connect.</description>
+    </item>
+    
+  </channel>
+</rss>

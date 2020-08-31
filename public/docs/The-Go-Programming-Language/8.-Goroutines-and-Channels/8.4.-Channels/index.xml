@@ -11,10 +11,10 @@
     
     <item>
       <title>8.4.1. 不带缓存的Channels</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1.-Unbuffered-Channels/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1.-Unbuffered-Channels/</guid>
       <description>8.4.1. 不带缓存的Channels #  一个基于无缓存Channels的发送操作将导致发送者goroutine阻塞，直到另一个goroutine在相同的Channels上执行接收操作，当发送的值通过Channels成功传输之后，两个goroutine可以继续执行后面的语句。反之，如果接收操作先发生，那么接收者goroutine也将阻塞，直到有另一个goroutine在相同的Channels上执行发送操作。
 基于无缓存Channels的发送和接收操作将导致两个goroutine做一次同步操作。因为这个原因，无缓存Channels有时候也被称为同步Channels。当通过一个无缓存Channels发送数据时，接收者收到数据发生在再次唤醒唤醒发送者goroutine之前（译注：happens before，这是Go语言并发内存模型的一个关键术语！）。
 在讨论并发编程时，当我们说x事件在y事件之前发生（happens before），我们并不是说x事件在时间上比y时间更早；我们要表达的意思是要保证在此之前的事件都已经完成了，例如在此之前的更新某些变量的操作已经完成，你可以放心依赖这些已完成的事件了。
@@ -28,10 +28,10 @@ func main() { conn, err := net.Dial(&amp;#34;tcp&amp;#34;, &amp;#34;localhost:80
     
     <item>
       <title>8.4.2. 串联的Channels（Pipeline）</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2.-Pipelines/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2.-Pipelines/</guid>
       <description>8.4.2. 串联的Channels（Pipeline） #  Channels也可以用于将多个goroutine连接在一起，一个Channel的输出作为下一个Channel的输入。这种串联的Channels就是所谓的管道（pipeline）。下面的程序用两个channels将三个goroutine串联起来，如图8.1所示。
  第一个goroutine是一个计数器，用于生成0、1、2、……形式的整数序列，然后通过channel将该整数序列发送给第二个goroutine；第二个goroutine是一个求平方的程序，对收到的每个整数求平方，然后将平方后的结果通过第二个channel发送给第三个goroutine；第三个goroutine是一个打印程序，打印收到的每个整数。为了保持例子清晰，我们有意选择了非常简单的函数，当然三个goroutine的计算很简单，在现实中确实没有必要为如此简单的运算构建三个goroutine。
 gopl.io/ch8/pipeline1
@@ -42,10 +42,10 @@ close(naturals) 当一个channel被关闭后，再向该channel发送数据将�
     
     <item>
       <title>8.4.3. 单方向的Channel</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3.-Unidirectional-Channel-Types/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3.-Unidirectional-Channel-Types/</guid>
       <description>8.4.3. 单方向的Channel #  随着程序的增长，人们习惯于将大的函数拆分为小的函数。我们前面的例子中使用了三个goroutine，然后用两个channels来连接它们，它们都是main函数的局部变量。将三个goroutine拆分为以下三个函数是自然的想法：
 func counter(out chan int) func squarer(out, in chan int) func printer(in chan int) 其中计算平方的squarer函数在两个串联Channels的中间，因此拥有两个channel类型的参数，一个用于输入一个用于输出。两个channel都拥有相同的类型，但是它们的使用方式相反：一个只用于接收，另一个只用于发送。参数的名字in和out已经明确表示了这个意图，但是并无法保证squarer函数向一个in参数对应的channel发送数据或者从一个out参数对应的channel接收数据。
 这种场景是典型的。当一个channel作为一个函数参数时，它一般总是被专门用于只发送或者只接收。
@@ -58,10 +58,10 @@ func counter(out chan&amp;lt;- int) { for x := 0; x &amp;lt; 100; x++ { out &amp
     
     <item>
       <title>8.4.4. 带缓存的Channels</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4.-Buffered-Channels/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4.-Buffered-Channels/</guid>
       <description>8.4.4. 带缓存的Channels #  带缓存的Channel内部持有一个元素队列。队列的最大容量是在调用make函数创建channel时通过第二个参数指定的。下面的语句创建了一个可以持有三个字符串元素的带缓存Channel。图8.2是ch变量对应的channel的图形表示形式。
 ch = make(chan string, 3)  向缓存Channel的发送操作就是向内部缓存队列的尾部插入元素，接收操作则是从队列的头部删除元素。如果内部缓存队列是满的，那么发送操作将阻塞直到因另一个goroutine执行接收操作而释放了新的队列空间。相反，如果channel是空的，接收操作将阻塞直到有另一个goroutine执行发送操作而向队列插入元素。
 我们可以在无阻塞的情况下连续向新创建的channel发送三个值：

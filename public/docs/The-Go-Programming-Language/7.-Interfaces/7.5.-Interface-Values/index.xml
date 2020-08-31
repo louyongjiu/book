@@ -11,10 +11,10 @@
     
     <item>
       <title>7.5.1. 警告：一个包含nil指针的接口不是nil接口</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1.-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1.-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</guid>
       <description>7.5.1. 警告：一个包含nil指针的接口不是nil接口 #  一个不包含任何值的nil接口值和一个刚好包含nil指针的接口值是不同的。这个细微区别产生了一个容易绊倒每个Go程序员的陷阱。
 思考下面的程序。当debug变量设置为true时，main函数会将f函数的输出收集到一个bytes.Buffer类型中。
 const debug = true func main() { var buf *bytes.Buffer if debug { buf = new(bytes.Buffer) // enable collection of output 	} f(buf) // NOTE: subtly incorrect! 	if debug { // ...use buf... 	} } // If out is non-nil, output will be written to it. func f(out io.Writer) { // ...do something... 	if out != nil { out.Write([]byte(&amp;#34;done!\n&amp;#34;)) } } 我们可能会预计当把变量debug设置为false时可以禁止对输出的收集，但是实际上在out.</description>

@@ -11,10 +11,10 @@
     
     <item>
       <title>3.6.1. iota 常量生成器</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1.-The-Constant-Generator-iota/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1.-The-Constant-Generator-iota/</guid>
       <description>3.6.1. iota 常量生成器 #  常量声明可以使用iota常量生成器初始化，它用于生成一组以相似规则初始化的常量，但是不用每行都写一遍初始化表达式。在一个const声明语句中，在第一个声明的常量所在的行，iota将会被置为0，然后在每一个有常量声明的行加一。
 下面是来自time包的例子，它首先定义了一个Weekday命名类型，然后为一周的每天定义了一个常量，从周日0开始。在其它编程语言中，这种类型一般被称为枚举类型。
 type Weekday int const ( Sunday Weekday = iota Monday Tuesday Wednesday Thursday Friday Saturday ) 周日将对应0，周一为1，如此等等。
@@ -24,10 +24,10 @@ type Flags uint const ( FlagUp Flags = 1 &amp;lt;&amp;lt; iota // is up 	FlagBro
     
     <item>
       <title>3.6.2. 无类型常量</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2.-Untyped-Constants/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2.-Untyped-Constants/</guid>
       <description>3.6.2. 无类型常量 #  Go语言的常量有个不同寻常之处。虽然一个常量可以有任意一个确定的基础类型，例如int或float64，或者是类似time.Duration这样命名的基础类型，但是许多常量并没有一个明确的基础类型。编译器为这些没有明确基础类型的数字常量提供比基础类型更高精度的算术运算；你可以认为至少有256bit的运算精度。这里有六种未明确类型的常量类型，分别是无类型的布尔型、无类型的整数、无类型的字符、无类型的浮点数、无类型的复数、无类型的字符串。
 通过延迟明确常量的具体类型，无类型的常量不仅可以提供更高的运算精度，而且可以直接用于更多的表达式而不需要显式的类型转换。例如，例子中的ZiB和YiB的值已经超出任何Go语言中整数类型能表达的范围，但是它们依然是合法的常量，而且像下面的常量表达式依然有效（译注：YiB/ZiB是在编译期计算出来的，并且结果常量是1024，是Go语言int变量能有效表示的）：
 fmt.Println(YiB/ZiB) // &amp;#34;1024&amp;#34; 另一个例子，math.Pi无类型的浮点数常量，可以直接用于任意需要浮点数或复数的地方：

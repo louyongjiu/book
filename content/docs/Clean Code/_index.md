@@ -2,12 +2,10 @@
 bookFlatSection: true
 bookCollapseSection: true
 weight: 1
-title: Go语言圣经
+title: 代码整洁之道
 ---
 
-# 代码整洁之道
-
-《代码整洁之道》中文翻译
+# 《代码整洁之道》中文翻译
 
 在线阅读：[http://gdut_yy.gitee.io/doc-cleancode/](http://gdut_yy.gitee.io/doc-cleancode/)
 

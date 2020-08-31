@@ -11,10 +11,10 @@
     
     <item>
       <title>4.4.1. 结构体字面值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1.-Struct-Literals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1.-Struct-Literals/</guid>
       <description>4.4.1. 结构体字面值 #  结构体值也可以用结构体字面值表示，结构体字面值可以指定每个成员的值。
 type Point struct{ X, Y int } p := Point{1, 2} 这里有两种形式的结构体字面值语法，上面的是第一种写法，要求以结构体成员定义的顺序为每个结构体成员指定一个字面值。它要求写代码和读代码的人要记住结构体的每个成员的类型和顺序，不过结构体成员有细微的调整就可能导致上述代码不能编译。因此，上述的语法一般只在定义结构体的包内部使用，或者是在较小的结构体中使用，这些结构体的成员排列比较规则，比如image.Point{x, y}或color.RGBA{red, green, blue, alpha}。
 其实更常用的是第二种写法，以成员名字和相应的值来初始化，可以包含部分或全部的成员，如1.4节的Lissajous程序的写法：
@@ -25,10 +25,10 @@ package p type T struct{ a, b int } // a and b are not exported  package q impor
     
     <item>
       <title>4.4.2. 结构体比较</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2.-Comparing-Structs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2.-Comparing-Structs/</guid>
       <description>4.4.2. 结构体比较 #  如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：
 type Point struct{ X, Y int } p := Point{1, 2} q := Point{2, 1} fmt.Println(p.X == q.X &amp;amp;&amp;amp; p.Y == q.Y) // &amp;#34;false&amp;#34; fmt.Println(p == q) // &amp;#34;false&amp;#34; 可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。
 type address struct { hostname string port int } hits := make(map[address]int) hits[address{&amp;#34;golang.org&amp;#34;, 443}]++ </description>
@@ -36,10 +36,10 @@ type address struct { hostname string port int } hits := make(map[address]int) h
     
     <item>
       <title>4.4.3. 结构体嵌入和匿名成员</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3.-Struct-Embedding-and-Anonymous-Fields/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3.-Struct-Embedding-and-Anonymous-Fields/</guid>
       <description>4.4.3. 结构体嵌入和匿名成员 #  在本节中，我们将看到如何使用Go语言提供的不同寻常的结构体嵌入机制让一个命名的结构体包含另一个结构体类型的匿名成员，这样就可以通过简单的点运算符x.f来访问匿名成员链中嵌套的x.d.e.f成员。
 考虑一个二维的绘图程序，提供了一个各种图形的库，例如矩形、椭圆形、星形和轮形等几何形状。这里是其中两个的定义：
 type Circle struct { X, Y, Radius int } type Wheel struct { X, Y, Radius, Spokes int } 一个Circle代表的圆形类型包含了标准圆心的X和Y坐标信息，和一个Radius表示的半径信息。一个Wheel轮形除了包含Circle类型所有的全部成员外，还增加了Spokes表示径向辐条的数量。我们可以这样创建一个wheel变量：

@@ -1,0 +1,356 @@
+1. Clean Code
+1.1. There Will Be Code
+1.2. Bad Code
+1.3. The Total Cost of Owning a Mess
+1.3.1. The Grand Redesign in the Sky
+1.3.2. Attitude
+1.3.3. The Primal Conundrum
+1.3.4. The Art of Clean Code?
+1.3.5. What Is Clean Code?
+1.4. Schools of Thought
+1.5. We Are Authors
+1.6. The Boy Scout Rule
+1.7. Prequel and Principles
+1.8. Conclusion
+1.9. Bibliography
+2. Meaningful Names
+2.1. Introduction
+2.2. Use Intention-Revealing Names
+2.3. Avoid Disinformation
+2.4. Make Meaningful Distinctions
+2.5. Use Pronounceable Names
+2.6. Use Searchable Names
+2.7. Avoid Encodings
+2.7.1. Hungarian Notation
+2.7.2.  Member Prefixes
+2.7.3.  Interfaces and Implementations 
+2.8. Avoid Mental Mapping
+2.9. Class Names
+2.10. Method Names
+2.11. Don’t Be Cute
+2.12. Pick One Word per Concept
+2.13. Don’t Pun
+2.14. Use Solution Domain Names
+2.15. Use Problem Domain Names
+2.16. Add Meaningful Context
+2.17. Don’t Add Gratuitous Context
+2.18. Final Words
+3. Functions
+3.1. Small!
+3.1.1.  Blocks and Indenting
+3.2. Do One Thing
+3.2.1. Sections within Functions 
+3.3. One Level of Abstraction per Function
+3.3.1. Reading Code from Top to Bottom: The Stepdown Rule
+3.4. Switch Statements 
+3.5. Use Descriptive Names
+3.6. Function Arguments
+3.6.1. Common Monadic Forms
+3.6.2. Flag Arguments 
+3.6.3. Dyadic Functions
+3.6.4. Triads
+3.6.5. Argument Objects
+3.6.6. Argument Lists
+3.6.7. Verbs and Keywords
+3.7. Have No Side Effects
+3.7.1. Output Arguments 
+3.8. Command Query Separation
+3.9. Prefer Exceptions to Returning Error Codes
+3.9.1. Extract Try/Catch Blocks 
+3.9.2. Error Handling Is One Thing
+3.9.3. The Error.java Dependency Magnet 
+3.10. Don’t Repeat Yourself 
+3.11. Structured Programming 
+3.12. How Do You Write Functions Like This?
+3.13. Conclusion
+3.14. SetupTeardownIncluder 
+3.15. Bibliography
+4. Comments
+4.1. Comments Do Not Make Up for Bad Code
+4.2. Explain Yourself in Code 
+4.3. Good Comments
+4.3.1. Legal Comments
+4.3.2. Informative Comments
+4.3.3. Explanation of Intent
+4.3.4. Clarification
+4.3.5. Warning of Consequences
+4.3.6. TODO Comments
+4.3.7. Amplification
+4.3.8. Javadocs in Public APIs
+4.4. Bad Comments 
+4.4.1. Mumbling
+4.4.2. Redundant Comments 
+4.4.3. Misleading Comments
+4.4.4. Mandated Comments
+4.4.5. Journal Comments
+4.4.6. Noise Comments 
+4.4.7. Scary Noise 
+4.4.8. Don’t Use a Comment When You Can Use a Function or a Variable
+4.4.9. Position Markers
+4.4.10. Closing Brace Comments
+4.4.11. Attributions and Bylines
+4.4.12. Commented-Out Code
+4.4.13. HTML Comments 
+4.4.14. Nonlocal Information
+4.4.15. Too Much Information 
+4.4.16. Inobvious Connection
+4.4.17. Function Headers
+4.4.18. Javadocs in Nonpublic Code 
+4.4.19. Example
+4.5. Bibliography
+5. Formatting
+5.1. The Purpose of Formatting 
+5.2. Vertical Formatting
+5.2.1. The Newspaper Metaphor 
+5.2.2. Vertical Openness Between Concepts
+5.2.3. Vertical Density
+5.2.4. Vertical Distance 
+5.2.5. Vertical Ordering
+5.3. Horizontal Formatting
+5.3.1. Horizontal Openness and Density
+5.3.2. Horizontal Alignment
+5.3.3. Indentation
+5.3.4. Dummy Scopes
+5.4. Team Rules
+5.5. Uncle Bob’s Formatting Rules
+6. Objects and Data Structures
+6.1. Data Abstraction
+6.2. Data/Object Anti-Symmetry 
+6.3. The Law of Demeter
+6.3.1. Train Wrecks 
+6.3.2. Hybrids
+6.3.3. Hiding Structure
+6.4. Data Transfer Objects
+6.4.1. Active Record
+6.5. Conclusion
+6.6. Bibliography
+7. Error Handling
+7.1. Use Exceptions Rather Than Return Codes 
+7.2. Write Your Try-Catch-Finally Statement First
+7.3. Use Unchecked Exceptions
+7.4. Provide Context with Exceptions
+7.5. Define Exception Classes in Terms of a Caller’s Needs
+7.6. Define the Normal Flow
+7.7. Don’t Return Null
+7.8. Don’t Pass Null 
+7.9. Conclusion
+7.10. Bibliography
+8. Boundaries
+8.1. Using Third-Party Code
+8.2. Exploring and Learning Boundaries
+8.3. Learning log4j
+8.4. Learning Tests Are Better Than Free
+8.5. Using Code That Does Not Yet Exist
+8.6. Clean Boundaries
+8.7. Bibliography
+9. Unit Tests
+9.1. The Three Laws of TDD
+9.2. Keeping Tests Clean 
+9.2.1. Tests Enable the -ilities
+9.3. Clean Tests 
+9.3.1. Domain-Specific Testing Language
+9.3.2. A Dual Standard
+9.4. One Assert per Test 
+9.4.1. Single Concept per Test
+9.5. F.I.R.S.T
+9.6. Conclusion
+9.7. Bibliography
+10. Classes
+10.1. Class Organization
+10.1.1. Encapsulation 
+10.2. Classes Should Be Small!
+10.2.1. The Single Responsibility Principle
+10.2.2. Cohesion
+10.2.3. Maintaining Cohesion Results in Many Small Classes
+10.3. Organizing for Change 
+10.3.1. Isolating from Change
+10.4. Bibliography
+11. Systems
+11.1. How Would You Build a City?
+11.2. Separate Constructing a System from Using It
+11.2.1. Separation of Main
+11.2.2. Factories 
+11.2.3. Dependency Injection
+11.3. Scaling Up
+11.3.1. Cross-Cutting Concerns 
+11.4. Java Proxies
+11.5. Pure Java AOP Frameworks
+11.6. AspectJ Aspects 
+11.7. Test Drive the System Architecture
+11.8. Optimize Decision Making
+11.9. Use Standards Wisely, When They Add DemonstrableValue
+11.10. Systems Need Domain-Specific Languages
+11.11. Conclusion
+11.12. Bibliography
+12. Emergence
+12.1. Getting Clean via Emergent Design 
+12.2. Simple Design Rule 1: Runs All the Tests
+12.3. Simple Design Rules 2–4: Refactoring 
+12.4. No Duplication
+12.5. Expressive
+12.6. Minimal Classes and Methods
+12.7. Conclusion
+12.8. Bibliography
+13. Concurrency
+13.1. Why Concurrency? 
+13.1.1. Myths and Misconceptions
+13.2. Challenges
+13.3. Concurrency Defense Principles
+13.3.1. Single Responsibility Principle
+13.3.2. Corollary: Limit the Scope of Data
+13.3.3. Corollary: Use Copies of Data
+13.3.4. Corollary: Threads Should Be as Independent as Possible 
+13.4. Know Your Library
+13.4.1. Thread-Safe Collections
+13.5. Know Your Execution Models 
+13.5.1. Producer-Consumer
+13.5.2. Readers-Writers
+13.5.3. Dining Philosophers
+13.6. Beware Dependencies Between Synchronized Methods 
+13.7. Keep Synchronized Sections Small
+13.8. Writing Correct Shut-Down Code Is Hard
+13.9. Testing Threaded Code
+13.9.1. Treat Spurious Failures as Candidate Threading Issues
+13.9.2. Get Your Nonthreaded Code Working First
+13.9.3. Make Your Threaded Code Pluggable 
+13.9.4. Make Your Threaded Code Tunable
+13.9.5. Run with More Threads Than Processors
+13.9.6. Run on Different Platforms
+13.9.7. Instrument Your Code to Try and Force Failures
+13.9.8. Hand-Coded 
+13.9.9. Automated
+13.10. Conclusion
+13.11. Bibliography
+14. Successive Refinement
+14.1. Args Implementation
+14.1.1. How Did I Do This? 
+14.2. Args: The Rough Draft 
+14.2.1. So I Stopped 
+14.2.2. On Incrementalism
+14.3. String Arguments 
+14.4. Conclusion
+15. JUnit Internals
+15.1. The JUnit Framework
+15.2. Conclusion
+16. Refactoring SerialDate
+16.1. First, Make It Work
+16.2. Then Make It Right
+16.3. Conclusion
+16.4. Bibliography
+17. Smells and Heuristics
+17.1. Comments 
+ C1: Inappropriate Information
+ C2: Obsolete Comment
+ C3: Redundant Comment 
+ C4: Poorly Written Comment
+ C5: Commented-Out Code
+17.2. Environment 
+ E1: Build Requires More Than One Step
+ E2: Tests Require More Than One Step
+17.3. Functions
+ F1: Too Many Arguments
+ F2: Output Arguments 
+ F3: Flag Arguments
+ F4: Dead Function 
+17.4. General
+ G1: Multiple Languages in One Source File
+ G2: Obvious Behavior Is Unimplemented
+ G3: Incorrect Behavior at the Boundaries
+ G4: Overridden Safeties
+ G5: Duplication
+ G6: Code at Wrong Level of Abstraction
+ G7: Base Classes Depending on Their Derivatives 
+ G8: Too Much Information
+ G9: Dead Code
+ G10: Vertical Separation 
+ G11: Inconsistency
+ G12: Clutter
+ G13: Artificial Coupling
+ G14: Feature Envy
+ G15: Selector Arguments
+ G16: Obscured Intent
+ G17: Misplaced Responsibility
+ G18: Inappropriate Static
+ G19: Use Explanatory Variables 
+ G20: Function Names Should Say What They Do
+ G21: Understand the Algorithm 
+ G22: Make Logical Dependencies Physical
+ G23: Prefer Polymorphism to If/Else or Switch/Case
+ G24: Follow Standard Conventions
+ G25: Replace Magic Numbers with Named Constants
+ G26: Be Precise
+ G27: Structure over Convention
+ G28: Encapsulate Conditionals 
+ G29: Avoid Negative Conditionals 
+ G30: Functions Should Do One Thing
+ G31: Hidden Temporal Couplings
+ G32: Don’t Be Arbitrary
+ G33: Encapsulate Boundary Conditions
+ G34: Functions Should Descend Only One Level of Abstraction 
+ G35: Keep Configurable Data at High Levels
+ G36: Avoid Transitive Navigation
+17.5. Java
+ J1: Avoid Long Import Lists by Using Wildcards
+ J2: Don’t Inherit Constants 
+ J3: Constants versus Enums
+17.6. Names
+ N1: Choose Descriptive Names
+ N2: Choose Names at the Appropriate Level of Abstraction
+ N3: Use Standard Nomenclature Where Possible
+ N4: Unambiguous Names
+ N5: Use Long Names for Long Scopes
+ N6: Avoid Encodings
+ N7: Names Should Describe Side-Effects 
+17.7. Tests
+ T1: Insufficient Tests
+ T2: Use a Coverage Tool!
+ T3: Don’t Skip Trivial Tests 
+ T4: An Ignored Test Is a Question about an Ambiguity
+ T5: Test Boundary Conditions
+ T6: Exhaustively Test Near Bugs
+ T7: Patterns of Failure Are Revealing
+ T8: Test Coverage Patterns Can Be Revealing
+ T9: Tests Should Be Fast
+17.8. Conclusion
+17.9. Bibliography
+Appendix A: Concurrency II
+Client/Server Example
+ The Server 
+ Adding Threading
+ Server Observations 
+ Conclusion
+Possible Paths of Execution 
+ Number of Paths
+ Digging Deeper 
+ Conclusion
+Knowing Your Library
+ Executor Framework 
+ Nonblocking Solutions
+ Nonthread-Safe Classes
+Dependencies Between Methods 
+Can Break Concurrent Code 
+ Tolerate the Failure
+ Client-Based Locking
+ Server-Based Locking
+Increasing Throughput 
+ Single-Thread Calculation of Throughput
+ Multithread Calculation of Throughput
+Deadlock
+ Mutual Exclusion 
+ Lock & Wait 
+ No Preemption
+ Circular Wait 
+ Breaking Mutual Exclusion
+ Breaking Lock & Wait
+ Breaking Preemption
+ Breaking Circular Wait
+Testing Multithreaded Code
+Tool Support for Testing Thread-Based Code 
+Conclusion
+Tutorial: Full Code Examples
+ Client/Server Nonthreaded
+ Client/Server Using Threads 
+Appendix B: orgjfreedateSerialDate
+Appendix C: Cross References of Heuristics
+Epilogue
+Index 

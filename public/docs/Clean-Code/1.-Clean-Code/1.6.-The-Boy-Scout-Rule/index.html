@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="1.6 童子军军规 #  It’s not enough to write the code well. The code has to be kept clean over time. We’ve all seen code rot and degrade as time passes. So we must take an active role in preventing this degradation.
+ 光把代码写好可不够。必须时时保持代码整洁。我们都见过代码随时间流逝而腐坏。我们应当更积极地阻止腐坏的发生。
+ The Boy Scouts of America have a simple rule that we can apply to our profession.
+ 借用美国童子军一条简单的军规，应用到我们的专业领域：
+ Leave the campground cleaner than you found it.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="1.6. 童子军军规" />
+<meta property="og:description" content="1.6 童子军军规 #  It’s not enough to write the code well. The code has to be kept clean over time. We’ve all seen code rot and degrade as time passes. So we must take an active role in preventing this degradation.
+ 光把代码写好可不够。必须时时保持代码整洁。我们都见过代码随时间流逝而腐坏。我们应当更积极地阻止腐坏的发生。
+ The Boy Scouts of America have a simple rule that we can apply to our profession.
+ 借用美国童子军一条简单的军规，应用到我们的专业领域：
+ Leave the campground cleaner than you found it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" />
+<meta property="article:modified_time" content="2020-08-31T11:12:21+08:00" />
+<title>1.6. 童子军军规 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/" class="">1. 整洁代码</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/" class="">1.1. 要有代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/" class="">1.2. 糟糕的代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/" class="">1.3. 混乱的代价</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/" class="">1.4. 思想流派</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/" class="">1.5. 我们是作者</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" class="active">1.6. 童子军军规</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/" class="">1.7. 前传与原则</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/" class="">1.8. 小结</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/" class="">1.9. 参考文献</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/" class="">2. 有意义的命名</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/" class="">2.1. 介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/" class="">2.2. 名副其实</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/" class="">2.3. 避免误导</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/" class="">2.4. 做有意义的区分</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/" class="">2.5. 使用读得出来的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/" class="">2.6. 使用可搜索的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/" class="">2.7. 避免使用编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/" class="">2.8. 避免思维映射</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/" class="">2.9. 类名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/" class="">2.10. 方法名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/" class="">2.11. 别扮可爱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/" class="">2.12. 每个概念对应一个词</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/" class="">2.13. 别用双关语</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/" class="">2.14. 使用解决方案领域名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/" class="">2.15. 使用源自所涉问题领域的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/" class="">2.16. 添加有意义的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/" class="">2.17. 不要添加没用的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/" class="">2.18. 最后的话</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/10.-Classes/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/11.-Systems/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/12.-Emergence/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/13.-Concurrency/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/14.-Successive-Refinement/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/15.-JUnit-Internals/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/ch3/" class="">Ch3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/4.-Comments/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/5.-Formatting/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/7.-Error-Handling/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/8.-Boundaries/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/9.-Unit-Tests/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/Appendix-A-Concurrency-II/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>1.6. 童子军军规</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#16-童子军军规">1.6 童子军军规</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="16-童子军军规">
+  1.6 童子军军规
+  <a class="anchor" href="#16-%e7%ab%a5%e5%ad%90%e5%86%9b%e5%86%9b%e8%a7%84">#</a>
+</h2>
+<p>It’s not enough to write the code well. The code has to be kept clean over time. We’ve all seen code rot and degrade as time passes. So we must take an active role in preventing this degradation.</p>
+<blockquote>
+<p>光把代码写好可不够。必须时时保持代码整洁。我们都见过代码随时间流逝而腐坏。我们应当更积极地阻止腐坏的发生。</p>
+</blockquote>
+<p>The Boy Scouts of America have a simple rule that we can apply to our profession.</p>
+<blockquote>
+<p>借用美国童子军一条简单的军规，应用到我们的专业领域：</p>
+</blockquote>
+<p>Leave the campground cleaner than you found it.5</p>
+<blockquote>
+<p>让营地比你来时更干净。</p>
+</blockquote>
+<p>If we all checked-in our code a little cleaner than when we checked it out, the code simply could not rot. The cleanup doesn’t have to be something big. Change one variable name for the better, break up one function that’s a little too large, eliminate one small bit of duplication, clean up one composite if statement.</p>
+<blockquote>
+<p>如果每次签入时，代码都比签出时干净，那么代码就不会腐坏。清理并不一定要花多少功夫，也许只是改好一个变量名，拆分一个有点过长的函数，消除一点点重复代码，清理一个嵌套 if 语句。</p>
+</blockquote>
+<p>Can you imagine working on a project where the code simply got better as time passed? Do you believe that any other option is professional? Indeed, isn’t continuous improvement an intrinsic part of professionalism?</p>
+<blockquote>
+<p>你想要为一个代码随时间流逝而越变越好的项目工作吗？你还能相信有其他更专业的做法吗？难道持续改进不是专业性的内在组成部分吗？</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/b6bfb2796b535af25049ea2945e79f47f05cf8b0" title='最后修改者 louyongjiu | 2020年8月31日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年8月31日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/Clean%20Code/1.%20Clean%20Code/1.6.%20The%20Boy%20Scout%20Rule.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#16-童子军军规">1.6 童子军军规</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

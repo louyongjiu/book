@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>1. 整洁代码 on Book</title>
+    <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/</link>
+    <description>Recent content in 1. 整洁代码 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>1.1. 要有代码</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/</guid>
+      <description>1.1 要有代码 #  One might argue that a book about code is somehow behind the times—that code is no longer the issue; that we should be concerned about models and requirements instead. Indeed some have suggested that we are close to the end of code. That soon all code will be generated instead of written. That programmers simply won’t be needed because business people will generate programs from specifications.</description>
+    </item>
+    
+    <item>
+      <title>1.2. 糟糕的代码</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/</guid>
+      <description>1.2 糟糕的代码 #  I was recently reading the preface to Kent Beck’s book Implementation Patterns.1 He says, “… this book is based on a rather fragile premise: that good code matters….” A fragile premise? I disagree! I think that premise is one of the most robust, supported, and overloaded of all the premises in our craft (and I think Kent knows it). We know good code matters because we’ve had to deal for so long with its lack.</description>
+    </item>
+    
+    <item>
+      <title>1.3. 混乱的代价</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/</guid>
+      <description>1.3 混乱的代价 #  If you have been a programmer for more than two or three years, you have probably been significantly slowed down by someone else’s messy code. If you have been a programmer for longer than two or three years, you have probably been slowed down by messy code. The degree of the slowdown can be significant. Over the span of a year or two, teams that were moving very fast at the beginning of a project can find themselves moving at a snail’s pace.</description>
+    </item>
+    
+    <item>
+      <title>1.4. 思想流派</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/</guid>
+      <description>1.4 思想流派 #  What about me (Uncle Bob)? What do I think clean code is? This book will tell you, in hideous detail, what I and my compatriots think about clean code. We will tell you what we think makes a clean variable name, a clean function, a clean class, etc. We will present these opinions as absolutes, and we will not apologize for our stridence. To us, at this point in our careers, they are absolutes.</description>
+    </item>
+    
+    <item>
+      <title>1.5. 我们是作者</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/</guid>
+      <description>1.5 我们是作者 #  The @author field of a Javadoc tells us who we are. We are authors. And one thing about authors is that they have readers. Indeed, authors are responsible for communicating well with their readers. The next time you write a line of code, remember you are an author, writing for readers who will judge your effort.
+ Javadoc 中的@author 字段告诉我们自己是什么人。我们是作者。作者都有读者。实际上，作者有责任与读者做良好沟通。下次你写代码的时候，记得自己是作者，要为评判你工作的读者写代码。
+ You might ask: How much is code really read?</description>
+    </item>
+    
+    <item>
+      <title>1.6. 童子军军规</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/</guid>
+      <description>1.6 童子军军规 #  It’s not enough to write the code well. The code has to be kept clean over time. We’ve all seen code rot and degrade as time passes. So we must take an active role in preventing this degradation.
+ 光把代码写好可不够。必须时时保持代码整洁。我们都见过代码随时间流逝而腐坏。我们应当更积极地阻止腐坏的发生。
+ The Boy Scouts of America have a simple rule that we can apply to our profession.
+ 借用美国童子军一条简单的军规，应用到我们的专业领域：
+ Leave the campground cleaner than you found it.</description>
+    </item>
+    
+    <item>
+      <title>1.7. 前传与原则</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/</guid>
+      <description>1.7 前传与原则 #  In many ways this book is a “prequel” to a book I wrote in 2002 entitled Agile Software Development: Principles, Patterns, and Practices (PPP). The PPP book concerns itself with the principles of object-oriented design, and many of the practices used by professional developers. If you have not read PPP, then you may find that it continues the story told by this book. If you have already read it, then you’ll find many of the sentiments of that book echoed in this one at the level of code.</description>
+    </item>
+    
+    <item>
+      <title>1.8. 小结</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/</guid>
+      <description>1.8 小结 #  Books on art don’t promise to make you an artist. All they can do is give you some of the tools, techniques, and thought processes that other artists have used. So too this book cannot promise to make you a good programmer. It cannot promise to give you “code-sense.” All it can do is show you the thought processes of good programmers and the tricks, techniques, and tools that they use.</description>
+    </item>
+    
+    <item>
+      <title>1.9. 参考文献</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/</guid>
+      <description>1.9 参考文献 #  [Beck07]: Implementation Patterns, Kent Beck, Addison-Wesley, 2007.
+[Knuth92]: Literate Programming, Donald E. Knuth, Center for the Study of Languageand Information, Leland Stanford Junior University, 1992.</description>
+    </item>
+    
+  </channel>
+</rss>

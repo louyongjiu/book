@@ -11,10 +11,10 @@
     
     <item>
       <title>2.4.1. 元组赋值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1.-Tuple-Assignment/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1.-Tuple-Assignment/</guid>
       <description>2.4.1. 元组赋值 #  元组赋值是另一种形式的赋值语句，它允许同时更新多个变量的值。在赋值之前，赋值语句右边的所有表达式将会先进行求值，然后再统一更新左边对应变量的值。这对于处理有些同时出现在元组赋值语句左右两边的变量很有帮助，例如我们可以这样交换两个变量的值：
 x, y = y, x a[i], a[j] = a[j], a[i] 或者是计算两个整数值的的最大公约数（GCD）（译注：GCD不是那个敏感字，而是greatest common divisor的缩写，欧几里德的GCD是最早的非平凡算法）：
 func gcd(x, y int) int { for y != 0 { x, y = y, x%y } return x } 或者是计算斐波纳契数列（Fibonacci）的第N个数：
@@ -24,10 +24,10 @@ i, j, k = 2, 3, 5 但如果表达式太复杂的话，应该尽量避免过度�
     
     <item>
       <title>2.4.2. 可赋值性</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2.-Assignability/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2.-Assignability/</guid>
       <description>2.4.2. 可赋值性 #  赋值语句是显式的赋值形式，但是程序中还有很多地方会发生隐式的赋值行为：函数调用会隐式地将调用参数的值赋值给函数的参数变量，一个返回语句会隐式地将返回操作的值赋值给结果变量，一个复合类型的字面量（§4.2）也会产生赋值行为。例如下面的语句：
 medals := []string{&amp;#34;gold&amp;#34;, &amp;#34;silver&amp;#34;, &amp;#34;bronze&amp;#34;} 隐式地对slice的每个元素进行赋值操作，类似这样写的行为：
 medals[0] = &amp;#34;gold&amp;#34; medals[1] = &amp;#34;silver&amp;#34; medals[2] = &amp;#34;bronze&amp;#34; map和chan的元素，虽然不是普通的变量，但是也有类似的隐式赋值行为。

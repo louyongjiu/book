@@ -11,10 +11,10 @@
     
     <item>
       <title>3.5.1. 字符串面值</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1.-String-Literals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1.-String-Literals/</guid>
       <description>3.5.1. 字符串面值 #  字符串值也可以用字符串面值方式编写，只要将一系列字节序列包含在双引号内即可：
 &amp;quot;Hello, 世界&amp;quot;  因为Go语言源文件总是用UTF8编码，并且Go语言的文本字符串也以UTF8编码的方式处理，因此我们可以将Unicode码点也写到字符串面值中。
 在一个双引号包含的字符串面值中，可以用以反斜杠\开头的转义序列插入任意的数据。下面的换行、回车和制表符等是常见的ASCII控制代码的转义方式：
@@ -26,10 +26,10 @@ const GoUsage = `Go is a tool for managing Go source code. Usage: go command [ar
     
     <item>
       <title>3.5.2. Unicode</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2.-Unicode/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2.-Unicode/</guid>
       <description>3.5.2. Unicode #  在很久以前，世界还是比较简单的，起码计算机世界就只有一个ASCII字符集：美国信息交换标准代码。ASCII，更准确地说是美国的ASCII，使用7bit来表示128个字符：包含英文字母的大小写、数字、各种标点符号和设备控制符。对于早期的计算机程序来说，这些就足够了，但是这也导致了世界上很多其他地区的用户无法直接使用自己的符号系统。随着互联网的发展，混合多种语言的数据变得很常见（译注：比如本身的英文原文或中文翻译都包含了ASCII、中文、日文等多种语言字符）。如何有效处理这些包含了各种语言的丰富多样的文本数据呢？
 答案就是使用Unicode（ http://unicode.org ），它收集了这个世界上所有的符号系统，包括重音符号和其它变音符号，制表符和回车符，还有很多神秘的符号，每个符号都分配一个唯一的Unicode码点，Unicode码点对应Go语言中的rune整数类型（译注：rune是int32等价类型）。
 在第八版本的Unicode标准里收集了超过120,000个字符，涵盖超过100多种语言。这些在计算机程序和数据中是如何体现的呢？通用的表示一个Unicode码点的数据类型是int32，也就是Go语言中rune对应的类型；它的同义词rune符文正是这个意思。
@@ -38,10 +38,10 @@ const GoUsage = `Go is a tool for managing Go source code. Usage: go command [ar
     
     <item>
       <title>3.5.3. UTF-8</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3.-UTF-8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3.-UTF-8/</guid>
       <description>3.5.3. UTF-8 #  UTF8是一个将Unicode码点编码为字节序列的变长编码。UTF8编码是由Go语言之父Ken Thompson和Rob Pike共同发明的，现在已经是Unicode的标准。UTF8编码使用1到4个字节来表示每个Unicode码点，ASCII部分字符只使用1个字节，常用字符部分使用2或3个字节表示。每个符号编码后第一个字节的高端bit位用于表示编码总共有多少个字节。如果第一个字节的高端bit为0，则表示对应7bit的ASCII字符，ASCII字符每个字符依然是一个字节，和传统的ASCII编码兼容。如果第一个字节的高端bit是110，则说明需要2个字节；后续的每个高端bit都以10开头。更大的Unicode码点也是采用类似的策略处理。
 0xxxxxxx runes 0-127 (ASCII) 110xxxxx 10xxxxxx 128-2047 (values &amp;lt;128 unused) 1110xxxx 10xxxxxx 10xxxxxx 2048-65535 (values &amp;lt;2048 unused) 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx 65536-0x10ffff (other values unused) 变长的编码无法直接通过索引来访问第n个字符，但是UTF8编码获得了很多额外的优点。首先UTF8编码比较紧凑，完全兼容ASCII码，并且可以自动同步：它可以通过向前回朔最多3个字节就能确定当前字符编码的开始字节的位置。它也是一个前缀编码，所以当从左向右解码时不会有任何歧义也并不需要向前查看（译注：像GBK之类的编码，如果不知道起点位置则可能会出现歧义）。没有任何字符的编码是其它字符编码的子串，或是其它编码序列的字串，因此搜索一个字符时只要搜索它的字节编码序列即可，不用担心前后的上下文会对搜索结果产生干扰。同时UTF8编码的顺序和Unicode码点的顺序一致，因此可以直接排序UTF8编码序列。同时因为没有嵌入的NUL(0)字节，可以很好地兼容那些使用NUL作为字符串结尾的编程语言。
 Go语言的源文件采用UTF8编码，并且Go语言处理UTF8编码的文本也很出色。unicode包提供了诸多处理rune字符相关功能的函数（比如区分字母和数字，或者是字母的大写和小写转换等），unicode/utf8包则提供了用于rune字符序列的UTF8编码和解码的功能。
@@ -56,10 +56,10 @@ func HasSuffix(s, suffix string) bool { return len(s) &amp;gt;= len(suffix) &amp
     
     <item>
       <title>3.5.4. 字符串和Byte切片</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4.-Strings-and-Byte-Slices/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4.-Strings-and-Byte-Slices/</guid>
       <description>3.5.4. 字符串和Byte切片 #  标准库中有四个包对字符串处理尤为重要：bytes、strings、strconv和unicode包。strings包提供了许多如字符串的查询、替换、比较、截断、拆分和合并等功能。
 bytes包也提供了很多类似功能的函数，但是针对和字符串有着相同结构的[]byte类型。因为字符串是只读的，因此逐步构建字符串会导致很多分配和复制。在这种情况下，使用bytes.Buffer类型将会更有效，稍后我们将展示。
 strconv包提供了布尔型、整型数、浮点数和对应字符串的相互转换，还提供了双引号转义相关的转换。
@@ -72,10 +72,10 @@ gopl.io/ch3/basename1
     
     <item>
       <title>3.5.5. 字符串和数字的转换</title>
-      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</link>
+      <link>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5.-Conversions-between-Strings-and-Numbers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</guid>
+      <guid>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5.-Conversions-between-Strings-and-Numbers/</guid>
       <description>3.5.5. 字符串和数字的转换 #  除了字符串、字符、字节之间的转换，字符串和数值之间的转换也比较常见。由strconv包提供这类转换功能。
 将一个整数转为字符串，一种方法是用fmt.Sprintf返回一个格式化的字符串；另一个方法是用strconv.Itoa(“整数到ASCII”)：
 x := 123 y := fmt.Sprintf(&amp;#34;%d&amp;#34;, x) fmt.Println(y, strconv.Itoa(x)) // &amp;#34;123 123&amp;#34; FormatInt和FormatUint函数可以用不同的进制来格式化数字：

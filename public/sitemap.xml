@@ -3,8 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/1.-Tutorial/1.1.-Hello-World/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
   </url>
   
   <url>
@@ -13,13 +23,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1-Workspace-Organization/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.1.-Workspace-Organization/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1-Randomized-Testing/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.1.-Randomized-Testing/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -33,23 +43,28 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.1.-Names/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1-Short-Variable-Declarations/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.1.-Short-Variable-Declarations/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1-Tuple-Assignment/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.1.-Tuple-Assignment/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1-Imports/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.1.-Imports/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -58,13 +73,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1-String-Literals/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.1.-String-Literals/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1-The-Constant-Generator-iota/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.1.-The-Constant-Generator-iota/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -73,13 +88,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1-The-append-Function/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.1.-The-append-Function/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1-Struct-Literals/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.1.-Struct-Literals/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -88,12 +103,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1-Error-Handling-Strategies/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.1.-Error-Handling-Strategies/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1-Caveat-Capturing-Iteration-Variables/</loc>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.6.-Anonymous-Functions/5.6.1.-Caveat-Capturing-Iteration-Variables/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -102,8 +118,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1-Nil-Is-a-Valid-Receiver-Value/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.2.-Methods-with-a-Pointer-Receiver/6.2.1.-Nil-Is-a-Valid-Receiver-Value/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -112,7 +128,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</loc>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.5.-Interface-Values/7.5.1.-Caveat-An-Interface-Containing-a-Nil-Pointer-Is-Non-Nil/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -121,8 +138,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1-Unbuffered-Channels/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.1.-Unbuffered-Channels/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -131,13 +148,18 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1-Growable-Stacks/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.1.-Growable-Stacks/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.1.-The-go-test-Tool/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/</loc>
+    <lastmod>2020-08-31T17:59:54+08:00</lastmod>
   </url>
   
   <url>
@@ -161,13 +183,18 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.2.-Import-Paths/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2-Downloading-Packages/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.2.-Downloading-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -176,8 +203,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2-Testing-a-Commandvvvvvvvv/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.2.-Testing-a-Command/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -191,23 +218,33 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.2.-Declarations/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2-Pointers/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.2.-Pointers/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2-Assignability/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.4.-Assignments/2.4.2.-Assignability/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2-Package-Initialization/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.6.-Packages-and-Files/2.6.2.-Package-Initialization/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -216,13 +253,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2-Unicode/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.2.-Unicode/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2-Untyped-Constants/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.6.-Constants/3.6.2.-Untyped-Constants/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -231,13 +268,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2-In-Place-Slice-Techniques/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.2.-Slices/4.2.2.-In-Place-Slice-Techniques/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2-Comparing-Structs/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.2.-Comparing-Structs/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -246,8 +283,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2-End-of-File-EOF/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/5.-Functions/5.4.-Errors/5.4.2.-End-of-File-EOF/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -262,20 +299,22 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.2.-Example-Concurrent-Clock-Server/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2-Pipelines/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.2.-Pipelines/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.2.-Mutual-Exclusion-sync.Mutex/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2-Goroutine-Scheduling/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.2.-Goroutine-Scheduling/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -294,18 +333,23 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.3.-The-Package-Declaration/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3-Building-Packages/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.3.-Building-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3-White-Box-Testing/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.3.-White-Box-Testing/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -320,6 +364,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/13.-Low-Level-Programming/13.3.-Example-Deep-Equivalence/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -333,8 +378,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3-The-new-Function/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.3.-The-new-Function/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -343,8 +393,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3-UTF-8/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.3.-UTF-8/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -353,8 +403,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3-Struct-Embedding-and-Anonymous-Fields/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/4.-Composite-Types/4.4.-Structs/4.4.3.-Struct-Embedding-and-Anonymous-Fields/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -374,20 +424,22 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.3.-Example-Concurrent-Echo-Server/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3-Unidirectional-Channel-Types/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.3.-Unidirectional-Channel-Types/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.3.-Read-Write-Mutexes-sync.RWMutex/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3-GOMAXPROCS/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.3.-GOMAXPROCS/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -401,18 +453,23 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.4.-Import-Declarations/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4-Documenting-Packagesvvvvvvvvvvvvvv/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.4.-Documenting-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4-External-Test-Packages/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.4.-External-Test-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -431,8 +488,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4-Lifetime-of-Variables/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.3.-Variables/2.3.4.-Lifetime-of-Variables/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -451,8 +513,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4-Strings-and-Byte-Slices/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.4.-Strings-and-Byte-Slices/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -481,8 +543,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4-Buffered-Channels/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.4.-Channels/8.4.4.-Buffered-Channels/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -491,13 +553,18 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4-Goroutines-Have-No-Identity/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.8.-Goroutines-and-Threads/9.8.4.-Goroutines-Have-No-Identity/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/Preface/Where-to-Find-More-Information/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
   </url>
   
   <url>
@@ -511,13 +578,13 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5-Internal-Packages/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.5.-Internal-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5-Writing-Effective-Tests/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.5.-Writing-Effective-Tests/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -536,6 +603,11 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.5.-Type-Declarations/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
@@ -546,8 +618,8 @@
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5-Conversions-between-Strings-and-Numbers/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/3.-Basic-Data-Types/3.5.-Strings/3.5.5.-Conversions-between-Strings-and-Numbers/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -567,6 +639,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/6.-Methods/6.5.-Example-Bit-Vector-Type/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -581,6 +654,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.5.-Lazy-Initialization-sync.Once/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -594,18 +668,23 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.6.-Packages-and-Naming/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6-Querying-Packages/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/10.-Packages-and-the-Go-Tool/10.7.-The-Go-Tool/10.7.6.-Querying-Packages/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6-Avoiding-Brittle-Tests/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/11.2.-Test-Functions/11.2.6.-Avoiding-Brittle-Tests/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
@@ -615,6 +694,12 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.6.-Example-Decoding-S-Expressions/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -654,6 +739,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.6.-Example-Concurrent-Web-Crawler/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -664,6 +750,11 @@
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/1.-Tutorial/1.7.-A-Web-Server/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
   </url>
   
   <url>
@@ -679,6 +770,11 @@
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/2.-Program-Structure/2.7.-Scope/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -703,6 +799,12 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/9.-Concurrency-with-Shared-Variables/9.7.-Example-Concurrent-Non-Blocking-Cache/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/</loc>
+    <lastmod>2020-08-31T11:12:21+08:00</lastmod>
   </url>
   
   <url>
@@ -713,6 +815,11 @@
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.8.-Displaying-the-Methods-of-a-Type/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -732,6 +839,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.8.-Example-Concurrent-Directory-Traversal/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -740,8 +848,18 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/</loc>
+    <lastmod>2020-08-31T11:26:39+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/12.-Reflection/12.9.-A-Word-of-Caution/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -751,6 +869,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.9.-Example-Expression-Evaluator/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -761,6 +880,11 @@
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.9.-Cancellation/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -775,6 +899,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/8.-Goroutines-and-Channels/8.10.-Example-Chat-Server/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
@@ -788,6 +913,10 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.11.-Discriminating-Errors-with-Type-Assertions/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
@@ -795,6 +924,11 @@
   <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/11.-Testing/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
@@ -808,6 +942,10 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/</loc>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.13.-Type-Switches/</loc>
     <lastmod>2020-08-27T15:36:41+08:00</lastmod>
   </url>
@@ -818,107 +956,117 @@
   </url>
   
   <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.14.-Example-Token-Based-XML-Decoding/</loc>
+    <lastmod>2020-08-28T14:02:25+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advicevvvv/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/apA/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/The-Go-Programming-Language/7.-Interfaces/7.15.-A-Few-Words-of-Advice/</loc>
+    <lastmod>2020-08-29T15:24:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch1/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch10/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/</loc>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch11/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/</loc>
+    <lastmod>2020-08-31T17:40:56+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch12/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/10.-Classes/ch10/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch13/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/11.-Systems/ch11/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch14/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/12.-Emergence/ch12/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch15/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/13.-Concurrency/ch13/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch16/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/14.-Successive-Refinement/ch14/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch17/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/15.-JUnit-Internals/ch15/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch2/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch3/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch4/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch5/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch6/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/5.-Formatting/ch5/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch7/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch8/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/7.-Error-Handling/ch7/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/ch9/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/8.-Boundaries/ch8/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://book.ninescloud.com/docs/Clean-Code/README/</loc>
-    <lastmod>2020-08-27T15:36:41+08:00</lastmod>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/9.-Unit-Tests/ch9/</loc>
+    <lastmod>2020-08-29T17:55:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://book.ninescloud.com/docs/Clean-Code/Appendix-A-Concurrency-II/apA/</loc>
+    <lastmod>2020-08-28T19:59:50+08:00</lastmod>
   </url>
   
   <url>
@@ -927,7 +1075,7 @@
   
   <url>
     <loc>https://book.ninescloud.com/docs/</loc>
-    <lastmod>2020-08-28T11:55:33+08:00</lastmod>
+    <lastmod>2020-08-31T17:59:54+08:00</lastmod>
   </url>
   
   <url>

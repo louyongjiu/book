@@ -16,7 +16,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -72,7 +72,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -707,7 +707,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#%e7%ac%ac-3-%e7%ab%a0-functions-%e5%87%bd%e6%95%b0">#</a>
 </h1>
 <p>
-  <img src="figures/ch3/3_1fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch3/3_1fig_martin.jpg" alt="" /></p>
 <p>In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.</p>
 <blockquote>
 <p>在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。</p>
@@ -876,7 +876,7 @@ SetupsAndTeardowns<span style="color:#f92672">(</span>
 <p>过去 30 年以来，以下建议以不同形式一再出现：</p>
 </blockquote>
 <p>
-  <img src="figures/ch3/3_2fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch3/3_2fig_martin.jpg" alt="" /></p>
 <p>FUNCTIONS SHOULD DO ONE THING. THEY SHOULD DO IT WELL. THEY SHOULD DO IT ONLY.</p>
 <blockquote>
 <p>函数应该做一件事。做好这件事。只做这一件事。</p>
@@ -1090,7 +1090,7 @@ SetupsAndTeardowns<span style="color:#f92672">(</span>
 <p>最理想的参数数量是零（零参数函数），其次是一（单参数函数），再次是二（双参数函数），应尽量避免三（三参数函数）。有足够特殊的理由才能用三个以上参数（多参数函数）——所以无论如何也不要这么做。</p>
 </blockquote>
 <p>
-  <img src="figures/ch3/3_3fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch3/3_3fig_martin.jpg" alt="" /></p>
 <p>Arguments are hard. They take a lot of conceptual power. That’s why I got rid of almost all of them from the example. Consider, for instance, the StringBuffer in the example. We could have passed it around as an argument rather than making it an instance variable, but then our readers would have had to interpret it each time they saw it. When you are reading the story told by the module, includeSetupPage() is easier to understand than includeSetupPageInto(newPage-Content). The argument is at a different level of abstraction than the function name and forces you to know a detail (in other words, StringBuffer) that isn’t particularly important at that point.</p>
 <blockquote>
 <p>参数不易对付。它们带有太多概念性。所以我在代码范例中几乎不加参数。比如，以 StringBuffer 为例，我们可能不把它作为实体变量，而是当作参数来传递，那样的话，读者每次看到它都得要翻译一遍。阅读模块所讲述的故事时，includeSetupPage()要比 includeSetupPageInto（newPage-Content）易于理解。参数与函数名处在不同的抽象层级，它要求你了解目前并不特别重要的细节（即那个 StringBuffer）。</p>
@@ -1421,7 +1421,7 @@ Circle <span style="color:#a6e22e">makeCircle</span><span style="color:#f92672">
 <p>回头仔细看看代码清单 3-1，你会注意到，有个算法在 SetUp、SuiteSetUp、TearDown 和 SuiteTearDown 中总共被重复了 4 次。识别重复不太容易，因为这 4 次重复与其他代码混在一起，而且也不完全一样。这样的重复还是会导致问题，因为代码因此而臃肿，且当算法改变时需要修改 4 处地方。而且也会增加 4 次放过错误的可能性。</p>
 </blockquote>
 <p>
-  <img src="figures/ch3/3_4fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch3/3_4fig_martin.jpg" alt="" /></p>
 <p>This duplication was remedied by the include method in Listing 3-7. Read through that code again and notice how the readability of the whole module is enhanced by the reduction of that duplication.</p>
 <blockquote>
 <p>使用代码清单 3-7 中的 include 方法修正了这些重复。再读一遍那段代码，你会注意到，整个模块的可读性因为重复的消除而得到了提升。</p>

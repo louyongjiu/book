@@ -14,7 +14,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -70,7 +70,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -679,7 +679,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#%e7%ac%ac-5-%e7%ab%a0-formatting-%e6%a0%bc%e5%bc%8f">#</a>
 </h1>
 <p>
-  <img src="figures/ch5/5_1fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch5/5_1fig_martin.jpg" alt="" /></p>
 <p>When people look under the hood, we want them to be impressed with the neatness, consistency, and attention to detail that they perceive. We want them to be struck by the orderliness. We want their eyebrows to rise as they scroll through the modules. We want them to perceive that professionals have been at work. If instead they see a scrambled mass of code that looks like it was written by a bevy of drunken sailors, then they are likely to conclude that the same inattention to detail pervades every other aspect of the project.</p>
 <blockquote>
 <p>当有人查看底层代码实现时，我们希望他们为其整洁、一致及所感知到的对细节的关注而震惊。我们希望他们高高扬起眉毛，一路看下去。我们希望他们感受到那些为之劳作的专业人士们。但若他们看到的只是一堆像是由酒醉的水手写出的鬼画符，那他们多半会得出结论，认为项目其他任何部分也同样对细节漠不关心。</p>
@@ -722,7 +722,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 <p>Figure 5-1 File length distributions LOG scale (box height = sigma)</p>
 <p>
-  <img src="figures/ch5/5_2fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch5/5_2fig_martin.jpg" alt="" /></p>
 <p>Junit, FitNesse, and Time and Money are composed of relatively small files. None are over 500 lines and most of those files are less than 200 lines. Tomcat and Ant, on the other hand, have some files that are several thousand lines long and close to half are over 200 lines.</p>
 <blockquote>
 <p>Junit、FitNesse 和 Time and Money 由相对较小的文件组成。没有一个超过 500 行，多数都小于 200 行。Tomcat 和 Ant 则有些文件达到数千行，将近一半文件长于 200 行。</p>
@@ -1048,7 +1048,7 @@ https://github.com/alex-shpak/hugo-book
 <p>如上所述，相关性应建立在直接依赖的基础上，如函数间调用，或函数使用某个变量。但也有其他相关性的可能。相关性可能来自于执行相似操作的一组函数。请看以下来自 Junit 4.3.1 的代码片段：</p>
 </blockquote>
 <p>
-  <img src="figures/ch5/5_3fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch5/5_3fig_martin.jpg" alt="" /></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Assert</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">assertTrue</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> condition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>condition<span style="color:#f92672">)</span>
@@ -1091,7 +1091,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 <p>Figure 5-2 Java line width distribution</p>
 <p>
-  <img src="figures/ch5/5_4fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch5/5_4fig_martin.jpg" alt="" /></p>
 <p>This suggests that we should strive to keep our lines short. The old Hollerith limit of 80 is a bit arbitrary, and I’m not opposed to lines edging out to 100 or even 120. But beyond that is probably just careless.</p>
 <blockquote>
 <p>这说明，应该尽力保持代码行短小。死守 80 个字符的上限有点僵化，而且我也并不反对代码行长度达到 100 个字符或 120 个字符。再多的话，大抵就是肆意妄为了。</p>
@@ -1317,7 +1317,7 @@ sender<span style="color:#f92672">.</span><span style="color:#a6e22e">setRequest
 <p>一组开发者应当认同一种格式风格，每个成员都应该采用那种风格。我们想要让软件拥有一以贯之的风格。我们不想让它显得是由一大票意见相左的个人所写成。</p>
 </blockquote>
 <p>
-  <img src="figures/ch5/5_5fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch5/5_5fig_martin.jpg" alt="" /></p>
 <p>When I started the FitNesse project back in 2002, I sat down with the team to work out a coding style. This took about 10 minutes. We decided where we’d put our braces, what our indent size would be, how we would name classes, variables, and methods, and so forth. Then we encoded those rules into the code formatter of our IDE and have stuck with them ever since. These were not the rules that I prefer; they were rules decided by the team. As a member of that team I followed them when writing code in the FitNesse project.</p>
 <blockquote>
 <p>002 年启动 FitNesse 项目时，我和开发团队一起制订了一套编码风格。这只花了我们 10 分钟时间。我们决定了在什么地方放置括号，缩进几个字符，如何命名类、变量和方法，如此等等。然后，我们把这些规则编写进 IDE 的代码格式功能，接着就一直沿用。这些规则并非全是我喜爱的；但它们是团队决定了的规则。作为团队一员，在为 FitNesse 项目编写代码时，我遵循这些规则。</p>

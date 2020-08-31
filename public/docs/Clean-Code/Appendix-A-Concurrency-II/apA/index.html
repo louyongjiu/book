@@ -20,7 +20,7 @@ This appendix supports and amplifies the Concurrency chapter on page 177. It is 
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -76,7 +76,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -1012,7 +1012,7 @@ https://github.com/alex-shpak/hugo-book
 <p>对于指令系列中有 N 个指令和 T 个线程、没有循环或条件分支的简单情况，总的可能执行路径数量等于</p>
 </blockquote>
 <p>
-  <img src="figures/apA/322equ01.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/322equ01.jpg" alt="" /></p>
 <p>Calculating the Possible Orderings</p>
 <blockquote>
 <p>计算可能执行次序</p>
@@ -1122,9 +1122,9 @@ https://github.com/alex-shpak/hugo-book
 <p>下面是 restId() 的字节码，如表 A-1 所示。</p>
 </blockquote>
 <p>
-  <img src="figures/apA/0324tab01.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/0324tab01.jpg" alt="" /></p>
 <p>
-  <img src="figures/apA/0325tab01.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/0325tab01.jpg" alt="" /></p>
 <p>These three instructions are guaranteed to be atomic because, although the thread executing them could be interrupted after any one of them, the information for the PUTFIELD instruction (the constant value 0 on the top of the stack and the reference to this one below the top, along with the field value) cannot be touched by another thread. So when the assignment occurs, we are guaranteed that the value 0 will be stored in the field value. The operation is atomic. The operands all deal with information local to the method, so there is no interference between multiple threads.</p>
 <blockquote>
 <p>这三个指令确保是原子的，因为尽管执行它们的线程可能在其中任何一个指令后被打断，但 PUTFIELD 指令（堆栈顶部的常量值 0 和顶端之下的 this 引用及其字段值）的信息并不能为其他线程所触及。所以，当赋值操作发生时，值 0 一定将存储到字段值中。该操作是原子的。操作对象都处理对于方法而言是本地的信息，故在多个线程之间并无冲突。</p>
@@ -1138,7 +1138,7 @@ https://github.com/alex-shpak/hugo-book
 <p>方法 getNextId 中的++操作就会有问题了。假定 lastId 在方法开始时的值为 42.下面是新方法的字节码，如表 A-2 所示。</p>
 </blockquote>
 <p>
-  <img src="figures/apA/0325tab02.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/0325tab02.jpg" alt="" /></p>
 <p>Imagine the case where the first thread completes the first three instructions, up to and including GETFIELD, and then it is interrupted. A second thread takes over and performs the entire method, incrementing lastId by one; it gets 43 back. Then the first thread picks up where it left off; 42 is still on the operand stack because that was the value of lastId when it executed GETFIELD. It adds one to get 43 again and stores the result. The value 43 is returned to the first thread as well. The result is that one of the increments is lost because the first thread stepped on the second thread after the second thread interrupted the first thread.</p>
 <blockquote>
 <p>设想第一个线程完成了前三个操作，直到执行完 GETFIELD，然后被打断。第二个线程接手并完成整个方法调用，lastId 的值递增 1；得到的值为 43。第一个线程再从中断处继续执行；操作对象栈中的值还是 42，因为那就是该线程执行 GETFIELD 时的 lastId 值。线程给 lastId 加 1，得到 43，存储这个结果。第一个线程也得到了值 43。结果就是其中一个递增操作丢失了，因为第一个线程在被第二个线程打断后又踏入了第二个线程中。</p>
@@ -1657,7 +1657,7 @@ map<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</
 </blockquote>
 <p>Figure A-1 Single thread</p>
 <p>
-  <img src="figures/apA/x01-1single_thread.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/x01-1single_thread.jpg" alt="" /></p>
 <h3 id="a52-multithread-calculation-of-throughput-多线程条件下的吞吐量">
   A.5.2 Multithread Calculation of Throughput 多线程条件下的吞吐量
   <a class="anchor" href="#a52-multithread-calculation-of-throughput-%e5%a4%9a%e7%ba%bf%e7%a8%8b%e6%9d%a1%e4%bb%b6%e4%b8%8b%e7%9a%84%e5%90%9e%e5%90%90%e9%87%8f">#</a>
@@ -1672,7 +1672,7 @@ map<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</
 </blockquote>
 <p>Figure A-2 Three concurrent threads</p>
 <p>
-  <img src="figures/apA/x01-2multi_thread.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/x01-2multi_thread.jpg" alt="" /></p>
 <h2 id="a6-deadlock-死锁">
   A.6 DEADLOCK 死锁
   <a class="anchor" href="#a6-deadlock-%e6%ad%bb%e9%94%81">#</a>
@@ -1802,7 +1802,7 @@ map<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</
 </blockquote>
 <p>Figure A-3</p>
 <p>
-  <img src="figures/apA/x01-3breaking_cycle.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/x01-3breaking_cycle.jpg" alt="" /></p>
 <p>All four of these conditions must hold for deadlock to be possible. Break any one of these conditions and deadlock is not possible.</p>
 <blockquote>
 <p>这 4 种条件都是死锁所必需的。只要其中一个不满足，死锁就不会发生。</p>
@@ -1990,9 +1990,9 @@ map<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</
 36:     <span style="color:#f92672">}</span>
 37: <span style="color:#f92672">}</span>
 </code></pre></div><p>
-  <img src="figures/apA/0340tab01.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/0340tab01.jpg" alt="" /></p>
 <p>
-  <img src="figures/apA/0341tab01.jpg" alt="" /></p>
+  <img src="/cc/figures/apA/0341tab01.jpg" alt="" /></p>
 <p>This test certainly sets up the conditions for a concurrent update problem. However, the problem occurs so infrequently that the vast majority of times this test won’t detect it.</p>
 <blockquote>
 <p>这个测试当然设置了满足并发更新问题发生的条件。不过，问题发生得如此频繁，测试也就极有可能侦测不到。</p>

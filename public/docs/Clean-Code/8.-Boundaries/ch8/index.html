@@ -16,7 +16,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -72,7 +72,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -668,7 +668,7 @@ https://github.com/alex-shpak/hugo-book
 </h1>
 <p>by James Grenning</p>
 <p>
-  <img src="figures/ch8/113fig01.jpg" alt="" /></p>
+  <img src="/cc/figures/ch8/113fig01.jpg" alt="" /></p>
 <p>We seldom control all the software in our systems. Sometimes we buy third-party packages or use open source. Other times we depend on teams in our own company to produce components or subsystems for us. Somehow we must cleanly integrate this foreign code with our own. In this chapter we look at practices and techniques to keep the boundaries of our software clean.</p>
 <blockquote>
 <p>我们很少控制系统中的全部软件。有时我们购买第三方程序包或使用开放源代码，有时我们依靠公司中其他团队打造组件或子系统。不管是哪种情况，我们都得将外来代码干净利落地整合进自己的代码中。本章将介绍一些保持软件边界整洁的实践手段和技巧。</p>
@@ -687,7 +687,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 <p>Figure 8-1 The methods of Map</p>
 <p>
-  <img src="figures/ch8/114fig01.jpg" alt="" /></p>
+  <img src="/cc/figures/ch8/114fig01.jpg" alt="" /></p>
 <p>If our application needs a Map of Sensors, you might find the sensors set up like this:</p>
 <blockquote>
 <p>如果你的应用程序需要一个包容 Sensor 类对象的 Map 映射图，大概会是这样：</p>
@@ -908,7 +908,7 @@ Sensor s <span style="color:#f92672">=</span> sensors<span style="color:#f92672"
 </blockquote>
 <p>Figure 8-2 Predicting the transmitter</p>
 <p>
-  <img src="figures/ch8/119fig01.jpg" alt="" /></p>
+  <img src="/cc/figures/ch8/119fig01.jpg" alt="" /></p>
 <p>This design also gives us a very convenient seam3 in the code for testing. Using a suitable FakeTransmitter, we can test the CommunicationsController classes. We can also create boundary tests once we have the TransmitterAPI that make sure we are using the API correctly.</p>
 <blockquote>
 <p>这套设计方案为测试提供了一种极为方便的接缝。使用适当的 FakeTransmitter，我们就能测试 CommunicationsController 类。在拿到 TransmitterAPI 时，我们也能创建确保正确使用 API 的边界测试。</p>

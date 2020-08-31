@@ -14,7 +14,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -70,7 +70,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -674,7 +674,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#%e7%ac%ac-6-%e7%ab%a0-objects-and-data-structures-%e5%af%b9%e8%b1%a1%e5%92%8c%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84">#</a>
 </h1>
 <p>
-  <img src="figures/ch6/6_1fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch6/6_1fig_martin.jpg" alt="" /></p>
 <p>There is a reason that we keep our variables private. We don’t want anyone else to depend on them. We want to keep the freedom to change their type or implementation on a whim or an impulse. Why, then, do so many programmers automatically add getters and setters to their objects, exposing their private variables as if they were public?</p>
 <blockquote>
 <p>将变量设置为私有（private）有一个理由：我们不想其他人依赖这些变量。我们还想在心血来潮时能自由修改其类型或实现。那么，为什么还是有那么多程序员给对象自动添加赋值器和取值器，将私有变量公之于众、如同它们根本就是公共变量一般呢？</p>
@@ -918,7 +918,7 @@ File scratchDir <span style="color:#f92672">=</span> opts<span style="color:#f92
 <p>上列代码是否违反了得墨忒耳律呢？当然，模块知道 ctxt 对象包含有多个选项，每个选项中都有一个临时目录，而每个临时目录都有一个绝对路径。对于一个函数，这些知识真够丰富的。调用函数懂得如何在一大堆不同对象间浏览。</p>
 </blockquote>
 <p>
-  <img src="figures/ch6/6_2fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch6/6_2fig_martin.jpg" alt="" /></p>
 <p>Whether this is a violation of Demeter depends on whether or not ctxt, Options, and ScratchDir are objects or data structures. If they are objects, then their internal structure should be hidden rather than exposed, and so knowledge of their innards is a clear violation of the Law of Demeter. On the other hand, if ctxt, Options, and ScratchDir are just data structures with no behavior, then they naturally expose their internal structure, and so Demeter does not apply.</p>
 <blockquote>
 <p>这些代码是否违反得墨忒耳律，取决于 ctxt、Options 和 ScratchDir 是对象还是数据结构。如果是对象，则它们的内部结构应当隐藏而不曝露，而有关其内部细节的知识就明显违反了得墨忒耳律。如果 ctxt、Options 和 ScratchDir 只是数据结构，没有任何行为，则它们自然会曝露其内部结构，得墨忒耳律也就不适用了。</p>

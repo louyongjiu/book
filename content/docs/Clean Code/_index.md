@@ -9,7 +9,7 @@ title: 代码整洁之道
 
 在线阅读：[http://gdut_yy.gitee.io/doc-cleancode/](http://gdut_yy.gitee.io/doc-cleancode/)
 
-<img src="./docs/cover.jpg" width=24% />
+<img src="/cc/figures/cover.jpg" width=24% />
 
 ## 前言
 

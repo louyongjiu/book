@@ -5,7 +5,7 @@ title: "1. 整洁代码"
 
 # 第 1 章 整洁代码
 
-![](figures/ch1/1-1fig_martin.jpg)
+![](/cc/figures/ch1/1-1fig_martin.jpg)
 
 You are reading this book for two reasons. First, you are a programmer. Second, you want to be a better programmer. Good. We need better programmers.
 

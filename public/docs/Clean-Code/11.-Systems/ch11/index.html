@@ -24,7 +24,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -80,7 +80,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -687,7 +687,7 @@ https://github.com/alex-shpak/hugo-book
 </h1>
 <p>by Dr. Kevin Dean Wampler</p>
 <p>
-  <img src="figures/ch11/11_1fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch11/11_1fig_martin.jpg" alt="" /></p>
 <p>“Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.”</p>
 <p>—Ray Ozzie, CTO, Microsoft Corporation</p>
 <blockquote>
@@ -778,14 +778,14 @@ https://github.com/alex-shpak/hugo-book
 <p>Sometimes, of course, we need to make the application responsible for when an object gets created. For example, in an order processing system the application must create the</p>
 <p>Figure 11-1 Separating construction in main()</p>
 <p>
-  <img src="figures/ch11/11_2fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch11/11_2fig_martin.jpg" alt="" /></p>
 <p>LineItem instances to add to an Order. In this case we can use the ABSTRACT FACTORY2 pattern to give the application control of when to build the LineItems, but keep the details of that construction separate from the application code. (See Figure 11-2.)</p>
 <blockquote>
 <p>当然，有时应用程序也要负责确定何时创建对象。比如，在某个订单处理系统中，应用程序必须创建 LineItem 实体，添加到 Order 对象。在这种情况下，我们可以使用抽象工厂模式让应用自行控制何时创建 LineItems，但构造的细节却隔离于应用程序代码之外。</p>
 </blockquote>
 <p>Figure 11-2 Separation construction with factory</p>
 <p>
-  <img src="figures/ch11/11_3fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch11/11_3fig_martin.jpg" alt="" /></p>
 <p>Again notice that all the dependencies point from main toward the OrderProcessing application. This means that the application is decoupled from the details of how to build a LineItem. That capability is held in the LineItemFactoryImplementation, which is on the main side of the line. And yet the application is in complete control of when the LineItem instances get built and can even provide application-specific constructor arguments.</p>
 <blockquote>
 <p>再留意一下，所有依赖都是从 main 指向 OrderProcessing 应用程序。这代表应用程序与如何构建 LineItem 的细节是分离开来的。构建能力由 LineItemFactoryImplementation 持有，而 LineItemFactoryImplementation 又是在 main 这一边的。但应用程序能完全控制 LineItem 实体何时构建，甚至能传递应用特定的构造器参数。</p>
@@ -1149,7 +1149,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 <p>Figure 11-3 The “Russian doll” of decorators</p>
 <p>
-  <img src="figures/ch11/11_4fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch11/11_4fig_martin.jpg" alt="" /></p>
 <p>The client believes it is invoking getAccounts() on a Bank object, but it is actually talking to the outermost of a set of nested DECORATOR14 objects that extend the basic behavior of the Bank POJO. We could add other decorators for transactions, caching, and so forth.</p>
 <blockquote>
 <p>客户代码以为调用的是 Bank 对象的 getAccount( )方法，其实它是在与一组扩展 Bank POJO 基础行为的油漆工（DECORATOR）对象中最外面的那个沟通。</p>

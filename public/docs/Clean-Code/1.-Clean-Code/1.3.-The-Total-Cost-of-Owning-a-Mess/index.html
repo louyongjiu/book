@@ -14,7 +14,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
-<script defer src="/zh.search.min.5e0cb88fe943dfa84e07b851073d5e9d2a070ea33f763765d8bb250045afec20.js" integrity="sha256-Xgy4j&#43;lD36hOB7hRBz1enSoHDqM/djdl2LslAEWv7CA="></script>
+<script defer src="/zh.search.min.bf23bc63a52c0af3b2926bb1a48b0dc2aa508cef92403592b6ff6f6a2484462b.js" integrity="sha256-vyO8Y6UsCvOykmuxpIsNwqpQjO&#43;SQDWStv9vaiSERis="></script>
 
 <script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
 <!--
@@ -70,7 +70,7 @@ https://github.com/alex-shpak/hugo-book
         <li class="book-section-flat" >
           
   
-    <a href="/docs/Clean-Code/" class="collapsed ">Go语言圣经</a>
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
   
 
           
@@ -677,7 +677,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 <p>Figure 1-1 Productivity vs. time</p>
 <p>
-  <img src="figures/ch1/1-4fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-4fig_martin.jpg" alt="" /></p>
 <h3 id="131-the-grand-redesign-in-the-sky-华丽新设计">
   1.3.1 The Grand Redesign in the Sky 华丽新设计
   <a class="anchor" href="#131-the-grand-redesign-in-the-sky-%e5%8d%8e%e4%b8%bd%e6%96%b0%e8%ae%be%e8%ae%a1">#</a>
@@ -779,7 +779,7 @@ https://github.com/alex-shpak/hugo-book
 <p>有多少程序员，就有多少定义。所以我只询问了一些非常知名且经验丰富的程序员。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-5fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-5fig_martin.jpg" alt="" /></p>
 <p>Bjarne Stroustrup, inventor of C++ and author of The C++ Programming Language</p>
 <blockquote>
 <p>Bjarne Stroustrup，C++语言发明者，C++Programming Language（中译版《C++程序设计语言》）一书作者。</p>
@@ -813,7 +813,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Grady Booch，Object Oriented Analysis and Design with Applications（中译版《面向对象分析与设计》）一书作者。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-6fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-6fig_martin.jpg" alt="" /></p>
 <p>Clean code is simple and direct. Clean code reads like well-written prose. Clean code never obscures the designer’s intent but rather is full of crisp abstractions and straightforward lines of control.</p>
 <blockquote>
 <p>整洁的代码简单直接。整洁的代码如同优美的散文。整洁的代码从不隐藏设计者的意图，充满了干净利落的抽象和直截了当的控制语句。</p>
@@ -835,7 +835,7 @@ https://github.com/alex-shpak/hugo-book
 <p>“老大”Dave Thomas，OTI 公司创始人，Eclipse 战略教父。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-7fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-7fig_martin.jpg" alt="" /></p>
 <p>Clean code can be read, and enhanced by a developer other than its original author. It has unit and acceptance tests. It has meaningful names. It provides one way rather than many ways for doing one thing. It has minimal dependencies, which are explicitly defined, and provides a clear and minimal API. Code should be literate since depending on the language, not all necessary information can be expressed clearly in code alone.</p>
 <blockquote>
 <p>整洁的代码应可由作者之外的开发者阅读和增补。它应当有单元测试和验收测试。它使用有意义的命名。它只提供一种而非多种做一件事的途径。它只有尽量少的依赖关系，而且要明确地定义和提供清晰、尽量少的 API。代码应通过其字面表达含义，因为不同的语言导致并非所有必需信息均可通过代码自身清晰表达。</p>
@@ -861,7 +861,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Michael Feathers，Working Effectively with Legacy Code（中译版《修改代码的艺术》）一书作者。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-8fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-8fig_martin.jpg" alt="" /></p>
 <p>I could list all of the qualities that I notice in clean code, but there is one overarching quality that leads to all of them. Clean code always looks like it was written by someone who cares. There is nothing obvious that you can do to make it better. All of those things were thought about by the code’s author, and if you try to imagine improvements, you’re led back to where you are, sitting in appreciation of the code someone left for you—code left by someone who cares deeply about the craft.</p>
 <blockquote>
 <p>我可以列出我留意到的整洁代码的所有特点，但其中有一条是根本性的。整洁的代码总是看起来像是某位特别在意它的人写的。几乎没有改进的余地。代码作者什么都想到了，如果你企图改进它，总会回到原点，赞叹某人留给你的代码——全心投入的某人留下的代码。</p>
@@ -883,7 +883,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Ron 初入行就在战略空军司令部（Strategic Air Command）编写 Fortran 程序，此后几乎在每种机器上编写过每种语言的代码。他的言论值得咀嚼。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-9fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-9fig_martin.jpg" alt="" /></p>
 <p>In recent years I begin, and nearly end, with Beck’s rules of simple code. In priority order, simple code:</p>
 <blockquote>
 <p>近年来，我开始研究贝克的简单代码规则，差不多也都琢磨透了。简单代码，依其重要顺序：</p>
@@ -940,7 +940,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Ward Cunningham，Wiki 发明者，eXtreme Programming （极限编程）的创始人之一，Smalltalk 语言和面向对象的思想领袖。所有在意代码者的教父。</p>
 </blockquote>
 <p>
-  <img src="figures/ch1/1-10fig_martin.jpg" alt="" /></p>
+  <img src="/cc/figures/ch1/1-10fig_martin.jpg" alt="" /></p>
 <p>You know you are working on clean code when each routine you read turns out to be pretty much what you expected. You can call it beautiful code when the code also makes it look like the language was made for the problem.</p>
 <blockquote>
 <p>如果每个例程都让你感到深合己意，那就是整洁代码。如果代码让编程语言看起来像是专为解决那个问题而存在，就可以称之为漂亮的代码。</p>

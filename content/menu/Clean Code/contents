@@ -19,7 +19,7 @@
 2.3. Avoid Disinformation
 2.4. Make Meaningful Distinctions
 2.5. Use Pronounceable Names
-2.6. Use Searchable Names 
+2.6. Use Searchable Names
 2.7. Avoid Encodings
 2.7.1. Hungarian Notation
 2.7.2.  Member Prefixes
@@ -27,7 +27,7 @@
 2.8. Avoid Mental Mapping
 2.9. Class Names
 2.10. Method Names
-2.11. Don’t Be Cute 
+2.11. Don’t Be Cute
 2.12. Pick One Word per Concept
 2.13. Don’t Pun
 2.14. Use Solution Domain Names

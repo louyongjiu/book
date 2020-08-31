@@ -3,7 +3,7 @@ weight: 1
 title: "1. 整洁代码"
 ---
 
-# 第 1 章 
+# 第 1 章 整洁代码
 
 ![](figures/ch1/1-1fig_martin.jpg)
 

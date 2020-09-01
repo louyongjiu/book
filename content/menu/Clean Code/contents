@@ -115,7 +115,7 @@
 5.5. Uncle Bob’s Formatting Rules
 6. Objects and Data Structures
 6.1. Data Abstraction
-6.2. Data/Object Anti-Symmetry 
+6.2. Data/Object Anti-Symmetry
 6.3. The Law of Demeter
 6.3.1. Train Wrecks 
 6.3.2. Hybrids

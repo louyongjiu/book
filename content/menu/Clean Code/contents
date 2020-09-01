@@ -59,11 +59,11 @@
 3.9.1. Extract Try/Catch Blocks 
 3.9.2. Error Handling Is One Thing
 3.9.3. The Error.java Dependency Magnet 
-3.10. Don’t Repeat Yourself 
-3.11. Structured Programming 
+3.10. Don’t Repeat Yourself
+3.11. Structured Programming
 3.12. How Do You Write Functions Like This?
 3.13. Conclusion
-3.14. SetupTeardownIncluder 
+3.14. SetupTeardownIncluder
 3.15. Bibliography
 4. Comments
 4.1. Comments Do Not Make Up for Bad Code

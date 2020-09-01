@@ -2,7 +2,7 @@
 bookFlatSection: true
 bookCollapseSection: true
 weight: 1
-title: 代码整洁之道
+title: "代码整洁之道"
 ---
 
 # 《代码整洁之道》中文翻译

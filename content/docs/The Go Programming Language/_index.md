@@ -2,7 +2,7 @@
 bookFlatSection: true
 bookCollapseSection: true
 weight: 2
-title: Go语言圣经
+title: "Go语言圣经"
 ---
 
 # Go语言圣经（中文版）

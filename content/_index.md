@@ -1,5 +1,5 @@
 ---
-title: Go语言圣经
+title: "Go语言圣经"
 type: docs
 ---
 

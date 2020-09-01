@@ -125,14 +125,14 @@
 6.5. Conclusion
 6.6. Bibliography
 7. Error Handling
-7.1. Use Exceptions Rather Than Return Codes 
+7.1. Use Exceptions Rather Than Return Codes
 7.2. Write Your Try-Catch-Finally Statement First
 7.3. Use Unchecked Exceptions
 7.4. Provide Context with Exceptions
 7.5. Define Exception Classes in Terms of a Caller’s Needs
 7.6. Define the Normal Flow
 7.7. Don’t Return Null
-7.8. Don’t Pass Null 
+7.8. Don’t Pass Null
 7.9. Conclusion
 7.10. Bibliography
 8. Boundaries

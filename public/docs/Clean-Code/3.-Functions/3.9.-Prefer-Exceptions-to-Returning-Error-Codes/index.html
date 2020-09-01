@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3.9 使用异常替代返回错误码 #  Returning error codes from command functions is a subtle violation of command query separation. It promotes commands being used as expressions in the predicates of if statements.
+ 从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在 if 语句判断中把指令当作表达式使用。
+ if (deletePage(page) == E_OK) This does not suffer from verb/adjective confusion but does lead to deeply nested structures. When you return an error code, you create the problem that the caller must deal with the error immediately.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="3.9. 使用异常替代返回错误码&#34;" />
+<meta property="og:description" content="3.9 使用异常替代返回错误码 #  Returning error codes from command functions is a subtle violation of command query separation. It promotes commands being used as expressions in the predicates of if statements.
+ 从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在 if 语句判断中把指令当作表达式使用。
+ if (deletePage(page) == E_OK) This does not suffer from verb/adjective confusion but does lead to deeply nested structures. When you return an error code, you create the problem that the caller must deal with the error immediately." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/" />
+<meta property="article:modified_time" content="2020-09-01T10:16:42+08:00" />
+<title>3.9. 使用异常替代返回错误码&#34; | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.5e3b717b0686f788252a3dd9f628944a27e58985fc0a36655b371cb064849d0d.js" integrity="sha256-XjtxewaG94glKj3Z9iiUSifliYX8CjZlWzccsGSEnQ0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/" class="">1. 整洁代码</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/" class="">1.1. 要有代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/" class="">1.2. 糟糕的代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/" class="">1.3. 混乱的代价</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/" class="">1.4. 思想流派</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/" class="">1.5. 我们是作者</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" class="">1.6. 童子军军规</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/" class="">1.7. 前传与原则</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/" class="">1.8. 小结</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/" class="">1.9. 参考文献</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/" class="">2. 有意义的命名</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/" class="">2.1. 介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/" class="">2.2. 名副其实</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/" class="">2.3. 避免误导</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/" class="">2.4. 做有意义的区分</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/" class="">2.5. 使用读得出来的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/" class="">2.6. 使用可搜索的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/" class="">2.7. 避免使用编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/" class="">2.8. 避免思维映射</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/" class="">2.9. 类名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/" class="">2.10. 方法名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/" class="">2.11. 别扮可爱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/" class="">2.12. 每个概念对应一个词</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/" class="">2.13. 别用双关语</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/" class="">2.14. 使用解决方案领域名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/" class="">2.15. 使用源自所涉问题领域的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/" class="">2.16. 添加有意义的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/" class="">2.17. 不要添加没用的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/" class="">2.18. 最后的话</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/" class="">3. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.1.-Small/" class="">3.1. 短小</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/" class="">3.2. 只做一件事&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/" class="">3.3. 每个函数一个抽象层级&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/" class="">3.4. switch 语句&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/" class="">3.5. 使用描述性的名称&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/" class="">3.6. 函数参数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/" class="">3.7. 无副作用&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/" class="">3.8. 分隔指令与询问&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/" class="active">3.9. 使用异常替代返回错误码&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/" class="">3.10. 别重复自己&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/" class="">3.11. 结构化编程&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/" class="">3.12. 如何写出这样的函数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.13.-Conclusion/" class="">3.13. 小结&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/" class="">3.14. 程序&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.15.-Bibliography/" class="">3.15. 参考文献&#34;</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/10.-Classes/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/11.-Systems/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/12.-Emergence/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/13.-Concurrency/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/14.-Successive-Refinement/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/15.-JUnit-Internals/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/4.-Comments/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/5.-Formatting/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/7.-Error-Handling/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/8.-Boundaries/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/9.-Unit-Tests/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/Appendix-A-Concurrency-II/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>3.9. 使用异常替代返回错误码&#34;</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#39-使用异常替代返回错误码">3.9 使用异常替代返回错误码</a>
+          <ul>
+            <li><a href="#391-extract-trycatch-blocks-抽离-trycatch-代码块">3.9.1 Extract Try/Catch Blocks 抽离 Try/Catch 代码块</a></li>
+            <li><a href="#392-error-handling-is-one-thing-错误处理就是一件事">3.9.2 Error Handling Is One Thing 错误处理就是一件事</a></li>
+            <li><a href="#393-the-errorjava-dependency-magnet-errorjava-依赖磁铁">3.9.3 The Error.java Dependency Magnet Error.java 依赖磁铁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="39-使用异常替代返回错误码">
+  3.9 使用异常替代返回错误码
+  <a class="anchor" href="#39-%e4%bd%bf%e7%94%a8%e5%bc%82%e5%b8%b8%e6%9b%bf%e4%bb%a3%e8%bf%94%e5%9b%9e%e9%94%99%e8%af%af%e7%a0%81">#</a>
+</h2>
+<p>Returning error codes from command functions is a subtle violation of command query separation. It promotes commands being used as expressions in the predicates of if statements.</p>
+<blockquote>
+<p>从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在 if 语句判断中把指令当作表达式使用。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>deletePage<span style="color:#f92672">(</span>page<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> E_OK<span style="color:#f92672">)</span>
+</code></pre></div><p>This does not suffer from verb/adjective confusion but does lead to deeply nested structures. When you return an error code, you create the problem that the caller must deal with the error immediately.</p>
+<blockquote>
+<p>这不会引起动词/形容词混淆，但却导致更深层次的嵌套结构。当返回错误码时，就是在要求调用者立刻处理错误。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>deletePage<span style="color:#f92672">(</span>page<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> E_OK<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>registry<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteReference</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> E_OK<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>configKeys<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteKey</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">makeKey</span><span style="color:#f92672">())</span> <span style="color:#f92672">==</span> E_OK<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page deleted&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;configKey not deleted&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;deleteReference from registry failed&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;delete failed&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> E_ERROR<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On the other hand, if you use exceptions instead of returned error codes, then the error processing code can be separated from the happy path code and can be simplified:</p>
+<blockquote>
+<p>另一方面，如果使用异常替代返回错误码，错误处理代码就能从主路径代码中分离出来，得到简化：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    deletePage<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
+    registry<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteReference</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">);</span>
+    configKeys<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteKey</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">makeKey</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="391-extract-trycatch-blocks-抽离-trycatch-代码块">
+  3.9.1 Extract Try/Catch Blocks 抽离 Try/Catch 代码块
+  <a class="anchor" href="#391-extract-trycatch-blocks-%e6%8a%bd%e7%a6%bb-trycatch-%e4%bb%a3%e7%a0%81%e5%9d%97">#</a>
+</h3>
+<p>Try/catch blocks are ugly in their own right. They confuse the structure of the code and mix error processing with normal processing. So it is better to extract the bodies of the try and catch blocks out into functions of their own.</p>
+<blockquote>
+<p>Try/catch 代码块丑陋不堪。它们搞乱了代码结构，把错误处理与正常流程混为一谈。最好把 try 和 catch 代码块的主体部分抽离出来，另外形成函数。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>Page page<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        deletePageAndAllReferences<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        logError<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deletePageAndAllReferences</span><span style="color:#f92672">(</span>Page page<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    deletePage<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
+    registry<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteReference</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">);</span>
+    configKeys<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteKey</span><span style="color:#f92672">(</span>page<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">makeKey</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logError</span><span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>In the above, the delete function is all about error processing. It is easy to understand and then ignore. The deletePageAndAllReferences function is all about the processes of fully deleting a page. Error handling can be ignored. This provides a nice separation that makes the code easier to understand and modify.</p>
+<blockquote>
+<p>在上例中，delete 函数只与错误处理有关。很容易理解然后就忽略掉。deletePageAndAllReference 函数只与完全删除一个 page 有关。错误处理可以忽略掉。有了这样美妙的区隔，代码就更易于理解和修改了。</p>
+</blockquote>
+<h3 id="392-error-handling-is-one-thing-错误处理就是一件事">
+  3.9.2 Error Handling Is One Thing 错误处理就是一件事
+  <a class="anchor" href="#392-error-handling-is-one-thing-%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e5%b0%b1%e6%98%af%e4%b8%80%e4%bb%b6%e4%ba%8b">#</a>
+</h3>
+<p>Functions should do one thing. Error handing is one thing. Thus, a function that handles errors should do nothing else. This implies (as in the example above) that if the keyword try exists in a function, it should be the very first word in the function and that there should be nothing after the catch/finally blocks.</p>
+<blockquote>
+<p>函数应该只做一件事。错误处理就是一件事。因此，处理错误的函数不该做其他事。这意味着（如上例所示）如果关键字 try 在某个函数中存在，它就该是这个函数的第一个单词，而且在 catch/finally 代码块后面也不该有其他内容。</p>
+</blockquote>
+<h3 id="393-the-errorjava-dependency-magnet-errorjava-依赖磁铁">
+  3.9.3 The Error.java Dependency Magnet Error.java 依赖磁铁
+  <a class="anchor" href="#393-the-errorjava-dependency-magnet-errorjava-%e4%be%9d%e8%b5%96%e7%a3%81%e9%93%81">#</a>
+</h3>
+<p>Returning error codes usually implies that there is some class or enum in which all the error codes are defined.</p>
+<blockquote>
+<p>返回错误码通常暗示某处有个类或是枚举，定义了所有错误码。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Error <span style="color:#f92672">{</span>
+    OK<span style="color:#f92672">,</span>
+    INVALID<span style="color:#f92672">,</span>
+    NO_SUCH<span style="color:#f92672">,</span>
+    LOCKED<span style="color:#f92672">,</span>
+    OUT_OF_RESOURCES<span style="color:#f92672">,</span>
+
+    WAITING_FOR_EVENT<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Classes like this are a dependency magnet; many other classes must import and use them. Thus, when the Error enum changes, all those other classes need to be recompiled and redeployed.11 This puts a negative pressure on the Error class. Programmers don’t want to add new errors because then they have to rebuild and redeploy everything. So they reuse old error codes instead of adding new ones.</p>
+<blockquote>
+<p>这样的类就是一块依赖磁铁（dependency magnet）；其他许多类都得导入和使用它。当 Error 枚举修改时，所有这些其他的类都需要重新编译和部署。这对 Error 类造成了负面压力。程序员不愿增加新的错误代码，因为这样他们就得重新构建和部署所有东西。于是他们就复用旧的错误码，而不添加新的。</p>
+</blockquote>
+<p>When you use exceptions rather than error codes, then new exceptions are derivatives of the exception class. They can be added without forcing any recompilation or redeployment.12</p>
+<blockquote>
+<p>使用异常替代错误码，新异常就可以从异常类派生出来，无需重新编译或重新部署。</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/898099ba91ff6f140943a2b4f4e73c671cddba9a" title='最后修改者 louyongjiu | 2020年9月1日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年9月1日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/Clean%20Code/3.%20Functions/3.9.%20Prefer%20Exceptions%20to%20Returning%20Error%20Codes.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#39-使用异常替代返回错误码">3.9 使用异常替代返回错误码</a>
+          <ul>
+            <li><a href="#391-extract-trycatch-blocks-抽离-trycatch-代码块">3.9.1 Extract Try/Catch Blocks 抽离 Try/Catch 代码块</a></li>
+            <li><a href="#392-error-handling-is-one-thing-错误处理就是一件事">3.9.2 Error Handling Is One Thing 错误处理就是一件事</a></li>
+            <li><a href="#393-the-errorjava-dependency-magnet-errorjava-依赖磁铁">3.9.3 The Error.java Dependency Magnet Error.java 依赖磁铁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

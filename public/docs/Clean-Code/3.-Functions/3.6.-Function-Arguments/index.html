@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3.6 函数参数 #  The ideal number of arguments for a function is zero (niladic). Next comes one (monadic), followed closely by two (dyadic). Three arguments (triadic) should be avoided where possible. More than three (polyadic) requires very special justification—and then shouldn’t be used anyway.
+ 最理想的参数数量是零（零参数函数），其次是一（单参数函数），再次是二（双参数函数），应尽量避免三（三参数函数）。有足够特殊的理由才能用三个以上参数（多参数函数）——所以无论如何也不要这么做。
+  Arguments are hard. They take a lot of conceptual power. That’s why I got rid of almost all of them from the example.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="3.6. 函数参数&#34;" />
+<meta property="og:description" content="3.6 函数参数 #  The ideal number of arguments for a function is zero (niladic). Next comes one (monadic), followed closely by two (dyadic). Three arguments (triadic) should be avoided where possible. More than three (polyadic) requires very special justification—and then shouldn’t be used anyway.
+ 最理想的参数数量是零（零参数函数），其次是一（单参数函数），再次是二（双参数函数），应尽量避免三（三参数函数）。有足够特殊的理由才能用三个以上参数（多参数函数）——所以无论如何也不要这么做。
+  Arguments are hard. They take a lot of conceptual power. That’s why I got rid of almost all of them from the example." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/" />
+<meta property="article:modified_time" content="2020-09-01T10:16:42+08:00" />
+<title>3.6. 函数参数&#34; | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.5e3b717b0686f788252a3dd9f628944a27e58985fc0a36655b371cb064849d0d.js" integrity="sha256-XjtxewaG94glKj3Z9iiUSifliYX8CjZlWzccsGSEnQ0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/" class="">1. 整洁代码</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/" class="">1.1. 要有代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/" class="">1.2. 糟糕的代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/" class="">1.3. 混乱的代价</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/" class="">1.4. 思想流派</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/" class="">1.5. 我们是作者</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" class="">1.6. 童子军军规</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/" class="">1.7. 前传与原则</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/" class="">1.8. 小结</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/" class="">1.9. 参考文献</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/" class="">2. 有意义的命名</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/" class="">2.1. 介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/" class="">2.2. 名副其实</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/" class="">2.3. 避免误导</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/" class="">2.4. 做有意义的区分</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/" class="">2.5. 使用读得出来的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/" class="">2.6. 使用可搜索的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/" class="">2.7. 避免使用编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/" class="">2.8. 避免思维映射</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/" class="">2.9. 类名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/" class="">2.10. 方法名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/" class="">2.11. 别扮可爱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/" class="">2.12. 每个概念对应一个词</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/" class="">2.13. 别用双关语</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/" class="">2.14. 使用解决方案领域名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/" class="">2.15. 使用源自所涉问题领域的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/" class="">2.16. 添加有意义的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/" class="">2.17. 不要添加没用的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/" class="">2.18. 最后的话</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/" class="">3. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.1.-Small/" class="">3.1. 短小</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/" class="">3.2. 只做一件事&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/" class="">3.3. 每个函数一个抽象层级&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/" class="">3.4. switch 语句&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/" class="">3.5. 使用描述性的名称&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/" class="active">3.6. 函数参数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/" class="">3.7. 无副作用&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/" class="">3.8. 分隔指令与询问&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/" class="">3.9. 使用异常替代返回错误码&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/" class="">3.10. 别重复自己&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/" class="">3.11. 结构化编程&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/" class="">3.12. 如何写出这样的函数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.13.-Conclusion/" class="">3.13. 小结&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/" class="">3.14. 程序&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.15.-Bibliography/" class="">3.15. 参考文献&#34;</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/10.-Classes/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/11.-Systems/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/12.-Emergence/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/13.-Concurrency/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/14.-Successive-Refinement/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/15.-JUnit-Internals/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/4.-Comments/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/5.-Formatting/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/7.-Error-Handling/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/8.-Boundaries/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/9.-Unit-Tests/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/Appendix-A-Concurrency-II/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>3.6. 函数参数&#34;</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#36-函数参数">3.6 函数参数</a>
+          <ul>
+            <li><a href="#361-common-monadic-forms-一元函数的普遍形式">3.6.1 Common Monadic Forms 一元函数的普遍形式</a></li>
+            <li><a href="#362-flag-arguments-标识参数">3.6.2 Flag Arguments 标识参数</a></li>
+            <li><a href="#363-dyadic-functions-二元函数">3.6.3 Dyadic Functions 二元函数</a></li>
+            <li><a href="#364-triads-三元函数">3.6.4 Triads 三元函数</a></li>
+            <li><a href="#365-argument-objects-参数对象">3.6.5 Argument Objects 参数对象</a></li>
+            <li><a href="#366-argument-lists-参数列表">3.6.6 Argument Lists 参数列表</a></li>
+            <li><a href="#367-verbs-and-keywords-动词与关键字">3.6.7 Verbs and Keywords 动词与关键字</a></li>
+            <li><a href="#output-arguments-输出参数">Output Arguments 输出参数</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="36-函数参数">
+  3.6 函数参数
+  <a class="anchor" href="#36-%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0">#</a>
+</h2>
+<p>The ideal number of arguments for a function is zero (niladic). Next comes one (monadic), followed closely by two (dyadic). Three arguments (triadic) should be avoided where possible. More than three (polyadic) requires very special justification—and then shouldn’t be used anyway.</p>
+<blockquote>
+<p>最理想的参数数量是零（零参数函数），其次是一（单参数函数），再次是二（双参数函数），应尽量避免三（三参数函数）。有足够特殊的理由才能用三个以上参数（多参数函数）——所以无论如何也不要这么做。</p>
+</blockquote>
+<p>
+  <img src="/cc/figures/ch3/3_3fig_martin.jpg" alt="" /></p>
+<p>Arguments are hard. They take a lot of conceptual power. That’s why I got rid of almost all of them from the example. Consider, for instance, the StringBuffer in the example. We could have passed it around as an argument rather than making it an instance variable, but then our readers would have had to interpret it each time they saw it. When you are reading the story told by the module, includeSetupPage() is easier to understand than includeSetupPageInto(newPage-Content). The argument is at a different level of abstraction than the function name and forces you to know a detail (in other words, StringBuffer) that isn’t particularly important at that point.</p>
+<blockquote>
+<p>参数不易对付。它们带有太多概念性。所以我在代码范例中几乎不加参数。比如，以 StringBuffer 为例，我们可能不把它作为实体变量，而是当作参数来传递，那样的话，读者每次看到它都得要翻译一遍。阅读模块所讲述的故事时，includeSetupPage()要比 includeSetupPageInto（newPage-Content）易于理解。参数与函数名处在不同的抽象层级，它要求你了解目前并不特别重要的细节（即那个 StringBuffer）。</p>
+</blockquote>
+<p>Arguments are even harder from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly. If there are no arguments, this is trivial. If there’s one argument, it’s not too hard. With two arguments the problem gets a bit more challenging. With more than two arguments, testing every combination of appropriate values can be daunting.</p>
+<blockquote>
+<p>从测试的角度看，参数甚至更叫人为难。想想看，要编写能确保参数的各种组合运行正常的测试用例，是多么困难的事。如果没有参数，就是小菜一碟。如果只有一个参数，也不太困难。有两个参数，问题就麻烦多了。如果参数多于两个，测试覆盖所有可能值的组合简直让人生畏。</p>
+</blockquote>
+<p>Output arguments are harder to understand than input arguments. When we read a function, we are used to the idea of information going in to the function through arguments and out through the return value. We don’t usually expect information to be going out through the arguments. So output arguments often cause us to do a double-take.</p>
+<blockquote>
+<p>输出参数比输入参数还要难以理解。读函数时，我们惯于认为信息通过参数输入函数，通过返回值从函数中输出。我们不太期望信息通过参数输出。所以，输出参数往往让人苦思之后才恍然大悟。</p>
+</blockquote>
+<p>One input argument is the next best thing to no arguments. SetupTeardown-Includer.render(pageData) is pretty easy to understand. Clearly we are going to render the data in the pageData object.</p>
+<blockquote>
+<p>相较于没有参数，只有一个输入参数算是第二好的做法。SetupTeardownInclude.render （pageData）也相当易于理解。很明显，我们将渲染 pageData 对象中的数据。</p>
+</blockquote>
+<h3 id="361-common-monadic-forms-一元函数的普遍形式">
+  3.6.1 Common Monadic Forms 一元函数的普遍形式
+  <a class="anchor" href="#361-common-monadic-forms-%e4%b8%80%e5%85%83%e5%87%bd%e6%95%b0%e7%9a%84%e6%99%ae%e9%81%8d%e5%bd%a2%e5%bc%8f">#</a>
+</h3>
+<p>There are two very common reasons to pass a single argument into a function. You may be asking a question about that argument, as in boolean fileExists(“MyFile”). Or you may be operating on that argument, transforming it into something else and returning it. For example, InputStream fileOpen(“MyFile”) transforms a file name String into an InputStream return value. These two uses are what readers expect when they see a function. You should choose names that make the distinction clear, and always use the two forms in a consistent context. (See Command Query Separation below.)</p>
+<blockquote>
+<p>向函数传入单个参数有两种极普遍的理由。你也许会问关于那个参数的问题，就像在 boolean fileExists(&ldquo;MyFile&rdquo;)中那样。也可能是操作该参数，将其转换为其他什么东西，再输出之。例如，InputStream fileOpen(&ldquo;MyFile&rdquo;)把 String 类型的文件名转换为 InputStream 类型的返回值。这就是读者看到函数时所期待的东西。你应当选用较能区别这两种理由的名称，而且总在一致的上下文中使用这两种形式。</p>
+</blockquote>
+<p>A somewhat less common, but still very useful form for a single argument function, is an event. In this form there is an input argument but no output argument. The overall program is meant to interpret the function call as an event and use the argument to alter the state of the system, for example, void passwordAttemptFailedNtimes(int attempts). Use this form with care. It should be very clear to the reader that this is an event. Choose names and contexts carefully.</p>
+<blockquote>
+<p>还有一种虽不那么普遍但仍极有用的单参数函数形式，那就是事件（event）。在这种形式中，有输入参数而无输出参数。程序将函数看作是一个事件，使用该参数修改系统状态，例如 void passwordAttemptFailedNtimes(int attempts)。小心使用这种形式。应该让读者很清楚地了解它是个事件。谨慎地选用名称和上下文语境。</p>
+</blockquote>
+<p>Try to avoid any monadic functions that don’t follow these forms, for example, void includeSetupPageInto(StringBuffer pageText). Using an output argument instead of a return value for a transformation is confusing. If a function is going to transform its input argument, the transformation should appear as the return value. Indeed, StringBuffer transform(StringBuffer in) is better than void transform(StringBuffer out), even if the implementation in the first case simply returns the input argument. At least it still follows the form of a transformation.</p>
+<blockquote>
+<p>尽量避免编写不遵循这些形式的一元函数，例如，void includeSetupPageInto(StringBuffer pageText)。对于转换，使用输出参数而非返回值令人迷惑。如果函数要对输入参数进行转换操作，转换结果就该体现为返回值。实际上，StringBuffer transform(StringBuffer in)要比 void transform(StringBuffer out)强，即便第一种形式只简单地返回输参数也是这样。至少，它遵循了转换的形式。</p>
+</blockquote>
+<h3 id="362-flag-arguments-标识参数">
+  3.6.2 Flag Arguments 标识参数
+  <a class="anchor" href="#362-flag-arguments-%e6%a0%87%e8%af%86%e5%8f%82%e6%95%b0">#</a>
+</h3>
+<p>Flag arguments are ugly. Passing a boolean into a function is a truly terrible practice. It immediately complicates the signature of the method, loudly proclaiming that this function does more than one thing. It does one thing if the flag is true and another if the flag is false!</p>
+<blockquote>
+<p>标识参数丑陋不堪。向函数传入布尔值简直就是骇人听闻的做法。这样做，方法签名立刻变得复杂起来，大声宣布本函数不止做一件事。如果标识为 true 将会这样做，标识为 false 则会那样做！</p>
+</blockquote>
+<p>In Listing 3-7 we had no choice because the callers were already passing that flag in, and I wanted to limit the scope of refactoring to the function and below. Still, the method call render(true) is just plain confusing to a poor reader. Mousing over the call and seeing render(boolean isSuite) helps a little, but not that much. We should have split the function into two: renderForSuite() and renderForSingleTest().</p>
+<blockquote>
+<p>在代码清单 3-7 中，我们别无选择，因为调用者已经传入了那个标识，而我想把重构范围限制在该函数及该函数以下范围之内。方法调用 render(true)对于可怜的读者来说仍然摸不着头脑。卷动屏幕，看到 render(Boolean isSuite)，稍许有点帮助，不过仍然不够。应该把该函数一分为二：reanderForSuite( )和 renderForSingleTest( )。</p>
+</blockquote>
+<h3 id="363-dyadic-functions-二元函数">
+  3.6.3 Dyadic Functions 二元函数
+  <a class="anchor" href="#363-dyadic-functions-%e4%ba%8c%e5%85%83%e5%87%bd%e6%95%b0">#</a>
+</h3>
+<p>A function with two arguments is harder to understand than a monadic function. For example, writeField(name) is easier to understand than writeField(output-Stream, name).10 Though the meaning of both is clear, the first glides past the eye, easily depositing its meaning. The second requires a short pause until we learn to ignore the first parameter. And that, of course, eventually results in problems because we should never ignore any part of code. The parts we ignore are where the bugs will hide.</p>
+<blockquote>
+<p>有两个参数的函数要比一元函数难懂。例如，writeField(name)比 writeField(outputStream,name)好懂。尽管两种情况下意义都很清楚，但第一个只要扫一眼就明白，更好地表达了其意义。第二个就得暂停一下才能明白，除非我们学会忽略第一个参数。而且最终那也会导致问题，因为我们根本就不该忽略任何代码。忽略掉的部分就是缺陷藏身之地。</p>
+</blockquote>
+<p>There are times, of course, where two arguments are appropriate. For example, Point p = new Point(0,0); is perfectly reasonable. Cartesian points naturally take two arguments. Indeed, we’d be very surprised to see new Point(0). However, the two arguments in this case are ordered components of a single value! Whereas output-Stream and name have neither a natural cohesion, nor a natural ordering.</p>
+<blockquote>
+<p>当然，有些时候两个参数正好。例如，Point p = new Point(0,0);就相当合理。笛卡儿点天生拥有两个参数。如果看到 new Point(0)，我们会倍感惊讶。然而，本例中的两个参数却只是单个值的有序组成部分！而 output-Stream 和 name 则既非自然的组合，也不是自然的排序。</p>
+</blockquote>
+<p>Even obvious dyadic functions like assertEquals(expected, actual) are problematic. How many times have you put the actual where the expected should be? The two arguments have no natural ordering. The expected, actual ordering is a convention that requires practice to learn.</p>
+<blockquote>
+<p>即便是如 assertEquals(expected, actual)这样的二元函数也有其问题。你有多少次会搞错 actual 和 expected 的位置呢？这两个参数没有自然的顺序。expected 在前，actual 在后，只是一种需要学习的约定罢了。</p>
+</blockquote>
+<p>Dyads aren’t evil, and you will certainly have to write them. However, you should be aware that they come at a cost and should take advantage of what mechanisms may be available to you to convert them into monads. For example, you might make the writeField method a member of outputStream so that you can say outputStream. writeField(name). Or you might make the outputStream a member variable of the current class so that you don’t have to pass it. Or you might extract a new class like FieldWriter that takes the outputStream in its constructor and has a write method.</p>
+<blockquote>
+<p>二元函数不算恶劣，而且你当然也会编写二元函数。不过，你得小心，使用二元函数要付出代价。你应该尽量利用一些机制将其转换成一元函数。例如，可以把 writeField 方法写成 outputStream 的成员之一，从而能这样用：outputStream.writeField(name)。或者，也可以把 outputStream 写成当前类的成员变量，从而无需再传递它。还可以分离出类似 FieldWriter 的新类，在其构造器中采用 outputStream，并且包含一个 write 方法。</p>
+</blockquote>
+<h3 id="364-triads-三元函数">
+  3.6.4 Triads 三元函数
+  <a class="anchor" href="#364-triads-%e4%b8%89%e5%85%83%e5%87%bd%e6%95%b0">#</a>
+</h3>
+<p>Functions that take three arguments are significantly harder to understand than dyads. The issues of ordering, pausing, and ignoring are more than doubled. I suggest you think very carefully before creating a triad.</p>
+<blockquote>
+<p>有三个参数的函数要比二元函数难懂得多。排序、琢磨、忽略的问题都会加倍体现。建议你在写三元函数前一定要想清楚。</p>
+</blockquote>
+<p>For example, consider the common overload of assertEquals that takes three arguments: assertEquals(message, expected, actual). How many times have you read the message and thought it was the expected? I have stumbled and paused over that particular triad many times. In fact, every time I see it, I do a double-take and then learn to ignore the message.</p>
+<blockquote>
+<p>例如，设想 assertEquals 有三个参数：assertEquals(message, expected, actual)。有多少次，你读到 message，错以为它是 expected 呢？我就常栽在这个三元函数上。实际上，每次我看到这里，总会绕半天圈子，最后学会了忽略 message 参数。</p>
+</blockquote>
+<p>On the other hand, here is a triad that is not quite so insidious: assertEquals(1.0, amount, .001). Although this still requires a double-take, it’s one that’s worth taking. It’s always good to be reminded that equality of floating point values is a relative thing.</p>
+<blockquote>
+<p>另一方面，这里有个并不那么险恶的三元函数：assertEquals(1.0, amount, .001)。虽然也要费点神，还是值得的。得到“浮点值的等值是相对而言”的提示总是好的。</p>
+</blockquote>
+<h3 id="365-argument-objects-参数对象">
+  3.6.5 Argument Objects 参数对象
+  <a class="anchor" href="#365-argument-objects-%e5%8f%82%e6%95%b0%e5%af%b9%e8%b1%a1">#</a>
+</h3>
+<p>When a function seems to need more than two or three arguments, it is likely that some of those arguments ought to be wrapped into a class of their own. Consider, for example, the difference between the two following declarations:</p>
+<blockquote>
+<p>如果函数看来需要两个、三个或三个以上参数，就说明其中一些参数应该封装为类了。例如，下面两个声明的差别：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Circle <span style="color:#a6e22e">makeCircle</span><span style="color:#f92672">(</span><span style="color:#66d9ef">double</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> y<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> radius<span style="color:#f92672">);</span>
+Circle <span style="color:#a6e22e">makeCircle</span><span style="color:#f92672">(</span>Point center<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> radius<span style="color:#f92672">);</span>
+</code></pre></div><p>Reducing the number of arguments by creating objects out of them may seem like cheating, but it’s not. When groups of variables are passed together, the way x and y are in the example above, they are likely part of a concept that deserves a name of its own.</p>
+<blockquote>
+<p>从参数创建对象，从而减少参数数量，看起来像是在作弊，但实则并非如此。当一组参数被共同传递，就像上例中的 x 和 y 那样，往往就是该有自己名称的某个概念的一部分。</p>
+</blockquote>
+<h3 id="366-argument-lists-参数列表">
+  3.6.6 Argument Lists 参数列表
+  <a class="anchor" href="#366-argument-lists-%e5%8f%82%e6%95%b0%e5%88%97%e8%a1%a8">#</a>
+</h3>
+<p>Sometimes we want to pass a variable number of arguments into a function. Consider, for example, the String.format method:</p>
+<blockquote>
+<p>有时，我们想要向函数传入数量可变的参数。例如，</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">”</span><span style="color:#f92672">%</span>s worked <span style="color:#f92672">%.</span><span style="color:#a6e22e">2f</span> hours<span style="color:#f92672">.</span><span style="color:#960050;background-color:#1e0010">”</span><span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> hours<span style="color:#f92672">);</span>
+</code></pre></div><p>If the variable arguments are all treated identically, as they are in the example above, then they are equivalent to a single argument of type List. By that reasoning, String.format is actually dyadic. Indeed, the declaration of String.format as shown below is clearly dyadic.</p>
+<blockquote>
+<p>如果可变参数像上例中那样被同等对待，就和类型为 List 的单个参数没什么两样。这样一来，String.formate 实则是二元函数。下列 String.format 的声明也很明显是二元的：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>String format<span style="color:#f92672">,</span> Object<span style="color:#960050;background-color:#1e0010">…</span> args<span style="color:#f92672">)</span>
+</code></pre></div><p>So all the same rules apply. Functions that take variable arguments can be monads, dyads, or even triads. But it would be a mistake to give them more arguments than that.</p>
+<blockquote>
+<p>同理，有可变参数的函数可能是一元、二元甚至三元。超过这个数量就可能要犯错了。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">monad</span><span style="color:#f92672">(</span>Integer<span style="color:#960050;background-color:#1e0010">…</span> args<span style="color:#f92672">);</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dyad</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> Integer<span style="color:#960050;background-color:#1e0010">…</span> args<span style="color:#f92672">);</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">triad</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> count<span style="color:#f92672">,</span> Integer<span style="color:#960050;background-color:#1e0010">…</span> args<span style="color:#f92672">);</span>
+</code></pre></div><h3 id="367-verbs-and-keywords-动词与关键字">
+  3.6.7 Verbs and Keywords 动词与关键字
+  <a class="anchor" href="#367-verbs-and-keywords-%e5%8a%a8%e8%af%8d%e4%b8%8e%e5%85%b3%e9%94%ae%e5%ad%97">#</a>
+</h3>
+<p>Choosing good names for a function can go a long way toward explaining the intent of the function and the order and intent of the arguments. In the case of a monad, the function and argument should form a very nice verb/noun pair. For example, write(name) is very evocative. Whatever this “name” thing is, it is being “written.” An even better name might be writeField(name), which tells us that the “name” thing is a “field.”</p>
+<blockquote>
+<p>给函数取个好名字，能较好地解释函数的意图，以及参数的顺序和意图。对于一元函数，函数和参数应当形成一种非常良好的动词/名词对形式。例如，write(name)就相当令人认同。不管这个“name”是什么，都要被“write”。更好的名称大概是 writeField(name)，它告诉我们，“name”是一个“field”。</p>
+</blockquote>
+<p>This last is an example of the keyword form of a function name. Using this form we encode the names of the arguments into the function name. For example, assertEquals might be better written as assertExpectedEqualsActual(expected, actual). This strongly mitigates the problem of having to remember the ordering of the arguments.</p>
+<blockquote>
+<p>最后那个例子展示了函数名称的关键字（keyword）形式。使用这种形式，我们把参数的名称编码成了函数名。例如，assertEqual 改成 assertExpectedEqualsActual(expected, actual)可能会好些。这大大减轻了记忆参数顺序的负担。</p>
+</blockquote>
+<p>Side effects are lies. Your function promises to do one thing, but it also does other hidden things. Sometimes it will make unexpected changes to the variables of its own class. Sometimes it will make them to the parameters passed into the function or to system globals. In either case they are devious and damaging mistruths that often result in strange temporal couplings and order dependencies.</p>
+<blockquote>
+<p>副作用是一种谎言。函数承诺只做一件事，但还是会做其他被藏起来的事。有时，它会对自己类中的变量做出未能预期的改动。有时，它会把变量搞成向函数传递的参数或是系统全局变量。无论哪种情况，都是具有破坏性的，会导致古怪的时序性耦合及顺序依赖。</p>
+</blockquote>
+<p>Consider, for example, the seemingly innocuous function in Listing 3-6. This function uses a standard algorithm to match a userName to a password. It returns true if they match and false if anything goes wrong. But it also has a side effect. Can you spot it?</p>
+<blockquote>
+<p>以代码清单 3-6 中看似无伤大雅的函数为例。该函数使用标准算法来匹配 userName 和 password。如果匹配成功，返回 true，如果失败则返回 false。但它会有副作用。你知道问题所在吗？</p>
+</blockquote>
+<p>Listing 3-6 UserValidator.java</p>
+<blockquote>
+<p>代码清单 3-6 UserValidator.java</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserValidator</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> Cryptographer cryptographer<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">checkPassword</span><span style="color:#f92672">(</span>String userName<span style="color:#f92672">,</span> String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        User user <span style="color:#f92672">=</span> UserGateway<span style="color:#f92672">.</span><span style="color:#a6e22e">findByName</span><span style="color:#f92672">(</span>userName<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>user <span style="color:#f92672">!=</span> User<span style="color:#f92672">.</span><span style="color:#a6e22e">NULL</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            String codedPhrase <span style="color:#f92672">=</span> user<span style="color:#f92672">.</span>
+                    <span style="color:#a6e22e">getPhraseEncodedByPassword</span><span style="color:#f92672">();</span>
+            String phrase <span style="color:#f92672">=</span> cryptographer<span style="color:#f92672">.</span><span style="color:#a6e22e">decrypt</span><span style="color:#f92672">(</span>codedPhrase<span style="color:#f92672">,</span> password<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Valid Password&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>phrase<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                Session<span style="color:#f92672">.</span><span style="color:#a6e22e">initialize</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>The side effect is the call to Session.initialize(), of course. The checkPassword function, by its name, says that it checks the password. The name does not imply that it initializes the session. So a caller who believes what the name of the function says runs the risk of erasing the existing session data when he or she decides to check the validity of the user.</p>
+<blockquote>
+<p>当然了，副作用就在于对 Session.initialize( )的调用。checkPassword 函数，顾名思义，就是用来检查密码的。该名称并未暗示它会初始化该次会话。所以，当某个误信了函数名的调用者想要检查用户有效性时，就得冒抹除现有会话数据的风险。</p>
+</blockquote>
+<p>This side effect creates a temporal coupling. That is, checkPassword can only be called at certain times (in other words, when it is safe to initialize the session). If it is called out of order, session data may be inadvertently lost. Temporal couplings are confusing, especially when hidden as a side effect. If you must have a temporal coupling, you should make it clear in the name of the function. In this case we might rename the function checkPasswordAndInitializeSession, though that certainly violates “Do one thing.”</p>
+<blockquote>
+<p>这一副作用造出了一次时序性耦合。也就是说，checkPassword 只能在特定时刻调用（换言之，在初始化会话是安全的时候调用）。如果在不合适的时候调用，会话数据就有可能沉默地丢失。时序性耦合令人迷惑，特别是当它躲在副作用后面时。如果一定要时序性耦合，就应该在函数名称中说明。在本例中，可以重命名函数为 checkPasswordAndInitializeSession，虽然那还是违反了“只做一件事”的规则。</p>
+</blockquote>
+<h3 id="output-arguments-输出参数">
+  Output Arguments 输出参数
+  <a class="anchor" href="#output-arguments-%e8%be%93%e5%87%ba%e5%8f%82%e6%95%b0">#</a>
+</h3>
+<p>Arguments are most naturally interpreted as inputs to a function. If you have been programming for more than a few years, I’m sure you’ve done a double-take on an argument that was actually an output rather than an input. For example:</p>
+<blockquote>
+<p>参数多数会被自然而然地看作是函数的输入。如果你编过好些年程序，我担保你一定被用作输出而非输入的参数迷惑过。例如：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">appendFooter<span style="color:#f92672">(</span>s<span style="color:#f92672">);</span>
+</code></pre></div><p>Does this function append s as the footer to something? Or does it append some footer to s? Is s an input or an output? It doesn’t take long to look at the function signature and see:</p>
+<blockquote>
+<p>这个函数是把 s 添加到什么东西后面吗？或者它把什么东西添加到了 s 后面？s 是输入参数还是输出参数？稍许花点时间看看函数签名：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">appendFooter</span><span style="color:#f92672">(</span>StringBuffer report<span style="color:#f92672">)</span>
+</code></pre></div><p>This clarifies the issue, but only at the expense of checking the declaration of the function. Anything that forces you to check the function signature is equivalent to a double-take. It’s a cognitive break and should be avoided.</p>
+<blockquote>
+<p>事情清楚了，但付出了检查函数声明的代价。你被迫检查函数签名，就得花上一点时间。应该避免这种中断思路的事。</p>
+</blockquote>
+<p>In the days before object oriented programming it was sometimes necessary to have output arguments. However, much of the need for output arguments disappears in OO languages because this is intended to act as an output argument. In other words, it would be better for appendFooter to be invoked as</p>
+<blockquote>
+<p>在面向对象编程之前的岁月里，有时的确需要输出参数。然而，面向对象语言中对输出参数的大部分需求已经消失了，因为 this 也有输出函数的意味在内。换言之，最好是这样调用 appendFooter：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">report<span style="color:#f92672">.</span><span style="color:#a6e22e">appendFooter</span><span style="color:#f92672">();</span>
+</code></pre></div><p>In general output arguments should be avoided. If your function must change the state of something, have it change the state of its owning object.</p>
+<blockquote>
+<p>在面向对象编程之前的岁月里，有时的确需要输出参数。然而，面向对象语言中对输出参数的大部分需求已经消失了，因为 this 也有输出函数的意味在内。换言之，最好是这样调用 appendFooter：</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/898099ba91ff6f140943a2b4f4e73c671cddba9a" title='最后修改者 louyongjiu | 2020年9月1日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年9月1日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/Clean%20Code/3.%20Functions/3.6.%20Function%20Arguments.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#36-函数参数">3.6 函数参数</a>
+          <ul>
+            <li><a href="#361-common-monadic-forms-一元函数的普遍形式">3.6.1 Common Monadic Forms 一元函数的普遍形式</a></li>
+            <li><a href="#362-flag-arguments-标识参数">3.6.2 Flag Arguments 标识参数</a></li>
+            <li><a href="#363-dyadic-functions-二元函数">3.6.3 Dyadic Functions 二元函数</a></li>
+            <li><a href="#364-triads-三元函数">3.6.4 Triads 三元函数</a></li>
+            <li><a href="#365-argument-objects-参数对象">3.6.5 Argument Objects 参数对象</a></li>
+            <li><a href="#366-argument-lists-参数列表">3.6.6 Argument Lists 参数列表</a></li>
+            <li><a href="#367-verbs-and-keywords-动词与关键字">3.6.7 Verbs and Keywords 动词与关键字</a></li>
+            <li><a href="#output-arguments-输出参数">Output Arguments 输出参数</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

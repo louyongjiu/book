@@ -104,16 +104,6 @@
     
     <item>
       <title></title>
-      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/ch3/</guid>
-      <description>第 3 章 Functions 函数 #   In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.
- 在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://book.ninescloud.com/docs/Clean-Code/4.-Comments/ch4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="第 3 章 函数 #   In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.
+ 在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="3. 函数" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/" />
+
+<title>3. 函数 | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.5e3b717b0686f788252a3dd9f628944a27e58985fc0a36655b371cb064849d0d.js" integrity="sha256-XjtxewaG94glKj3Z9iiUSifliYX8CjZlWzccsGSEnQ0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<link rel="alternate" type="application/rss+xml" href="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/index.xml" title="Book" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/" class="">1. 整洁代码</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/" class="">1.1. 要有代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/" class="">1.2. 糟糕的代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/" class="">1.3. 混乱的代价</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/" class="">1.4. 思想流派</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/" class="">1.5. 我们是作者</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" class="">1.6. 童子军军规</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/" class="">1.7. 前传与原则</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/" class="">1.8. 小结</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/" class="">1.9. 参考文献</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/" class="">2. 有意义的命名</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/" class="">2.1. 介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/" class="">2.2. 名副其实</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/" class="">2.3. 避免误导</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/" class="">2.4. 做有意义的区分</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/" class="">2.5. 使用读得出来的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/" class="">2.6. 使用可搜索的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/" class="">2.7. 避免使用编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/" class="">2.8. 避免思维映射</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/" class="">2.9. 类名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/" class="">2.10. 方法名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/" class="">2.11. 别扮可爱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/" class="">2.12. 每个概念对应一个词</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/" class="">2.13. 别用双关语</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/" class="">2.14. 使用解决方案领域名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/" class="">2.15. 使用源自所涉问题领域的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/" class="">2.16. 添加有意义的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/" class="">2.17. 不要添加没用的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/" class="">2.18. 最后的话</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/" class="active">3. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.1.-Small/" class="">3.1. 短小</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/" class="">3.2. 只做一件事&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/" class="">3.3. 每个函数一个抽象层级&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/" class="">3.4. switch 语句&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/" class="">3.5. 使用描述性的名称&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/" class="">3.6. 函数参数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/" class="">3.7. 无副作用&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/" class="">3.8. 分隔指令与询问&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/" class="">3.9. 使用异常替代返回错误码&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/" class="">3.10. 别重复自己&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/" class="">3.11. 结构化编程&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/" class="">3.12. 如何写出这样的函数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.13.-Conclusion/" class="">3.13. 小结&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/" class="">3.14. 程序&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.15.-Bibliography/" class="">3.15. 参考文献&#34;</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/10.-Classes/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/11.-Systems/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/12.-Emergence/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/13.-Concurrency/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/14.-Successive-Refinement/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/15.-JUnit-Internals/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/4.-Comments/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/5.-Formatting/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/7.-Error-Handling/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/8.-Boundaries/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/9.-Unit-Tests/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/Appendix-A-Concurrency-II/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>3. 函数</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#第-3-章-函数">第 3 章 函数</a></li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="第-3-章-函数">
+  第 3 章 函数
+  <a class="anchor" href="#%e7%ac%ac-3-%e7%ab%a0-%e5%87%bd%e6%95%b0">#</a>
+</h1>
+<p>
+  <img src="/cc/figures/ch3/3_1fig_martin.jpg" alt="" /></p>
+<p>In the early days of programming we composed our systems of routines and subroutines. Then, in the era of Fortran and PL/1 we composed our systems of programs, subprograms, and functions. Nowadays only the function survives from those early days. Functions are the first line of organization in any program. Writing them well is the topic of this chapter.</p>
+<blockquote>
+<p>在编程的早年岁月，系统由程序和子程序组成。后来，在 Fortran 和 PL/1 的年代，系统由程序、子程序和函数组成。如今，只有函数存活下来。函数是所有程序中的第一组代码。本章将讨论如何写好函数。</p>
+</blockquote>
+<p>Consider the code in Listing 3-1. It’s hard to find a long function in FitNesse,1 but after a bit of searching I came across this one. Not only is it long, but it’s got duplicated code, lots of odd strings, and many strange and inobvious data types and APIs. See how much sense you can make of it in the next three minutes.</p>
+<blockquote>
+<p>请看代码清单 3-1。在 FitNesse 中，很难找到长函数，不过我还是搜寻到一个。它不光长，而且代码也很复杂，有大量字符串、怪异而不显见的数据类型和 API。花 3 分钟时间，看能读懂多少？</p>
+</blockquote>
+<p>Listing 3-1 HtmlUtil.java (FitNesse 20070619)</p>
+<blockquote>
+<p>代码清单 3-1 HtmlUtil.java（FitNesse 20070619）</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">testableHtml</span><span style="color:#f92672">(</span>
+        PageData pageData<span style="color:#f92672">,</span>
+        <span style="color:#66d9ef">boolean</span> includeSuiteSetup
+<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    WikiPage wikiPage <span style="color:#f92672">=</span> pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getWikiPage</span><span style="color:#f92672">();</span>
+    StringBuffer buffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">hasAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>includeSuiteSetup<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            WikiPage suiteSetup <span style="color:#f92672">=</span>
+                    PageCrawlerImpl<span style="color:#f92672">.</span><span style="color:#a6e22e">getInheritedPage</span><span style="color:#f92672">(</span>
+                            SuiteResponder<span style="color:#f92672">.</span><span style="color:#a6e22e">SUITE_SETUP_NAME</span><span style="color:#f92672">,</span> wikiPage
+                    <span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>suiteSetup <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                WikiPagePath pagePath <span style="color:#f92672">=</span>
+                        suiteSetup<span style="color:#f92672">.</span><span style="color:#a6e22e">getPageCrawler</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFullPath</span><span style="color:#f92672">(</span>suiteSetup<span style="color:#f92672">);</span>
+                String pagePathName <span style="color:#f92672">=</span> PathParser<span style="color:#f92672">.</span><span style="color:#a6e22e">render</span><span style="color:#f92672">(</span>pagePath<span style="color:#f92672">);</span>
+                buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!include -setup .&#34;</span><span style="color:#f92672">)</span>
+                        <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>pagePathName<span style="color:#f92672">)</span>
+                        <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        WikiPage setup <span style="color:#f92672">=</span>
+                PageCrawlerImpl<span style="color:#f92672">.</span><span style="color:#a6e22e">getInheritedPage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SetUp&#34;</span><span style="color:#f92672">,</span> wikiPage<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>setup <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            WikiPagePath setupPath <span style="color:#f92672">=</span>
+                    wikiPage<span style="color:#f92672">.</span><span style="color:#a6e22e">getPageCrawler</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFullPath</span><span style="color:#f92672">(</span>setup<span style="color:#f92672">);</span>
+            String setupPathName <span style="color:#f92672">=</span> PathParser<span style="color:#f92672">.</span><span style="color:#a6e22e">render</span><span style="color:#f92672">(</span>setupPath<span style="color:#f92672">);</span>
+            buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!include -setup .&#34;</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>setupPathName<span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">());</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">hasAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+        WikiPage teardown <span style="color:#f92672">=</span>
+                PageCrawlerImpl<span style="color:#f92672">.</span><span style="color:#a6e22e">getInheritedPage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;TearDown&#34;</span><span style="color:#f92672">,</span> wikiPage<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>teardown <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            WikiPagePath tearDownPath <span style="color:#f92672">=</span>
+                    wikiPage<span style="color:#f92672">.</span><span style="color:#a6e22e">getPageCrawler</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFullPath</span><span style="color:#f92672">(</span>teardown<span style="color:#f92672">);</span>
+            String tearDownPathName <span style="color:#f92672">=</span> PathParser<span style="color:#f92672">.</span><span style="color:#a6e22e">render</span><span style="color:#f92672">(</span>tearDownPath<span style="color:#f92672">);</span>
+            buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!include -teardown .&#34;</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>tearDownPathName<span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>includeSuiteSetup<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            WikiPage suiteTeardown <span style="color:#f92672">=</span>
+                    PageCrawlerImpl<span style="color:#f92672">.</span><span style="color:#a6e22e">getInheritedPage</span><span style="color:#f92672">(</span>
+                            SuiteResponder<span style="color:#f92672">.</span><span style="color:#a6e22e">SUITE_TEARDOWN_NAME</span><span style="color:#f92672">,</span>
+                            wikiPage
+                    <span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>suiteTeardown <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                WikiPagePath pagePath <span style="color:#f92672">=</span>
+                        suiteTeardown<span style="color:#f92672">.</span><span style="color:#a6e22e">getPageCrawler</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFullPath</span><span style="color:#f92672">(</span>suiteTeardown<span style="color:#f92672">);</span>
+                String pagePathName <span style="color:#f92672">=</span> PathParser<span style="color:#f92672">.</span><span style="color:#a6e22e">render</span><span style="color:#f92672">(</span>pagePath<span style="color:#f92672">);</span>
+                buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!include -teardown .&#34;</span><span style="color:#f92672">)</span>
+                        <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>pagePathName<span style="color:#f92672">)</span>
+                        <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">setContent</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+    <span style="color:#66d9ef">return</span> pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getHtml</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Do you understand the function after three minutes of study? Probably not. There’s too much going on in there at too many different levels of abstraction. There are strange strings and odd function calls mixed in with doubly nested if statements controlled by flags.</p>
+<blockquote>
+<p>搞懂这个函数了吗？大概没有。有太多事发生，有太多不同层级的抽象。奇怪的字符串和函数调用，混以双重嵌套、用标识来控制的 if 语句等，不一而足。</p>
+</blockquote>
+<p>However, with just a few simple method extractions, some renaming, and a little restructuring, I was able to capture the intent of the function in the nine lines of Listing 3-2. See whether you can understand that in the next 3 minutes.</p>
+<blockquote>
+<p>不过，只要做几个简单的方法抽离和重命名操作，加上一点点重构，就能在 9 行代码之内搞掂（如代码清单 3-2 所示）。用 3 分钟阅读以下代码，看你能理解吗？</p>
+</blockquote>
+<p>Listing 3-2 HtmlUtil.java (refactored)</p>
+<blockquote>
+<p>代码清单 3-2 HtmlUtil.java（重构之后）</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">renderPageWithSetupsAndTeardowns</span><span style="color:#f92672">(</span>
+        PageData pageData<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> isSuite
+<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">boolean</span> isTestPage <span style="color:#f92672">=</span> pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">hasAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isTestPage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        WikiPage testPage <span style="color:#f92672">=</span> pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getWikiPage</span><span style="color:#f92672">();</span>
+        StringBuffer newPageContent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">();</span>
+        includeSetupPages<span style="color:#f92672">(</span>testPage<span style="color:#f92672">,</span> newPageContent<span style="color:#f92672">,</span> isSuite<span style="color:#f92672">);</span>
+        newPageContent<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">());</span>
+        includeTeardownPages<span style="color:#f92672">(</span>testPage<span style="color:#f92672">,</span> newPageContent<span style="color:#f92672">,</span> isSuite<span style="color:#f92672">);</span>
+        pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">setContent</span><span style="color:#f92672">(</span>newPageContent<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">return</span> pageData<span style="color:#f92672">.</span><span style="color:#a6e22e">getHtml</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Unless you are a student of FitNesse, you probably don’t understand all the details. Still, you probably understand that this function performs the inclusion of some setup and teardown pages into a test page and then renders that page into HTML. If you are familiar with JUnit,2 you probably realize that this function belongs to some kind of Web-based testing framework. And, of course, that is correct. Divining that information from Listing 3-2 is pretty easy, but it’s pretty well obscured by Listing 3-1.</p>
+<blockquote>
+<p>除非你正在研究 FitNesse，否则就理解不了所有细节。不过，你大概能明白，该函数包含把一些设置和拆解页放入一个测试页面，再渲染为 HTML 的操作。如果你熟悉 JUnit，或许会想到，该函数归属于某个基于 Web 的测试框架。而且，这当然没错。从代码清单 3-2 中获得信息很容易，而代码清单 3-1 则晦涩难明。</p>
+</blockquote>
+<p>So what is it that makes a function like Listing 3-2 easy to read and understand? How can we make a function communicate its intent? What attributes can we give our functions that will allow a casual reader to intuit the kind of program they live inside?</p>
+<blockquote>
+<p>是什么让代码清单 3-2 易于阅读和理解？怎么才能让函数表达其意图？该给函数赋予哪些属性，好让读者一看就明白函数是属于怎样的程序？</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+  <div><a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/commit/898099ba91ff6f140943a2b4f4e73c671cddba9a" title='最后修改者 louyongjiu | 2020年9月1日' target="_blank" rel="noopener">
+      <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2020年9月1日</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/Clean%20Code/3.%20Functions/_index.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#第-3-章-函数">第 3 章 函数</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

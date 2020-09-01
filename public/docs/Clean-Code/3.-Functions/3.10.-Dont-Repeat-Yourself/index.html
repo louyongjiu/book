@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3.10 别重复自己 #  Look back at Listing 3-1 carefully and you will notice that there is an algorithm that gets repeated four times, once for each of the SetUp, SuiteSetUp, TearDown, and SuiteTearDown cases. It’s not easy to spot this duplication because the four instances are intermixed with other code and aren’t uniformly duplicated. Still, the duplication is a problem because it bloats the code and will require four-fold modification should the algorithm ever have to change.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="3.10. 别重复自己&#34;" />
+<meta property="og:description" content="3.10 别重复自己 #  Look back at Listing 3-1 carefully and you will notice that there is an algorithm that gets repeated four times, once for each of the SetUp, SuiteSetUp, TearDown, and SuiteTearDown cases. It’s not easy to spot this duplication because the four instances are intermixed with other code and aren’t uniformly duplicated. Still, the duplication is a problem because it bloats the code and will require four-fold modification should the algorithm ever have to change." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/" />
+
+<title>3.10. 别重复自己&#34; | Book</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css" integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY=">
+<script defer src="/zh.search.min.5e3b717b0686f788252a3dd9f628944a27e58985fc0a36655b371cb064849d0d.js" integrity="sha256-XjtxewaG94glKj3Z9iiUSifliYX8CjZlWzccsGSEnQ0="></script>
+
+<script defer src="/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Book</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/Clean-Code/" class="collapsed ">代码整洁之道</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/" class="">1. 整洁代码</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.1.-There-Will-Be-Code/" class="">1.1. 要有代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.2.-Bad-Code/" class="">1.2. 糟糕的代码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.3.-The-Total-Cost-of-Owning-a-Mess/" class="">1.3. 混乱的代价</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.4.-Schools-of-Thought/" class="">1.4. 思想流派</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.5.-We-Are-Authors/" class="">1.5. 我们是作者</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.6.-The-Boy-Scout-Rule/" class="">1.6. 童子军军规</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.7.-Prequel-and-Principles/" class="">1.7. 前传与原则</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.8.-Conclusion/" class="">1.8. 小结</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/1.-Clean-Code/1.9.-Bibliography/" class="">1.9. 参考文献</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/" class="">2. 有意义的命名</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.1.-Introduction/" class="">2.1. 介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.2.-Use-Intention-Revealing-Names/" class="">2.2. 名副其实</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.3.-Avoid-Disinformation/" class="">2.3. 避免误导</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.4.-Make-Meaningful-Distinctions/" class="">2.4. 做有意义的区分</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.5.-Use-Pronounceable-Names/" class="">2.5. 使用读得出来的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.6.-Use-Searchable-Names/" class="">2.6. 使用可搜索的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.7.-Avoid-Encodings/" class="">2.7. 避免使用编码</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.8.-Avoid-Mental-Mapping/" class="">2.8. 避免思维映射</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.9.-Class-Names/" class="">2.9. 类名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.10.-Method-Names/" class="">2.10. 方法名</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.11.-Dont-Be-Cute/" class="">2.11. 别扮可爱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.12.-Pick-One-Word-per-Concept/" class="">2.12. 每个概念对应一个词</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.13.-Dont-Pun/" class="">2.13. 别用双关语</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.14.-Use-Solution-Domain-Names/" class="">2.14. 使用解决方案领域名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.15.-Use-Problem-Domain-Names/" class="">2.15. 使用源自所涉问题领域的名称</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.16.-Add-Meaningful-Context/" class="">2.16. 添加有意义的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.17.-Dont-Add-Gratuitous-Context/" class="">2.17. 不要添加没用的语境</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/2.-Meaningful-Names/2.18.-Final-Words/" class="">2.18. 最后的话</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/" class="">3. 函数</a>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.1.-Small/" class="">3.1. 短小</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/" class="">3.2. 只做一件事&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/" class="">3.3. 每个函数一个抽象层级&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/" class="">3.4. switch 语句&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/" class="">3.5. 使用描述性的名称&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/" class="">3.6. 函数参数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/" class="">3.7. 无副作用&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/" class="">3.8. 分隔指令与询问&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/" class="">3.9. 使用异常替代返回错误码&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/" class="active">3.10. 别重复自己&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/" class="">3.11. 结构化编程&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/" class="">3.12. 如何写出这样的函数&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.13.-Conclusion/" class="">3.13. 小结&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/" class="">3.14. 程序&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/3.-Functions/3.15.-Bibliography/" class="">3.15. 参考文献&#34;</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/10.-Classes/ch10/" class="">Ch10</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/11.-Systems/ch11/" class="">Ch11</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/12.-Emergence/ch12/" class="">Ch12</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/13.-Concurrency/ch13/" class="">Ch13</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/14.-Successive-Refinement/ch14/" class="">Ch14</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/15.-JUnit-Internals/ch15/" class="">Ch15</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/16.-Refactoring-SerialDate/ch16/" class="">Ch16</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/17.-Smells-and-Heuristics/ch17/" class="">Ch17</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/4.-Comments/ch4/" class="">Ch4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/5.-Formatting/ch5/" class="">Ch5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/6.-Objects-and-Data-Structures/ch6/" class="">Ch6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/7.-Error-Handling/ch7/" class="">Ch7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/8.-Boundaries/ch8/" class="">Ch8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/9.-Unit-Tests/ch9/" class="">Ch9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/docs/Clean-Code/Appendix-A-Concurrency-II/apA/" class="">Ap A</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+    <a href="/docs/The-Go-Programming-Language/" class="collapsed ">Go语言圣经</a>
+  
+
+          
+  
+  
+  
+
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/louyongjiu/gopl-zh-hugo" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>3.10. 别重复自己&#34;</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#310-别重复自己">3.10 别重复自己</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="310-别重复自己">
+  3.10 别重复自己
+  <a class="anchor" href="#310-%e5%88%ab%e9%87%8d%e5%a4%8d%e8%87%aa%e5%b7%b1">#</a>
+</h2>
+<p>Look back at Listing 3-1 carefully and you will notice that there is an algorithm that gets repeated four times, once for each of the SetUp, SuiteSetUp, TearDown, and SuiteTearDown cases. It’s not easy to spot this duplication because the four instances are intermixed with other code and aren’t uniformly duplicated. Still, the duplication is a problem because it bloats the code and will require four-fold modification should the algorithm ever have to change. It is also a four-fold opportunity for an error of omission.</p>
+<blockquote>
+<p>回头仔细看看代码清单 3-1，你会注意到，有个算法在 SetUp、SuiteSetUp、TearDown 和 SuiteTearDown 中总共被重复了 4 次。识别重复不太容易，因为这 4 次重复与其他代码混在一起，而且也不完全一样。这样的重复还是会导致问题，因为代码因此而臃肿，且当算法改变时需要修改 4 处地方。而且也会增加 4 次放过错误的可能性。</p>
+</blockquote>
+<p>
+  <img src="/cc/figures/ch3/3_4fig_martin.jpg" alt="" /></p>
+<p>This duplication was remedied by the include method in Listing 3-7. Read through that code again and notice how the readability of the whole module is enhanced by the reduction of that duplication.</p>
+<blockquote>
+<p>使用代码清单 3-7 中的 include 方法修正了这些重复。再读一遍那段代码，你会注意到，整个模块的可读性因为重复的消除而得到了提升。</p>
+</blockquote>
+<p>Duplication may be the root of all evil in software. Many principles and practices have been created for the purpose of controlling or eliminating it. Consider, for example, that all of Codd’s database normal forms serve to eliminate duplication in data. Consider also how object-oriented programming serves to concentrate code into base classes that would otherwise be redundant. Structured programming, Aspect Oriented Programming, Component Oriented Programming, are all, in part, strategies for eliminating duplication. It would appear that since the invention of the subroutine, innovations in software development have been an ongoing attempt to eliminate duplication from our source code.</p>
+<blockquote>
+<p>重复可能是软件中一切邪恶的根源。许多原则与实践规则都是为控制与消除重复而创建。例如，全部考德（Codd）数据库范式都是为消灭数据重复而服务。再想想看，面向对象编程是如何将代码集中到基类，从而避免了冗余。面向方面编程（Aspect Oriented Programming）、面向组件编程（Component Oriented Programming）多少也都是消除重复的一种策略。看来，自子程序发明以来，软件开发领域的所有创新都是在不断尝试从源代码中消灭重复。</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/louyongjiu/gopl-zh-hugo/edit/master/content/docs/Clean%20Code/3.%20Functions/3.10.%20Don%e2%80%99t%20Repeat%20Yourself.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#310-别重复自己">3.10 别重复自己</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

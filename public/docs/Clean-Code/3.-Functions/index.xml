@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>3. 函数 on Book</title>
+    <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/</link>
+    <description>Recent content in 3. 函数 on Book</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://book.ninescloud.com/docs/Clean-Code/3.-Functions/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>3.1. 短小</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.1.-Small/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.1.-Small/</guid>
+      <description>3.1 短小 #  The first rule of functions is that they should be small. The second rule of functions is that they should be smaller than that. This is not an assertion that I can justify. I can’t provide any references to research that shows that very small functions are better. What I can tell you is that for nearly four decades I have written functions of all different sizes.</description>
+    </item>
+    
+    <item>
+      <title>3.2. 只做一件事&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.2.-Do-One-Thing/</guid>
+      <description>3.2 只做一件事 #  It should be very clear that Listing 3-1 is doing lots more than one thing. It’s creating buffers, fetching pages, searching for inherited pages, rendering paths, appending arcane strings, and generating HTML, among other things. Listing 3-1 is very busy doing lots of different things. On the other hand, Listing 3-3 is doing one simple thing. It’s including setups and teardowns into test pages.
+ 代码清单 3-1 显然想做好几件事。它创建缓冲区、获取页面、搜索继承下来的页面、渲染路径、添加神秘的字符串、生成 HTML，如此等等。代码清单 3-1 手忙脚乱。而代码清单 3-3 则只做一件简单的事。它将设置和拆解包纳到测试页面中。</description>
+    </item>
+    
+    <item>
+      <title>3.3. 每个函数一个抽象层级&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.3.-One-Level-of-Abstraction-per-Function/</guid>
+      <description>3.3 每个函数一个抽象层级 #  In order to make sure our functions are doing “one thing,” we need to make sure that the statements within our function are all at the same level of abstraction. It is easy to see how Listing 3-1 violates this rule. There are concepts in there that are at a very high level of abstraction, such as getHtml(); others that are at an intermediate level of abstraction, such as: String pagePathName = PathParser.</description>
+    </item>
+    
+    <item>
+      <title>3.4. switch 语句&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.4.-Switch-Statements-/</guid>
+      <description>3.4 switch 语句 #  It’s hard to make a small switch statement.6 Even a switch statement with only two cases is larger than I’d like a single block or function to be. It’s also hard to make a switch statement that does one thing. By their nature, switch statements always do N things. Unfortunately we can’t always avoid switch statements, but we can make sure that each switch statement is buried in a low-level class and is never repeated.</description>
+    </item>
+    
+    <item>
+      <title>3.5. 使用描述性的名称&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.5.-Use-Descriptive-Names/</guid>
+      <description>3.5 使用描述性的名称 #  In Listing 3-7 I changed the name of our example function from testableHtml to SetupTeardownIncluder.render. This is a far better name because it better describes what the function does. I also gave each of the private methods an equally descriptive name such as isTestable or includeSetupAndTeardownPages. It is hard to overestimate the value of good names. Remember Ward’s principle: “You know you are working on clean code when each routine turns out to be pretty much what you expected.</description>
+    </item>
+    
+    <item>
+      <title>3.6. 函数参数&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.6.-Function-Arguments/</guid>
+      <description>3.6 函数参数 #  The ideal number of arguments for a function is zero (niladic). Next comes one (monadic), followed closely by two (dyadic). Three arguments (triadic) should be avoided where possible. More than three (polyadic) requires very special justification—and then shouldn’t be used anyway.
+ 最理想的参数数量是零（零参数函数），其次是一（单参数函数），再次是二（双参数函数），应尽量避免三（三参数函数）。有足够特殊的理由才能用三个以上参数（多参数函数）——所以无论如何也不要这么做。
+  Arguments are hard. They take a lot of conceptual power. That’s why I got rid of almost all of them from the example.</description>
+    </item>
+    
+    <item>
+      <title>3.7. 无副作用&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.7.-Have-No-Side-Effects/</guid>
+      <description>3.7 无副作用 #  Side effects are lies. Your function promises to do one thing, but it also does other hidden things. Sometimes it will make unexpected changes to the variables of its own class. Sometimes it will make them to the parameters passed into the function or to system globals. In either case they are devious and damaging mistruths that often result in strange temporal couplings and order dependencies.</description>
+    </item>
+    
+    <item>
+      <title>3.8. 分隔指令与询问&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.8.-Command-Query-Separation/</guid>
+      <description>3.8 分隔指令与询问 #  Functions should either do something or answer something, but not both. Either your function should change the state of an object, or it should return some information about that object. Doing both often leads to confusion. Consider, for example, the following function:
+ 函数要么做什么事，要么回答什么事，但二者不可得兼。函数应该修改某对象的状态，或是返回该对象的有关信息。两样都干常会导致混乱。看看下面的例子：
+ public boolean set(String attribute, String value); This function sets the value of a named attribute and returns true if it is successful and false if no such attribute exists.</description>
+    </item>
+    
+    <item>
+      <title>3.9. 使用异常替代返回错误码&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.9.-Prefer-Exceptions-to-Returning-Error-Codes/</guid>
+      <description>3.9 使用异常替代返回错误码 #  Returning error codes from command functions is a subtle violation of command query separation. It promotes commands being used as expressions in the predicates of if statements.
+ 从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在 if 语句判断中把指令当作表达式使用。
+ if (deletePage(page) == E_OK) This does not suffer from verb/adjective confusion but does lead to deeply nested structures. When you return an error code, you create the problem that the caller must deal with the error immediately.</description>
+    </item>
+    
+    <item>
+      <title>3.10. 别重复自己&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.10.-Dont-Repeat-Yourself/</guid>
+      <description>3.10 别重复自己 #  Look back at Listing 3-1 carefully and you will notice that there is an algorithm that gets repeated four times, once for each of the SetUp, SuiteSetUp, TearDown, and SuiteTearDown cases. It’s not easy to spot this duplication because the four instances are intermixed with other code and aren’t uniformly duplicated. Still, the duplication is a problem because it bloats the code and will require four-fold modification should the algorithm ever have to change.</description>
+    </item>
+    
+    <item>
+      <title>3.11. 结构化编程&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.11.-Structured-Programming/</guid>
+      <description>3.11 结构化编程 #  Some programmers follow Edsger Dijkstra’s rules of structured programming.14 Dijkstra said that every function, and every block within a function, should have one entry and one exit. Following these rules means that there should only be one return statement in a function, no break or continue statements in a loop, and never, ever, any goto statements.
+ 有些程序员遵循 Edsger Dijkstra 的结构化编程规则。Dijkstra 认为，每个函数、函数中的每个代码块都应该有一个入口、一个出口。遵循这些规则，意味着在每个函数中只该有一个 return 语句，循环中不能有 break 或 continue 语句，而且永永远远不能有任何 goto 语句。</description>
+    </item>
+    
+    <item>
+      <title>3.12. 如何写出这样的函数&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.12.-How-Do-You-Write-Functions-Like-This/</guid>
+      <description>3.12 如何写出这样的函数 #  Writing software is like any other kind of writing. When you write a paper or an article, you get your thoughts down first, then you massage it until it reads well. The first draft might be clumsy and disorganized, so you wordsmith it and restructure it and refine it until it reads the way you want it to read.
+ 写代码和写别的东西很像。在写论文或文章时，你先想什么就写什么，然后再打磨它。初稿也许粗陋无序，你就斟酌推敲，直至达到你心目中的样子。
+ When I write functions, they come out long and complicated.</description>
+    </item>
+    
+    <item>
+      <title>3.13. 小结&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.13.-Conclusion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.13.-Conclusion/</guid>
+      <description>3.13 小结 #  Every system is built from a domain-specific language designed by the programmers to describe that system. Functions are the verbs of that language, and classes are the nouns. This is not some throwback to the hideous old notion that the nouns and verbs in a requirements document are the first guess of the classes and functions of a system. Rather, this is a much older truth. The art of programming is, and has always been, the art of language design.</description>
+    </item>
+    
+    <item>
+      <title>3.14. 程序&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.14.-SetupTeardownIncluder/</guid>
+      <description>3.14 程序 #  Listing 3-7 SetupTeardownIncluder.java
+ 代码清单 3-7 SetupTeardownIncluder.java
+ package fitnesse.html; import fitnesse.responders.run.SuiteResponder; import fitnesse.wiki.*; public class SetupTeardownIncluder { private PageData pageData; private boolean isSuite; private WikiPage testPage; private StringBuffer newPageContent; private PageCrawler pageCrawler; public static String render(PageData pageData) throws Exception { return render(pageData, false); } public static String render(PageData pageData, boolean isSuite) throws Exception { return new SetupTeardownIncluder(pageData).render(isSuite); } private SetupTeardownIncluder(PageData pageData) { this.pageData = pageData; testPage = pageData.</description>
+    </item>
+    
+    <item>
+      <title>3.15. 参考文献&#34;</title>
+      <link>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.15.-Bibliography/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://book.ninescloud.com/docs/Clean-Code/3.-Functions/3.15.-Bibliography/</guid>
+      <description>3.15 参考文献 #  [KP78]: Kernighan and Plaugher, The Elements of Programming Style, 2d. ed., McGraw-Hill, 1978.
+[PPP02]: Robert C. Martin, Agile Software Development: Principles, Patterns, and Prac-tices, Prentice Hall, 2002.
+[GOF]: Design Patterns: Elements of Reusable Object Oriented Software, Gamma et al.,Addison-Wesley, 1996.
+[PRAG]: The Pragmatic Programmer, Andrew Hunt, Dave Thomas, Addison-Wesley,2000.
+[SP72]: Structured Programming, O.-J. Dahl, E. W. Dijkstra, C. A. R. Hoare, AcademicPress, London, 1972.</description>
+    </item>
+    
+  </channel>
+</rss>

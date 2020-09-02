@@ -162,7 +162,7 @@
 10.2.1. The Single Responsibility Principle
 10.2.2. Cohesion
 10.2.3. Maintaining Cohesion Results in Many Small Classes
-10.3. Organizing for Change 
+10.3. Organizing for Change
 10.3.1. Isolating from Change
 10.4. Bibliography
 11. Systems

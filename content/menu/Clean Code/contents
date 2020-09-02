@@ -145,12 +145,12 @@
 8.7. Bibliography
 9. Unit Tests
 9.1. The Three Laws of TDD
-9.2. Keeping Tests Clean 
+9.2. Keeping Tests Clean
 9.2.1. Tests Enable the -ilities
-9.3. Clean Tests 
+9.3. Clean Tests
 9.3.1. Domain-Specific Testing Language
 9.3.2. A Dual Standard
-9.4. One Assert per Test 
+9.4. One Assert per Test
 9.4.1. Single Concept per Test
 9.5. F.I.R.S.T
 9.6. Conclusion

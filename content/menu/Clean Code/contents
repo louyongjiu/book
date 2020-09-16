@@ -175,7 +175,7 @@
 11.3.1. Cross-Cutting Concerns 
 11.4. Java Proxies
 11.5. Pure Java AOP Frameworks
-11.6. AspectJ Aspects 
+11.6. AspectJ Aspects
 11.7. Test Drive the System Architecture
 11.8. Optimize Decision Making
 11.9. Use Standards Wisely, When They Add DemonstrableValue

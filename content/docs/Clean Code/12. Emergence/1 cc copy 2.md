@@ -1,10 +1,9 @@
-# 第 12 章 Emergence 迭进
+---
+weight: 12
+title: "12.1. 通过迭进设计达到整洁目的"
+---
 
-by Jeff Langr
-
-![](/cc/figures/ch12/12_1fig_martin.jpg)
-
-## 12.1 GETTING CLEAN VIA EMERGENT DESIGN 通过迭进设计达到整洁目的
+## 12.1 通过迭进设计达到整洁目的
 
 What if there were four simple rules that you could follow that would help you create good designs as you worked? What if by following these rules you gained insights into the structure and design of your code, making it easier to apply principles such as SRP and DIP? What if these four rules facilitated the emergence of good designs?
 

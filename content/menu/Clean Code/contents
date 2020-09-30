@@ -327,8 +327,7 @@ Knowing Your Library
  Executor Framework 
  Nonblocking Solutions
  Nonthread-Safe Classes
-Dependencies Between Methods 
-Can Break Concurrent Code 
+Dependencies Between Methods Can Break Concurrent Code 
  Tolerate the Failure
  Client-Based Locking
  Server-Based Locking
